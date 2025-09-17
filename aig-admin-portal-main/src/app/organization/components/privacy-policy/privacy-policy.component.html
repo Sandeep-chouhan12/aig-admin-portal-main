@@ -1,0 +1,47 @@
+<!-- Privacy Policy -->
+<div class="content" data-number="24">
+
+  <!-- Officer Privacy Policy -->
+  <div class="background-card bg-transparent p-4 d-flex flex-column gap-4">
+    <h4 class="fs-20 fw-500 dark mb-0"> Privacy Policy</h4>
+
+    <!-- Editor -->
+    <div class="col-md-12">
+      <form action="" [formGroup]="organizationForm">
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <!-- <h4 class="mb-0 fs-16 fw-400 black">Description</h4> -->
+          <div class="text-editor" id="editor-officer">
+            <!-- <ckeditor [editor]="Editor" [config]="editorConfig" formControlName="content">
+            </ckeditor> -->
+            <ngx-editor-menu [editor]="officerEditor" [toolbar]="toolbar">
+            </ngx-editor-menu>
+            <ngx-editor [editor]="officerEditor" formControlName="content"></ngx-editor>
+            <!-- <textarea formControlName="content">
+            </textarea> -->
+          </div>
+        </div>
+        <div *ngIf="organizationForm.get('content')?.invalid && organizationForm.get('content')?.touched">
+          <span *ngIf="organizationForm.get('content')?.errors?.['required']" class="error">Please enter privacy policy</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Button (Conditional) -->
+    <div class="d-flex justify-content-end gap-2"
+      *appHasPermission="{ title: permissionTitle.ORGANIZATIONS ,accessType: permissionType.CREATE }">
+      <button *ngIf="!isOrganizationEditeMode" class="btn_lg fs-16 fw-500 br_10" [disabled]="isSubmittingOrganization"
+        (click)="submitPrivacyPolicy()">
+        {{ isSubmittingOrganization ? 'Saving...' : 'Save' }}
+      </button>
+ 
+      <ng-container *ngIf="isOrganizationEditeMode">
+        <button *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.UPDATE }" class="btn_lg fs-16 fw-500 br_10 btn-outline-dark"
+          [disabled]="isSubmittingOrganization" (click)="updatePrivacyPolicy()">
+          {{ isSubmittingOrganization ? 'Updating...' : 'Update' }}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

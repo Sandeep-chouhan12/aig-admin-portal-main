@@ -1,0 +1,44 @@
+// #chart1 {
+//     max-width: 380px;
+//     margin:  auto;
+//     padding: 0;
+//   }
+
+
+#pie-chart {
+    padding: 81px 0px;
+}
+
+// :host ::ng-deep .apexcharts-legend {
+//     display: block;
+//     overflow: hidden;
+//     padding: 0px;
+// }
+// @media  (max-width: 1400px) {
+//     :host ::ng-deep .apexcharts-legend {
+//         display: flex !important;
+//         overflow: hidden;
+//         padding: 0px;
+//         gap: 12px;
+//     }
+// }
+
+@media (max-width: 992px) {
+    .Verification_Officer_graph {
+        .col-md-6 {
+            width: 100%;
+        }
+    }
+}
+
+::ng-deep.apexcharts-legend-text{
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+@media (max-width: 575px) {
+    ::ng-deep.apexcharts-legend-text{
+        font-size: 13px !important;
+        font-weight: 600 !important;
+    }
+}

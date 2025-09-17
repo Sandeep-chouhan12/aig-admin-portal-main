@@ -1,0 +1,19 @@
+<div class="background-card bg-transparent h-100 d-flex flex-column gap-4">
+    <div class="d-flex justify-content-between align-items-center py-2 flex-wrap gap-2">
+        <h3 class="fs-18 fw-500 black mb-0">API Graph</h3>
+        <!-- week filter -->
+        <!-- <select id="week" name="week" class="attendance_dropdown1 border-0 fs-14 fw-700 theading ">
+            <option>week</option>
+            <option>week</option>
+            <option>week</option>
+            <option>week</option>
+            <option>week</option>
+        </select> -->
+    </div>
+    <!-- <img src="assets/images/temp_img/Bars.png" class="img-fluid w-100"> -->
+    <apx-chart  [series]="chartOptions.series" [chart]="chartOptions.chart"
+        [dataLabels]="chartOptions.dataLabels" [colors]="chartOptions.colors" [grid]="chartOptions.grid"
+        [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis" [legend]="chartOptions.legend"
+        [fill]="chartOptions.fill" [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip"
+        [xaxis]="chartOptions.xaxis"></apx-chart>
+</div>

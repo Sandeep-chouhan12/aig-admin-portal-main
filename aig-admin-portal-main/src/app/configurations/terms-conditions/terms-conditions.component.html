@@ -1,0 +1,73 @@
+<!-- Terms & Conditions -->
+<div class="content" data-number="23">
+
+    <!-- Officer Terms -->
+    <div class="background-card bg-transparent p-4 d-flex flex-column gap-4">
+        <h4 class="fs-20 fw-500 dark mb-0">Officer Terms & Conditions</h4>
+        <div class="col-md-12">
+            <div class="d-flex flex-column gap-2 w-100">
+                <form [formGroup]="officerForm">
+                    <div class="text-editor" id="editor-officer">
+                        <ngx-editor-menu [editor]="officerEditor" [toolbar]="toolbar">
+                        </ngx-editor-menu>
+                        <ngx-editor [editor]="officerEditor" formControlName="content"></ngx-editor>
+                    </div>
+                    <div *ngIf="officerForm.get('content')?.invalid && officerForm.get('content')?.touched">
+                        <span *ngIf="officerForm.get('content')?.errors?.['required']"    class="error" >Please enter officer terms & conditions</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Buttons -->
+        <div class="d-flex justify-content-end gap-2"
+            *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.CREATE }">
+            <button *ngIf="!isOfficerEditMode" class="btn_lg fs-16 fw-500 br_10" [disabled]="isSubmittingOfficer || officerForm.invalid"
+                (click)="submitTerms('officer')">
+                {{ isSubmittingOfficer ? 'Saving...' : 'Save' }}
+            </button>
+           <ng-container *ngIf="isOfficerEditMode">
+               <button *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.UPDATE }" 
+                   class="btn_lg fs-16 fw-500 br_10 btn-outline-dark"
+                   [disabled]="isSubmittingOfficer || officerForm.invalid" 
+                   (click)="updateTerms('officer')">
+                   {{ isSubmittingOfficer ? 'Updating...' : 'Update' }}
+               </button>
+            </ng-container>
+        </div>
+    </div>
+
+
+    <!-- User Terms -->
+    <div class="background-card bg-transparent p-4 d-flex flex-column gap-4 mt-4">
+        <h4 class="fs-20 fw-500 dark mb-0">User Terms & Conditions</h4>
+
+        <div class="col-md-12">
+            <div class="d-flex flex-column gap-2 w-100">
+                <form [formGroup]="userForm">
+                    <div class="text-editor" id="editor-user">
+                        <ngx-editor-menu [editor]="userEditor" [toolbar]="toolbar">
+                        </ngx-editor-menu>
+                        <ngx-editor [editor]="userEditor" formControlName="content"></ngx-editor>
+                    </div>
+                    <div *ngIf="userForm.get('content')?.invalid && userForm.get('content')?.touched" >
+                        <span *ngIf="userForm.get('content')?.errors?.['required']" class="error">Please enter user terms & conditions</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-end gap-2"
+            *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.CREATE }">
+            <button *ngIf="!isUserEditMode" class="btn_lg fs-16 fw-500 br_10" 
+                [disabled]="isSubmittingUser || userForm.invalid" (click)="submitTerms('user')">
+                {{ isSubmittingUser ? 'Saving...' : 'Save' }}
+            </button>
+            <button *ngIf="isUserEditMode" class="btn_lg fs-16 fw-500 br_10 btn-outline-dark"
+                [disabled]="isSubmittingUser || userForm.invalid" (click)="updateTerms('user')">
+                {{ isSubmittingUser ? 'Updating...' : 'Update' }}
+            </button>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,547 @@
+<!-- user details -->
+<div class="container px-0 px-sm-2" *ngIf="user">
+    <div class="d-flex flex-column gap-4">
+        <!-- Officer Details box -->
+        <div class="content_box">
+            <div class="d-flex justify-content-end align-items-center" *ngIf="user.isDeleted">
+                <div class="add_details_btn ">
+                    <button class="status_btn rejected_btn"> Deleted</button>
+                </div>
+            </div>
+            <div class="row gy-4 align-items-center">
+                <div class="col-md-2 ">
+                    <img class="modal_profile" [src]="user.profilePicture || appUtils.DEFAULT_IMAGE">
+                </div>
+                <div class="col-md-10 user_details">
+
+                    <div class="row gy-3">
+                        <div class="col-md-3 col-lg-2 col-sm-6">
+                            <h3>User Name</h3>
+                            <h4>{{user.firstName +" "+user.lastName}}</h4>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-sm-6">
+                            <h3>Email</h3>
+                            <h4>{{user.email}}</h4>
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-sm-6">
+                            <h3>Phone Number</h3>
+                            <h4>{{user.phoneNumber}}</h4>
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-sm-6">
+                            <h3>Create Date</h3>
+                            <h4>{{user.createdDate |date:'dd/MM/YYYY'}}</h4>
+                        </div>
+                        <div class="col-md-3 col-lg-2 col-sm-6">
+                            <h3>Update Date</h3>
+                            <h4>{{user.updatedDate | date:'dd/MM/YYYY'}}</h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h4 class="primary mb-0 fs-18 fw-600">Address</h4>
+            <div class="d-flex align-items-center address_show" *ngIf="user.settings">
+                <h4 class="d-flex align-items-center gap-1"><span
+                        [ngClass]="user.settings.notifications?'push_notification_circle':'sms_notification_circle'"></span>Push
+                    Notification
+                </h4>
+                <h4 class="d-flex align-items-center gap-1">
+                    <span [ngClass]="user.settings.sms?'push_notification_circle':'sms_notification_circle'"></span>
+                    SMS
+                </h4>
+                <h4 class="d-flex align-items-center gap-1">
+                    <span [ngClass]="user.settings.email?'push_notification_circle':'sms_notification_circle'"></span>
+                    Email
+                </h4>
+            </div>
+        </div>
+
+        <!-- Address  list -->
+        <div class="table_container table-responsive">
+            <div class="table-pagination page-nav empty" *ngIf="addressList.length==0">
+                <h4 class="primary mb-0 fs-26 fw-600">No Addresses </h4>
+            </div>
+            <div style="overflow-x:auto;" *ngIf="addressList && addressList.length >0">
+                <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="table_heading">
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 20%;">AIG Code</th>
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 40%;">Address</th>
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Address Type</th>
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Address Type Image</th>
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 100%; justify-content: center;display: flex;">Status</th>
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg_light">
+                        <tr *ngFor="let address of addressList">
+
+                            <td class="fs-14 fw-500 info">
+                                {{address.aigcode}}
+
+                            </td>
+                            <td class="fs-14 fw-500 info">{{address.address}}
+                            </td>
+
+                            <td>
+                                <h4 class="fs-14 fw-500 info mb-0">{{address.addressType}}
+                                </h4>
+                            </td>
+                            <td style="display: flex;justify-content: center;">
+                                <span _ngcontent-ng-c1300020800="" class="user_address_icon">
+                                    <img _ngcontent-ng-c1300020800="" [src]="address.addressTypeImage"
+                                        style="height: 16px;width: 16px;">
+                                </span>
+                                <!-- <div class="d-flex align-items-center">
+                                            <img [src]="address.addressTypeImage" class="address_type">
+                                        </div> -->
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="varification_officer align-items-center">
+                                        <button class="status_btn "
+                                            [ngClass]="address.isVerified?'Verified_btn':'Unverified_btn'">
+                                            {{address.isVerified?'Verified':'Unverified'}}</button>
+                                        <a *ngIf="address.isVerified" (click)="getAddressDetails(address.id)"
+                                            class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                            View Summary</a>
+                                    </div>
+                                </div>
+                                <!-- <button class="status_btn " [ngClass]="address.isVerified?'Verified_btn':'Unverified_btn'"> {{address.isVerified?'Verified':'Unverified'}}</button> -->
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center" *ngIf="address.isDeleted">
+                                    <div class="mx_12 verification_officer">
+                                        <button class="status_btn rejected_btn"> Deleted</button>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <a *ngIf="!address.isDeleted" href="javascript:void(0)"
+                                        (click)="navigate(componentRoutes.ADDRESS_DETAILS_BASE +'/'+address.id)"><img
+                                            src="assets/images/svg_img/edit-icon.svg" class="add_icons"></a>
+                                    <ng-container
+                                        *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.UPDATE }">
+                                        <a *ngIf="!address.isDeleted" (click)="setEditData(address)"
+                                            data-bs-target="#EditAddress" data-bs-toggle="modal">
+                                            <img src="assets/images/svg_img/pencil.svg" class="add_icons">
+                                        </a>
+                                    </ng-container>
+
+                                    <ng-container *ngIf="!address.isDeleted">
+                                        <a *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.DELETE }"
+                                            (click)="deleteAddressId = address.id">
+                                            <img src="assets/images/svg_img/Trash.svg" data-bs-target="#delete-modal"
+                                                data-bs-toggle="modal">
+                                        </a>
+                                    </ng-container>
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <app-pagination *ngIf="addressPageManager.totalElements>addressPageRequest.pageSize"
+                    [data]="addressList" [pageManager]="addressPageManager" [pageRequest]="addressPageRequest"
+                    (fetchData)="getAddressOfUser($event)"></app-pagination>
+            </div>
+        </div>
+
+        <!-- user details tabs -->
+        <ul class="nav-pills user-tabs-grid mb-0" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="tabs_btn active fs-16 fw-600" id="Transactionss" data-bs-toggle="pill"
+                    data-bs-target="#Transactions" type="button" role="tab" aria-controls="pills-Transactions"
+                    aria-selected="true">Transactions</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="tabs_btn fs-16 fw-600" id="Emergencys" data-bs-toggle="pill" data-bs-target="#Emergency"
+                    type="button" role="tab" aria-controls="pills-Emergency" aria-selected="false">Emergency
+                    History</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="tabs_btn fs-16 fw-600" id="Verifications" data-bs-toggle="pill"
+                    data-bs-target="#Verification" type="button" role="tab" aria-controls="pills-Verification"
+                    aria-selected="false">Verification History</button>
+            </li>
+
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+
+            <!-- Transactions tabs -->
+            <div class="tab-pane fade show active" id="Transactions" role="tabpanel"
+                aria-labelledby="pills-Transactions-tab" tabindex="0">
+                <!-- Transactions list -->
+                <div class="table_container table-responsive">
+                    <div class="table-pagination page-nav empty" *ngIf="transactionList.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Transactions History </h4>
+                    </div>
+                    <div style="overflow-x:auto;" *ngIf="transactionList && transactionList.length >0">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 20%;">Transaction ID
+                                    </th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 20%;">Transaction Date
+                                        Time
+                                    </th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 50%;">Description of the
+                                        transaction</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+                                <tr *ngFor="let transaction of transactionList">
+                                    <td class="fs-14 fw-500 info">{{transaction.txnId}}</td>
+                                    <td class="fs-14 fw-500 info">{{transaction.createdDate | date:'dd/MM/YYYY hh:mm
+                                        a'}}
+                                    </td>
+
+                                    <td class="fs-14 fw-500 info">{{transaction.description}}</td>
+                                    <td class="fs-14 fw-500 info">₦{{transaction.amount}}</td>
+
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <app-pagination *ngIf="transactionPageManager.totalElements>transactionPageRequest.pageSize"
+                            [data]="transactionList" [pageManager]="transactionPageManager"
+                            [pageRequest]="transactionPageRequest"
+                            (fetchData)="getTransactionOfUser($event)"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- Transactions tabs end-->
+
+            <!-- Emergency History tābs -->
+            <div class="tab-pane fade" id="Emergency" role="tabpanel" aria-labelledby="pills-Emergency-tab"
+                tabindex="0">
+                <!-- Emergency History  list -->
+                <div class="table_container mb-4 table-responsive">
+                    <div class="table-pagination page-nav empty" *ngIf="emergencyList.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Emergency History </h4>
+                    </div>
+                    <div style="overflow-x:auto;" *ngIf="emergencyList && emergencyList.length >0">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Emergency</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 20%;">Emergency Name
+                                    </th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 50%;">Address</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 20%;">Emergency Date &
+                                        Time
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+                                <tr *ngFor="let emergency of emergencyList">
+                                    <td class="fs-14 fw-500 info"><span class="Emergency_icon"><img
+                                                [src]="emergency.emergencyServiceImage"></span></td>
+                                    <td class="fs-14 fw-500 info">{{emergency.emergencyServiceName}}
+                                    </td>
+
+                                    <td class="fs-14 fw-500 info">{{emergency.address}} </td>
+                                    <td class="fs-14 fw-500 info">{{emergency.requestedDate | date:'dd/MM/YYYY hh:mm
+                                        a'}}
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination *ngIf="emergencyPageManager.totalElements>emergencyPageRequest.pageSize"
+                            [data]="emergencyList" [pageManager]="emergencyPageManager"
+                            [pageRequest]="emergencyPageRequest"
+                            (fetchData)="getEmergencyOfUser($event)"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!--  Emergency History tābs end-->
+
+            <!-- Verification History tabs -->
+            <div class="tab-pane fade" id="Verification" role="tabpanel" aria-labelledby="pills-Verification-tab"
+                tabindex="0">
+                <!-- Verification History  list -->
+                <div class="table_container mb-4 table-responsive">
+                    <div class="table-pagination page-nav empty" *ngIf="verificationRequestList.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Verification History </h4>
+                    </div>
+                    <div style="overflow-x:auto;" *ngIf="verificationRequestList && verificationRequestList.length >0">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">AIG Code</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 30%;">Address</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Address Type</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 5%;">Image</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">Assigned
+                                        Verification
+                                        Officer</th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">Transaction Date &
+                                        Time
+                                    </th>
+                                    <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+                                <tr *ngFor="let history of verificationRequestList">
+                                    <td class="fs-14 fw-500 info">{{history.aigCode}}</td>
+                                    <td class="fs-14 fw-500 info">{{history.address}}
+                                    </td>
+                                    <td>
+                                        <h4 class="fs-14 fw-500 info mb-0 ">{{history.addressType}}</h4>
+                                    </td>
+                                    <td>
+                                        <!-- <img [src]="history.addressTypeImage" class="address_type"> -->
+                                        <span _ngcontent-ng-c1300020800="" class="user_address_icon">
+                                            <img _ngcontent-ng-c1300020800="" [src]="history.addressTypeImage"
+                                                style="height: 16px;width: 16px;">
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="d-flex align-items-center gap-1"
+                                            *ngIf="history.verificationOfficer">
+                                            <img [src]="history.verificationOfficer.profilePicture || appUtils.DEFAULT_IMAGE"
+                                                class="address_icon">
+                                            <div class="varification_officer">
+                                                <h5 class="fs-14 fw-500 black mb-1">
+                                                    {{history.verificationOfficer.firstName
+                                                    +" "+history.verificationOfficer.lastName}}</h5>
+                                                <a (click)="navigate(componentRoutes.VERI_OFFI_DETAILS_BASE+'/'+history.verificationOfficer.userId)"
+                                                    class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                                    View Profile</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fs-14 fw-500 info">{{history.transactionDateTime | date:'dd/MM/YYYY hh:mm
+                                        a'}}</td>
+                                    <td>
+                                        <!-- <button class="status_btn " [ngClass]="history.status==verificationRequestsStatus.Verified?'Verified_btn':(history.status==verificationRequestsStatus.Pending?'Pending_btn':'rejected_btn')"> {{history.status==verificationRequestsStatus.Verified?'Verified':(history.status==verificationRequestsStatus.Pending?'Pending':'Rejected')}}</button> -->
+                                        <div class="d-flex align-items-center">
+                                            <div class="varification_officer align-items-center">
+                                                <button class="status_btn "
+                                                    [ngClass]="history.status==verificationRequestsStatus.Verified?'Verified_btn':(history.status==verificationRequestsStatus.Pending?'Pending_btn':'rejected_btn')">
+                                                    {{history.status==verificationRequestsStatus.Verified?'Verified':(history.status==verificationRequestsStatus.Pending?'Pending':'Rejected')}}</button>
+                                                <a *ngIf="history.status==verificationRequestsStatus.Verified || history.status==verificationRequestsStatus.Rejected"
+                                                    (click)="getAddressverificationDetails(history.id)"
+                                                    class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                                    View Summary</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <app-pagination *ngIf="verificationPageManager.totalElements>verificationPageRequest.pageSize"
+                            [data]="verificationRequestList" [pageManager]="verificationPageManager"
+                            [pageRequest]="verificationPageRequest"
+                            (fetchData)="getAddressVerificationRequestsOfUser($event)"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- Verification History end-->
+        </div>
+    </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="delete-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        Address</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 text-center">Are you sure you want to delete this
+                        Address? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-delete-address">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" (click)="deleteAddress()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DELETE MODAL END -->
+
+<!-- USER ADDRESS EDIT MODAL -->
+<div class="modal fade" id="EditAddress" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <div class="modal-header p-0 mb_40">
+                <h1 class="modal-title fs-18 fw-600 primary" id="exampleModalToggleLabel2">Edit Address
+                </h1>
+            </div>
+            <div class="p-0">
+                <form class="" [formGroup]="editForm">
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Address Type</label>
+                            <input type="text" name="addressType" formControlName="addressType"
+                                class="form-control profile_edit" placeholder="Home"
+                                [(ngModel)]="editAddress.addressType">
+                            <div *ngIf="checkFieldValid('addressType',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">First Name</label>
+                            <input type="text" formControlName="firstName" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.firstName">
+                            <div *ngIf="checkFieldValid('firstName',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Surname</label>
+                            <input type="text" formControlName="surname" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.surname">
+                            <div *ngIf="checkFieldValid('surname',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">House No./Building</label>
+                            <input type="text" name="buildingNo" formControlName="buildingNo"
+                                class="form-control profile_edit" placeholder="" [(ngModel)]="editAddress.buildingNo">
+                            <div *ngIf="checkFieldValid('buildingNo',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Area/Locality</label>
+                            <input type="text" name="locality" formControlName="locality"
+                                class="form-control profile_edit" placeholder="" [(ngModel)]="editAddress.locality">
+                            <div *ngIf="checkFieldValid('locality',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Landmark</label>
+                            <input type="text" name="landmark" formControlName="landmark"
+                                class="form-control profile_edit" placeholder="" [(ngModel)]="editAddress.landmark">
+                            <div *ngIf="checkFieldValid('landmark',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">LGA</label>
+                            <input type="text" class="form-control profile_edit not-allowed"
+                                [placeholder]="editAddress.lgaName" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">State</label>
+                            <input type="text" class="form-control profile_edit not-allowed"
+                                [placeholder]="editAddress.state" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">City</label>
+                            <input type="text" name="city" formControlName="city" class="form-control profile_edit"
+                                placeholder="indore" [(ngModel)]="editAddress.city">
+                            <div *ngIf="checkFieldValid('city',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">ZipCode</label>
+                            <input type="text" name="zipcode" formControlName="zipcode"
+                                class="form-control profile_edit" placeholder="......."
+                                [(ngModel)]="editAddress.zipcode">
+                            <div *ngIf="checkFieldValid('zipcode',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="d-flex  justify-content-end mt_40 gap_24 px-3 modal-button">
+                            <button class="btn_lg2" data-bs-dismiss="modal" id="close-update-modal"
+                                aria-label="Close">Cancel</button>
+                            <button class="btn_lg" [ngClass]="loading?'disable':''" (click)="updateAddress()">
+                                <div class="spinner-border text-light" *ngIf="loading" role="status">
+                                    <span class="sr-only"></span>
+                                </div>
+                                {{loading?'':'Submit'}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- USER ADDRESS EDIT MODAL END -->
+
+<!-- USER ADDRESS EDIT MODAL -->
+<div class="modal fade" id="VerificationSummary" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1" *ngIf="addressDetails && addressDetails.addressVerificationDetails">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <button type="button" class="close_btn d-flex justify-content-end mb-2" data-bs-dismiss="modal"
+                aria-label="Close"><i class="fi fi-rr-cross-circle"></i></button>
+            <div class="p-0">
+                <div class="Address_Details mb_20 col-md-12">
+                    <h5 class="fs-18 fw-500 secondary mb-3">Verification Details</h5>
+                    <div class="view-documents-grid">
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.propertyImage ||defaultPropertyImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.requestorImage ||defaultImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Requestor</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <div id="map" class="verification_image height mb_10"></div>
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Location map</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer p-0"
+                *ngIf="addressDetails && addressDetails.addressVerificationDetails && addressDetails.addressVerificationDetails.summary">
+                <div class="Address_Details col-md-12 m-0">
+                    <h5 class="fs-18 fw-500 secondary mb_10">Verification Summary</h5>
+                    <div class="Verification_Summary">
+                        <h4 class="mb-1 fs-15 fw-50 text_small">Comment</h4>
+                        <h5 class="fs-13 fw-500 grey mb-0">{{addressDetails.addressVerificationDetails.summary.comment}}
+                        </h5>
+                    </div>
+                    <div class="view-documents-grid">
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.propertyImage ||defaultPropertyImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.requestorImage ||defaultImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Owner</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.govtIdImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Gov id</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- USER ADDRESS EDIT MODAL END -->

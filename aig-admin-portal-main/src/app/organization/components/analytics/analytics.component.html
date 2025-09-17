@@ -1,0 +1,126 @@
+<!-- Analytics -->
+<div class="content" data-number="14">
+    <!-- user graph -->
+    <div class="row gy-4">
+        <!--  User Verification -->
+        <div class="col-md-12">
+            <div class="user_graph_cards">
+                <div class="">
+                    <div class="user_heading flex-wrap gap-2">
+                        <h4 class="fs-20 fw-600 dark mb-0">User Acquition</h4>
+                        <div class="d-flex align-items-center  gap_30">
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="user_circle"></span>
+                                <h3 class="fs-14 fw-500 theading mb-0">User Onboarding</h3>
+
+                            </div>
+                            <!-- tabs -->
+
+                            <select id="year" name="year" #userAcquition
+                                class="attendance_dropdown1 border-0 fs-14 fw-700 theading "
+                                (change)="getApiDocUserAcquition(userAcquition.value)">
+                                <option [value]="-1">Monthly</option>
+                                <option [value]="-2">Yearly</option>
+                                <option *ngFor="let month of constants.MONTHS;index as i" [value]="i+1">{{month}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="chart">
+                        <apx-chart [series]="apiDocUserGraph?.series" [chart]="apiDocUserGraph?.chart"
+                            [xaxis]="apiDocUserGraph?.xaxis" [dataLabels]="apiDocUserGraph?.dataLabels"
+                            [grid]="apiDocUserGraph?.grid" [stroke]="apiDocUserGraph?.stroke"
+                            [title]="apiDocUserGraph?.title" [colors]="apiDocUserGraph?.colors"
+                            [yaxis]="apiDocUserGraph?.yaxis" [tooltip]="apiDocUserGraph?.tooltip"
+                            [legend]="apiDocUserGraph?.legend" [markers]="apiDocUserGraph?.markers"></apx-chart>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Active Users -->
+        <!-- <div class="col-md-4">
+            <div class="user_graph_cards">
+                <div class="user_heading">
+                    <h4 class="fs-20 fw-600 dark mb-0">User Satisfaction</h4>
+                </div>
+                <img src="assets/images/temp_img/User Satisfation.png" class="img-fluid">
+            </div>
+        </div> -->
+        <!-- user graph -->
+        <div class="col-md-12">
+            <div class="user_graph_cards">
+                <div class="user_heading flex-wrap gap-2">
+                    <h4 class="fs-20 fw-600 dark mb-0">Api Users</h4>
+                    <select id="year" name="year" #apiCall class="attendance_dropdown1 border-0 fs-14 fw-700 theading "
+                        (change)="getApiCallSummary(apiCall.value)">
+                        <option [value]="-1">Monthly</option>
+                        <option [value]="-2">Yearly</option>
+                        <option *ngFor="let month of constants.MONTHS;index as i" [value]="i+1">{{month}}</option>
+                    </select>
+                </div>
+                <!--The content below is only a placeholder and can be replaced.-->
+                <div id="chart">
+                    <apx-chart [series]="apiCallSummary?.series" [chart]="apiCallSummary?.chart"
+                        [xaxis]="apiCallSummary?.xaxis" [dataLabels]="apiCallSummary?.dataLabels"
+                        [grid]="apiCallSummary?.grid" [stroke]="apiCallSummary?.stroke" [title]="apiCallSummary?.title"
+                        [colors]="apiCallSummary?.colors" [yaxis]="apiCallSummary?.yaxis"
+                        [tooltip]="apiCallSummary?.tooltip" [legend]="apiCallSummary?.legend"
+                        [markers]="apiCallSummary?.markers"></apx-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="table_container p-0 pb-2 content d-flex flex-column justify-content-between h-100" data-number="4" style="display: block;">
+                <div class="Officer_table">
+                    <div>
+                        <h4 class="fs-18 fw-600 dark mb-0">Top Collaborators </h4>
+                    </div>
+                </div>
+
+        <div class="table-responsive" *ngIf="topCollaborators.length!=0">
+            <table class="table mb-0 admin-table" id="dtHorizontalExample"
+                cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading">Company Name</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Email</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Phone Number</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Status</th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let user of topCollaborators ">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img [src]="user.profilePicture || appUtil.DEFAULT_IMAGE"
+                                    class="address_icon">
+                                <div class="mx_12 varification_user align-items-start">
+                                    <h5 class="fs-14 fw-500 black mb-1">{{user.companyName}}</h5>
+
+                                    <a (click)="navigateToComponent(user.organizationId,user.organizationType)"
+                                        class="fs-10 fw-600 theading mb-0  border-bottomLine">
+                                        View Profile</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{user.email}}</td>
+                    
+                        <td class="fs-14 fw-500 info">{{user.phoneNumber}}</td>
+                        <td class="fs-14 fw-500 info">
+                            <label class="switch">
+                                <input type="checkbox" [checked]="user.isActive" (click)="changeOrganizationStatus(user)">
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                    </tr>
+    
+                </tbody>
+            </table>
+    
+        </div>
+    </div>
+
+</div>

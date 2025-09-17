@@ -1,0 +1,38 @@
+<div class="dashboard_content py-3 px-4 h-100" data-number="4" style="display: block;">
+        <div class="mb_20">
+            <h4 class="fs-18 fw-600 dark mb-0">Address Management </h4>
+        </div>
+        <div>
+            <div class="d-flex justify-content-between mb-3 add_cards">
+                <div class="add_management_text">
+                    <h3>Verified Addresses</h3>
+                    <h4 class="theading">{{totalVerified}}</h4>
+                </div>
+                <!-- graph -->
+                <div id="area-chart">
+                    <apx-chart [series]="verifiedChart?.series" [chart]="verifiedChart?.chart"
+                        [xaxis]="verifiedChart?.xaxis" [stroke]="verifiedChart?.stroke"
+                        [dataLabels]="verifiedChart?.dataLabels" [yaxis]="verifiedChart?.yaxis"
+                        [labels]="verifiedChart?.labels" [legend]="verifiedChart?.legend"
+                        [colors]="verifiedChart?.colors" [grid]="verifiedChart?.grid"
+                        [tooltip]="verifiedChart?.tooltip"></apx-chart>
+                </div>
+            </div>
+            <!-- graph -->
+            
+        </div>
+        <div class="d-flex justify-content-between mb-3">
+            <div class="add_management_text">
+                <h3>Unverified Addresses</h3>
+                <h4 class="pending_add">{{totalPending}}</h4>
+            </div>
+            <!-- graph -->
+            <div id="area-chart">
+                <apx-chart [series]="pendingChart?.series" [chart]="pendingChart?.chart" [xaxis]="pendingChart?.xaxis"
+                    [stroke]="pendingChart?.stroke" [dataLabels]="pendingChart?.dataLabels"
+                    [yaxis]="pendingChart?.yaxis" [labels]="pendingChart?.labels" [legend]="pendingChart?.legend"
+                    [colors]="pendingChart?.colors" [grid]="pendingChart?.grid"
+                    [tooltip]="pendingChart?.tooltip"></apx-chart>
+            </div>
+        </div>
+</div>

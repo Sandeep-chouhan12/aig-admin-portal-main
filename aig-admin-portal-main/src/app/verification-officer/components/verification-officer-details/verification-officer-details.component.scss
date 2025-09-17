@@ -1,0 +1,43 @@
+.invert-filter {
+    filter: invert(100%);
+}
+
+.height {
+    height: 200px;
+}
+
+.verification_officer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.view-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 24px;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 567px;
+}
+
+.expanded {
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  display: block;
+}
+
+.truncate-text {
+  display: inline-block;
+  max-width: 400px;
+  /* adjust as per column size */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,117 @@
+
+<!--  Analytics -->
+<div class="content" data-number="5">
+
+    <!-- user graph -->
+    <div class="row user_analytics_graph gy-4">
+        <!--  User Verification -->
+        <div class="col-md-6">
+            <div class="user_graph_cards">
+                <div class="user_heading flex-wrap gap-2">
+                    <h4 class="fs-20 fw-600 dark mb-0"> User Acquition</h4>
+                    <div class="d-flex align-items-center  gap_30">
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="user_circle"></span>
+                            <h3 class="fs-14 fw-500 theading mb-0">User Onboarding</h3>
+                        </div>
+                        <!-- tabs -->
+                        
+                        <select id="year" name="year"  #userAcquition (change)="getUserAcquition(userAcquition.value)"
+                        class="attendance_dropdown1 border-0 fs-14 fw-700 theading ">
+                        <option  [value]="-1">Monthly</option>
+                        <option  [value]="-2">Yearly</option>
+                        <option *ngFor="let month of constants.MONTHS;index as i" [value]="i+1" >{{month}}</option>
+                    </select>
+                    </div>
+                </div>
+                <div id="chart">
+                    <apx-chart
+                      [series]="userGraphAcquition?.series"
+                      [chart]="userGraphAcquition?.chart"
+                      [xaxis]="userGraphAcquition?.xaxis"
+                      [dataLabels]="userGraphAcquition?.dataLabels"
+                      [grid]="userGraphAcquition?.grid"
+                      [stroke]="userGraphAcquition?.stroke"
+                      [title]="userGraphAcquition?.title"
+                      [colors]="userGraphAcquition?.colors"
+                      [yaxis]="userGraphAcquition?.yaxis"
+                      [tooltip]="userGraphAcquition?.tooltip"
+                      [legend]="userGraphAcquition?.legend"
+                      [markers]="userGraphAcquition?.markers"
+                    ></apx-chart>
+                  </div>
+
+            </div>
+        </div>
+        <!-- Active Users -->
+        <div class="col-md-6">
+            <div class="user_graph_cards">
+                <div class="user_heading flex-wrap gap-2">
+                    <h4 class="fs-20 fw-600 dark mb-0">Verification Request Raised</h4>
+                    <select id="year" name="year" #request (change)="getVerificationRequests(request.value)"
+                    class="attendance_dropdown1 border-0 fs-14 fw-700 theading ">
+                    <option  [value]="-1">Monthly</option>
+                    <option  [value]="-2">Yearly</option>
+                    <option *ngFor="let month of constants.MONTHS;index as i"  [value]="i+1" >{{month}}</option>
+
+                </select>
+                </div>
+                    <!--The content below is only a placeholder and can be replaced.-->
+                    <div id="chart">
+                        <apx-chart
+                          [series]="userVerificationGraph?.series"
+                          [chart]="userVerificationGraph?.chart"
+                          [xaxis]="userVerificationGraph?.xaxis"
+                          [dataLabels]="userVerificationGraph?.dataLabels"
+                          [grid]="userVerificationGraph?.grid"
+                          [stroke]="userVerificationGraph?.stroke"
+                          [title]="userVerificationGraph?.title"
+                          [colors]="userVerificationGraph?.colors"
+                          [yaxis]="userVerificationGraph?.yaxis"
+                          [tooltip]="userVerificationGraph?.tooltip"
+                          [legend]="userVerificationGraph?.legend"
+                          [markers]="userVerificationGraph?.markers"
+                        ></apx-chart>
+                      </div>
+        </div>
+
+    </div>
+    <!-- user graph -->
+    <div class="col-md-12">
+        <div class="user_graph_cards">
+            <div class="user_heading flex-wrap gap-2">
+                <h4 class="fs-20 fw-600 dark mb-0">Address</h4>
+                <!-- filter -->
+                <select id="year" name="year"  #address (change)="getAddressStatics(address.value)" 
+                class="attendance_dropdown1 border-0 fs-14 fw-700 theading ">
+                <option  [value]="-1">Monthly</option>
+                <option  [value]="-2">Yearly</option>
+                <option *ngFor="let month of constants.MONTHS;index as i" [value]="i+1" >{{month}}</option>
+
+            </select>
+            </div>
+            <!-- user graph -->
+            <!--The content below is only a placeholder and can be replaced.-->
+            <div id="chart">
+            <apx-chart
+            [series]="userMixGraph?.series"
+            [chart]="userMixGraph?.chart"
+            [yaxis]="userMixGraph?.yaxis"
+            [xaxis]="userMixGraph?.xaxis"
+            [labels]="userMixGraph?.labels"
+            [stroke]="userMixGraph?.stroke"
+            [plotOptions]="userMixGraph?.plotOptions"
+            [markers]="userMixGraph?.markers"
+            [fill]="userMixGraph?.fill"
+            [tooltip]="userMixGraph?.tooltip"
+            [colors]="userMixGraph?.colors"
+            [dataLabels]="userMixGraph?.dataLabels"
+            [legend]="userMixGraph?.legend"
+            [grid]="userMixGraph?.grid"
+            ></apx-chart>
+        </div>
+        </div>
+    </div>
+
+    
+</div>

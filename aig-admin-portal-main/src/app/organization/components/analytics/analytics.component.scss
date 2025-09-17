@@ -1,0 +1,36 @@
+:host ::ng-deep .user-area-graph .apexcharts-xaxistooltip {
+    opacity: 1;
+    padding: 9px 10px;
+    pointer-events: none;
+    color: #ffffff;
+    background-color: #1f3778;
+    font-family: outfit;
+    display: none;
+    width: 50px;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 20px;
+    position: absolute;
+    z-index: 10;
+    /* background: #4d5b6400; */
+    border: 1px solid #90a4ae;
+    transition: 0.15s ease all;
+  }
+  
+  :host ::ng-deep .user-area-graph .apexcharts-tooltip {
+    border-radius: 5px;
+    box-shadow: none; 
+    cursor: default;
+    font-size: 14px;
+    left: 62px;
+    opacity: 1;
+    pointer-events: none;
+    position: absolute;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 12;
+    transition: .15s ease all;
+}

@@ -1,0 +1,20 @@
+<div class="background-card bg-transparent h-100 d-flex flex-column gap-4">
+    <div class="d-flex justify-content-between align-items-center py-2 flex-wrap gap-2 borderBottom pb-3">
+        <h3 class="fs-18 fw-500 black mb-0">Transaction</h3>
+        <!-- week filter -->
+        <select id="week" name="week" class="attendance_dropdown1 border-0 fs-14 fw-700 theading " #chartMode
+            (change)="onChartModeChange(chartMode.value)">
+            <option value="yearly">Yearly</option>
+            <option value="monthly" selected>Monthly</option>
+            <option *ngFor="let m of months" [value]="m">
+                {{ m.charAt(0) + m.slice(1).toLowerCase() }}
+            </option>
+        </select>
+
+    </div>
+    <!-- <img src="assets/images/png/customers-chart.png" /> -->
+    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [dataLabels]="chartOptions.dataLabels"
+        [plotOptions]="chartOptions.plotOptions" [yaxis]="chartOptions.yaxis" [legend]="chartOptions.legend"
+        [fill]="chartOptions.fill" [stroke]="chartOptions.stroke" [tooltip]="chartOptions.tooltip"
+        [xaxis]="chartOptions.xaxis" [grid]="chartOptions.grid" [stroke]="chartOptions.stroke"></apx-chart>
+</div>

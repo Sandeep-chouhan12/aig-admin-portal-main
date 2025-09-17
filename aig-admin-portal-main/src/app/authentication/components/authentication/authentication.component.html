@@ -1,0 +1,26 @@
+<div class="login p-4">
+    <div class="row h-100 w-100 g-0">
+        <div class="col-md-6 h-100">
+            <!-- LOGIN BOX -->
+            <app-login class="login_img" id="btn1"></app-login>
+
+            <!-- FORGET PASSWORD BOX -->
+            <app-forget-password class="login_img" id="btn2" (email)="email= $event"
+                (submitted)="submitted = $event"></app-forget-password>
+
+            <!-- OTP BOX -->
+            <app-otp-verification class="login_img" id="btn3" [email]="email"
+                [submitted]="submitted"></app-otp-verification>
+
+            <!-- NEW PASSWORD BOX -->
+            <app-new-password class="login_img" id="btn4" [email]="email"></app-new-password>
+
+        </div>
+        <!-- RIGHT LOGIN IMAGE -->
+        <div class="col-md-6 col-lg-6 d-none d-md-block h-100">
+            <div class="h-100">
+                <img src="assets/images/temp_img/login-img.png" class="login-background-img w-100">
+            </div>
+        </div>
+    </div>
+</div>

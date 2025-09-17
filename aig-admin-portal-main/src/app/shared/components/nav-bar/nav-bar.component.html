@@ -1,0 +1,292 @@
+<!-- top-navbar -->
+<nav class="topnavbar d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center" *ngIf="isInnerNav ;else elseBlock">
+        <a class="back_arrow mx_20 " (click)="back()"><img src="assets/images/svg_img/back_arrow.svg"
+                class="img-fluid"></a>
+
+         <h4 class="primary mb-0 fs-24 fw-600 title-hide">{{title}}</h4>
+    </div>
+    <ng-template #elseBlock>
+        <h4 class="primary mb-0 fs-24 fw-600">{{title}}</h4>
+    </ng-template>
+    <div class="right-admin-profile d-flex align-items-center">
+
+        <div class="d-flex align-items-center">
+            <a [routerLink]="componentRoutes.NOTIFICATIONS" class="mx_20 ms-0"
+                (click)="sharedService.setTitle('Notifications')"><img src="assets/images/svg_img/notification.svg"></a>
+
+            <div class="dropdown position-relative">
+                <a class="fs-16 fw-500 black dropdown-toggle d-flex align-items-center" href="#" role="button"
+                    id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="true">
+                    <img class="profile_img" [src]="admin.profilePicture || appUtils.DEFAULT_IMAGE">
+                    {{admin!.firstName+" "+admin!.lastName}}
+                    <i class="fi fi-sr-angle-small-down lh-0 mt-1 mx-0 ms-1"></i>
+                </a>
+                <ul class="dropdown-menu profiles_dropdown" aria-labelledby="dropdownMenuLink"
+                    data-popper-placement="bottom-end">
+                    <div class="mb-4">
+                        <li class="profile_dropdown fs-16 fw-500 black"><img class="profile_img"
+                                [src]="admin.profilePicture || appUtils.DEFAULT_IMAGE">{{admin.firstName+"
+                            "+admin.lastName}}</li>
+                    </div>
+                    <li class="profile_card fs-15 fw-500 text_small" data-bs-target="#exampleModalToggle2"
+                        data-bs-toggle="modal">
+                        <img class="profile_icon" src="assets/images/svg_img/view-profile.svg">
+                        View Profile
+                        <div class="mb-0 lh-0 mx-0 ms-auto p-0"><img src="assets/images/svg_img/arrow.svg">
+                        </div>
+
+                    </li>
+                    <li class="profile_card fs-15 fw-500 text_small" data-bs-target="#exampleModalToggle4"
+                        data-bs-toggle="modal" (click)="clearData()">
+                        <img class="profile_icon" src="assets/images/svg_img/change-password.svg">
+                        Change Password
+                        <div class="mb-0 lh-0 mx-0 ms-auto p-0">
+                            <img src="assets/images/svg_img/arrow.svg">
+                        </div>
+                    </li>
+                    <li class="profile_card fs-15 fw-500 danger bg_danger mb-0" data-bs-target="#exampleModalToggle5"
+                        data-bs-toggle="modal">
+                        <img class="profile_icon bg_info" src="assets/images/svg_img/logout.svg">Logout
+                    </li>
+                </ul>
+
+            </div>
+            <!-- toggle btn -->
+            <!-- toggle btn -->
+            <div class="right-admin-profile d-flex align-items-center">
+                <a class="sidebar-toggle-show" onclick="toggleSidebar()" id="sidebar-show-icon">
+                    <i class="fi fi-rr-menu-burger"></i>
+                </a>
+                <a class="d-xl-none sidebar-toggle-show-close" onclick="toggleSidebar()" id="sidebar-close-icon">
+                    <i class="fi fi-rr-cross-small"></i>
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+</nav>
+<!-- top-navbar end -->
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal fade" id="exampleModalToggle4" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 d-block">
+                <div>
+                    <div class=" mb-0 d-flex justify-content-between">
+                        <h1 class="fs-22 fw-600 text_small mb-0" id="exampleModalToggleLabel2">Change
+                            password</h1>
+                        <button type="button" class="close_btn" data-bs-dismiss="modal" aria-label="Close" id="close"><i
+                                class="fi fi-rr-cross-circle"></i></button>
+                    </div>
+                    <h3 class="fs-16 fw-500 info mb-0">Set a new login password for your account</h3>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <form [formGroup]="changePassFrom" (keyup.enter)="changePassword()">
+                    <div class="mb-4 mt-4">
+                        <div class="col-md-12 mb-3">
+                            <div class="position-relative">
+                                <i class="fi fi-rr-lock lock_icon"></i>
+                                <input #i1 type="password" class="form-control password_input" name="currentPassword"
+                                    formControlName="currentPassword" placeholder="Current Password">
+                                <i (click)="changePasswordIcon(i1)"
+                                    [ngClass]="i1.type==='text'?'fi fi-rr-eye eye_icon':'fi fi-rr-eye-crossed eye_icon'"></i>
+                            </div>
+                            <div *ngIf="checkFieldValid('currentPassword',changePassFrom)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="position-relative">
+                                <i class="fi fi-rr-lock lock_icon"></i>
+                                <input #i2 type="password" class="form-control password_input" name="newPassword"
+                                    formControlName="newPassword" placeholder="New Password">
+                                <i (click)="changePasswordIcon(i2)"
+                                    [ngClass]="i2.type==='text'?'fi fi-rr-eye eye_icon':'fi fi-rr-eye-crossed eye_icon'"></i>
+                            </div>
+                            <div *ngIf="checkFieldValid('newPassword',changePassFrom)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="position-relative">
+                                <i class="fi fi-rr-lock lock_icon"></i>
+                                <input #i3 type="password" class="form-control password_input" name="confirmPassword"
+                                    formControlName="confirmPassword" placeholder="Confirm Password">
+                                <i (click)="changePasswordIcon(i3)"
+                                    [ngClass]="i3.type==='text'?'fi fi-rr-eye eye_icon':'fi fi-rr-eye-crossed eye_icon'"></i>
+                            </div>
+                            <div *ngIf="checkFieldValid('confirmPassword',changePassFrom)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer p-0">
+                <button class="btn-primary  fs-16 fw-500 w-100 m-0" (click)="changePassword()">Save Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CHANGE PASSWORD MODAL END -->
+
+<!-- LOGOUT MODAL -->
+<div class="modal fade" id="exampleModalToggle5" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <h1 class="fs-22 fw-600 text_small mb_10 text-center" id="exampleModalToggleLabel2">Logout
+                        Verification</h1>
+                    <h3 class="fs-16 fw-400 info mb-0">Are you sure you want to logout this verification ?</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" aria-label="Close"
+                        id="logout">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500" (click)="logOutUser('logout')">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOGOUT MODAL END -->
+
+<!-- PROFILE MODAL -->
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <div class="modal-header p-0">
+                <h1 class="modal-title fs-22 fw-600 text_small mb-3" id="exampleModalToggleLabel2">View Profile</h1>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+            </div>
+            <div class="modal-body p-0" *ngIf="admin">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <img class="modal_profile"
+                        [src]="admin.profilePicture?admin.profilePicture: '../../../assets/images/svg_img/user-profile.svg'">
+                    <button class="edit_btn fs-16 f-500" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal"
+                        (click)="clearData()" (click)="setUpdateAdmin()">
+                        <i class="fi fi-sr-pencil fs-12 mx-2 ms-0"></i>Edit
+                    </button>
+                </div>
+            </div>
+            <div class="" *ngIf="admin">
+                <div class="row gy-3">
+                    <div class="col-md-6">
+                        <label for="" class="black fs-15 fw-400 mb-2">First Name</label>
+                        <input type="text" class="form-control profile_input2" [placeholder]="admin.firstName" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="black fs-15 fw-400 mb-2">Last Name</label>
+                        <input type="text" class="form-control profile_input2" [placeholder]="admin.lastName" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="black fs-15 fw-400 mb-2">Email Address</label>
+                        <input type="text" class="form-control profile_input2" [placeholder]="admin.email" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="black fs-15 fw-400 mb-2">Phone Number</label>
+                        <input type="text" class="form-control profile_input2" [placeholder]="admin.phoneNumber"
+                            disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PROFILE MODAL END -->
+
+<!-- PROFILE EDIT MODAL -->
+<div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content gap-4">
+            <div class="d-flex flex-column gap-3">
+                <h1 class="modal-title fs-22 fw-600 text_small" id="exampleModalToggleLabel2">Edit Profile</h1>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                <div class="modal-body p-0">
+                    <div class="d-flex  align-items-center gap-3 flex-wrap">
+                        <input id="file" type="file" (change)="setImage($event)" class="d-none" accept="image/*">
+                        <img class="modal_profile" id="output" [src]="imagePreview || appUtils.DEFAULT_IMAGE">
+                        <label class="-label" for="file">
+                            <a class="secondary fs-16 fw-500 change_img d-flex gap-2 align-items-center">
+                                <img class="" src="assets/images/svg_img/album.svg" height="20px" width="20px">Change
+                                Image
+                            </a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <form [formGroup]="editForm" class="d-flex flex-column gap-4">
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="" class="black fs-15 fw-400 mb-2">First Name</label>
+                            <input type="text" class="form-control profile_input2" [placeholder]="updateAdmin.firstName"
+                                formControlName="firstName" name="firstName">
+                            <!-- <p class="error validation"
+                       *ngIf="(editForm.get('firstName')?.touched ) && editForm.get('firstName')?.hasError('required')">
+                       First Name Is Required.
+                    </p> -->
+                            <div *ngIf="editForm.get('firstName')?.hasError('required') && editForm.get('firstName')?.touched "
+                                class="error validation">
+                                <p> {{constants.INVALID_FIELD}}</p>
+                            </div>
+                            <div *ngIf="editForm.get('firstName')?.hasError('invalidName') && editForm.get('firstName')?.touched "
+                                class="error">{{constant.INVALID_NAME}}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-15 fw-400 mb-2">Last Name</label>
+                            <input type="text" class="form-control profile_input2" [placeholder]="updateAdmin.lastName"
+                                formControlName="lastName" name="lastName">
+                            <div *ngIf="editForm.get('lastName')?.hasError('required') && editForm.get('lastName')?.touched "
+                                class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                            <div *ngIf="editForm.get('lastName')?.hasError('invalidName') && editForm.get('lastName')?.touched "
+                                class="error ">{{constant.INVALID_NAME}}</div>
+                            <!-- <p class="error validation"
+                    *ngIf="(editForm.get('lastName')?.touched ) && editForm.get('lastName')?.hasError('required')">
+                    Last Name Is Required.
+                </p> -->
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-15 fw-400 mb-2">Email Address</label>
+                            <input type="email" class="form-control profile_input2 disableCursor"
+                                [placeholder]="updateAdmin.email" disabled name="email">
+
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-15 fw-400 mb-2">Phone Number</label>
+                            <input type="text" class="form-control profile_input2 disableCursor "
+                                [placeholder]="updateAdmin.phoneNumber" disabled name="phoneNumber">
+
+                        </div>
+                    </div>
+                    <div class="gap_20 d-flex justify-content-between justify-content-md-end profile-button">
+                        <a class="btn_secondary fs-16 fw-500 px-3 px-sm-5 d-flex justify-content-center align-items-center" data-bs-dismiss="modal" id="profileBarCancel"
+                            aria-label="Close">Cancel</a>
+                        <a [ngClass]="loading?'disable':''" class="btn-primary  fs-16 fw-500 px-3 px-sm-4 d-flex justify-content-center align-items-center"
+                            (click)="updateAdminMethod()" onclick="myFunction()">
+                            <div class="spinner-border text-light" *ngIf="loading" role="status">
+                                <span class="sr-only"></span>
+                            </div>
+                            {{loading?'':'Save Changes'}}
+                        </a>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- PROFILE EDIT MODAL END -->

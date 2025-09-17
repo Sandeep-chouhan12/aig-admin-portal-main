@@ -1,0 +1,90 @@
+
+<div class="Officer_table">
+    <div class="d-flex align-items-center justify-content-between">
+        <h4 class="fs-20 fw-600 dark mb-0">{{tableConfig.tableHeader}}</h4>
+        <button class="select-btn gap_6" data-bs-target="#AddOperator" data-bs-toggle="modal" *ngIf="tableConfig?.isAdd"><img
+                src="assets/images/svg_img/plus.svg">Add {{tableConfig.tableHeader}}</button>
+
+        <!--Filter options selector start-->
+        <div class="filter-box" *ngIf="tableConfig?.isDropdown">
+            <div class="select-menu">
+                <div class="select-btn">
+                    <span class="sBtn-text">Pending</span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.9655 9.51733L11.9999 14.4829L7.03442 9.51733" stroke="white"
+                            stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <ul class="options">
+                    <li class="option">
+                        <span class="option-text">Rejected</span>
+                    </li>
+                    <li class="option">
+                        <span class="option-text">Pending</span>
+                    </li>
+                    <li class="option">
+                        <span class="option-text">Verified</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    <!--Filter options selector end-->
+
+    </div>
+</div>
+<div style="overflow-x:auto;"  [ngClass]="tableConfig!.scroll?.isScroll?tableConfig!.scroll!.class:''">
+    <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+        <thead>
+            <tr class="table_heading">
+                <th scope="col" class="fs-14 fw-500 theading" *ngFor="let column of columnConfig">{{column.label}}</th>
+                <th scope="col" class="fs-14 fw-500 theading" *ngIf="tableConfig?.rowStatus">Status <img
+                        src="assets/images/temp_img/down-arrow.png"></th>
+                <th scope="col" class="fs-14 fw-500 theading" *ngIf="tableConfig?.rowActions">Action</th>
+            </tr>
+        </thead>
+        <tbody class="bg_light">
+            <tr *ngFor="let data of dataSource;let i=index;">
+    
+                <td class="fs-14 fw-500 info" *ngFor="let column of columnConfig;let j=index;">
+                    <a href="user-details.html" class="d-flex align-items-center" *ngIf="tableConfig.isProfileIcon && (column.name===tableConfig.profileKey); else elseBlock" >
+                        <img src="assets/images/temp_img/user-icon.png" class="address_icon">
+                        <div class="varification_officer">
+                            <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2">{{data[column.name]}}</h5>
+                            <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2">{{data.firstName+' '+data.lastName}}</h4>
+                        </div>
+                    </a>
+                    <ng-template #elseBlock>
+                        <!-- Content to show if the condition is false -->
+                        <!-- <img [src]="data[tableConfig.addressIconKey]" height="16" width="16" *ngIf="tableConfig.addressIconKey && (column.name ==  'addressType')"> -->
+                        <span >{{data[column.name]}}</span>
+                      </ng-template>
+                </td>
+                <!-- <td class="fs-14 fw-500 info">9234567890</td>
+                <td class="fs-14 fw-500 info">Medical Emergency</td> -->
+                <!-- <td class="fs-14 fw-500 info">******** <i
+                        class="fi fi-ss-eye-crossed mx-0 ms-1"></i></td> -->
+                <td class="fs-14 fw-500 info" *ngIf="tableConfig?.rowStatus">
+                    <label class="switch" *ngIf="tableConfig.rowStatus?.toggleBtn">
+                        <input type="checkbox" [checked]="data.isActive" #input (change)="updateStatus(i,data.id)">
+                        <span class="slider round"></span>
+                    </label>
+                    <button class="status_btn Pending_btn" *ngIf="tableConfig.rowStatus?.label">Pending</button>
+                </td>
+                <td *ngIf="tableConfig?.rowActions">
+                    <a href="javascript:void(0)"  data-bs-target="#view-modal" data-bs-toggle="modal"  *ngIf="tableConfig.rowActions?.view"><img src="assets/images/svg_img/edit-icon.svg"
+                            class="add_icons" ></a>
+                    <a href="javascript:void(0)" data-bs-target="#edit-modal" data-bs-toggle="modal" *ngIf="tableConfig.rowActions?.edit"><img
+                            src="assets/images/svg_img/pencil.svg" class="add_icons"></a>
+                    <a href="javascript:void(0)" *ngIf="tableConfig.rowActions?.delete" (click)="setData(data.id)"><img src="assets/images/svg_img/Trash.svg"
+                            data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <app-pagination *ngIf="tableConfig?.withPagination"></app-pagination>
+</div>
+
+<app-delete-modal *ngIf="modalConfig"   [title]="modalConfig.title?modalConfig.title:''" [message]="modalConfig.title?modalConfig.message:''" (onDelete)="deleteData()"></app-delete-modal>

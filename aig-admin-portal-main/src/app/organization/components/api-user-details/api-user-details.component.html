@@ -1,0 +1,289 @@
+
+    <div class="container">
+        <!-- Officer Details box -->
+        <div class="content_box mb-4">
+            <div class="row align-items-center mb-4 api_user_details">
+                <div class="col-md-2 ">
+                    <img class="modal_profile" [src]="userDetail.profilePicture || appUtil.DEFAULT_IMAGE">
+                </div>
+                <div class="col-md-10 user_details" *ngIf="userDetail.personalInformationResponse">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h3>User Name</h3>
+                            <h4>{{userDetail.personalInformationResponse.firstName+' '+userDetail.personalInformationResponse.lastName}}
+                            </h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h3>Email</h3>
+                            <h4>{{userDetail.email}}</h4>
+                        </div>
+                        <div class="col-md-3">
+                            <h3>Phone Number</h3>
+                            <h4>{{userDetail.phoneNumber}}</h4>
+                        </div>
+                        <div class="col-md-2">
+                            <h3>Status</h3>
+                            <label class="switch">
+                                <input type="checkbox" [checked]="userDetail.isActive" (click)="changeStatus()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-1 m-auto">
+                            <button class="status_btn Verified_btn"
+                                *ngIf="userDetail.requestStatus=='VERIFIED'">Verified</button>
+                            <button class="status_btn Pending_btn"
+                                *ngIf="userDetail.requestStatus=='PENDING'">Pending</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Api Request -->
+            <div class="address_card mb_20" *ngIf="requestStatus">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4 class="fs-14 fw-500 info mb_8">Remaining Request</h4>
+                        <h5 class="text_small  fs-15 fw-500 mb-0">{{reamainingRequest}}</h5>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="fs-14 fw-500 info mb_8">Request Today</h4>
+                        <h5 class="text_small  fs-15 fw-500 mb-0">{{todaysRequest}} </h5>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="fs-14 fw-500 info mb_8">Request Last 7 days</h4>
+                        <h5 class="text_small  fs-15 fw-500 mb-0">{{lastSevenRequest}} </h5>
+                    </div>
+                    <div class="col-md-3">
+                        <h4 class="fs-14 fw-500 info mb_8">Lifetime Request</h4>
+                        <h5 class="text_small  fs-15 fw-500 mb-0">{{LifeTimeRequest}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- api user details tabs -->
+        <ul class="nav nav-pills mb-4 gap_12" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="tabs_btn active fs-16 fw-600" id="RegistrationDetailss" data-bs-toggle="pill"
+                    data-bs-target="#RegistrationDetails" type="button" role="tab"
+                    aria-controls="pills-RegistrationDetails" aria-selected="true">Registration Details</button>
+            </li>
+            <li class="nav-item" role="presentation" *ngIf="requestStatus"> 
+                <button class="tabs_btn fs-16 fw-600" id="APIKeyss" data-bs-toggle="pill" data-bs-target="#APIKeys"
+                    type="button" role="tab" aria-controls="pills-APIKeys" aria-selected="false">API Keys</button>
+            </li>
+            <li class="nav-item" role="presentation" *ngIf="requestStatus">
+                <button class="tabs_btn fs-16 fw-600" id="Transactions" data-bs-toggle="pill"
+                    data-bs-target="#Transaction " type="button" role="tab" aria-controls="pills-Transaction "
+                    aria-selected="false">Transaction </button>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+
+            <!-- Registration Details tabs -->
+            <div class="tab-pane fade show active content_box" id="RegistrationDetails" role="tabpanel"
+                aria-labelledby="pills-RegistrationDetails-tab" tabindex="0">
+                <!-- Personal information -->
+                <div class="Registration_Details mb-4" *ngIf="userDetail.personalInformationResponse">
+                    <h3 class="primary fs-16 fw-600 mb-4">Personal information</h3>
+                    <div class="d-flex  Registration_information1">
+                        <div class="">
+                            <h4 class="fs-15 fw-500 info mb_8">First Name</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.personalInformationResponse.firstName}}</h5>
+                        </div>
+                        <div class="">
+                            <h4 class="fs-15 fw-500 info mb_8">Last Name</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.personalInformationResponse.lastName}}</h5>
+                        </div>
+                        <div class="">
+                            <h4 class="fs-15 fw-500 info mb_8">Identification Number</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.personalInformationResponse.userIdentityNumber}}</h5>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Business information -->
+                <div class="Registration_Details mb-4" *ngIf="userDetail.businessInformationResponse" >
+                    <h3 class="primary fs-16 fw-600 mb-4">Business information</h3>
+                    <div class="row justify-content-between Registration_information2">
+                        <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">Business Name</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.businessInformationResponse.businessName}}</h5>
+                        </div>
+                        <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">Business Type</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.businessInformationResponse.businessType}}</h5>
+                        </div>
+                        <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">Business Physical Address</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.businessInformationResponse.businessPhysicalAddress}}</h5>
+                        </div>
+                        <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">Registration No.</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.businessInformationResponse.registrationNumber}}</h5>
+                        </div>
+                        <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">Tax Identification Number </h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.businessInformationResponse.taxIdentificationNumber}}</h5>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Business Director information -->
+                <div class="Registration_Details mb-4" *ngIf="userDetail.directorInformationResponse">
+                    <h3 class="primary fs-16 fw-600 mb-4">Business Director information</h3>
+                    <div class="row Registration_information3">
+                        <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">Name of Director</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.directorInformationResponse.directorName}}</h5>
+                        </div>
+                        <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">Physical Address</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.directorInformationResponse.directorPhysicalAddress}}</h5>
+                        </div>
+                        <!-- <div class="col-md-2">
+                            <h4 class="fs-15 fw-500 info mb_8">AIG Code</h4>
+                            <h5 class="text_small  fs-16 fw-600 mb-0">
+                                {{userDetail.directorInformationResponse.directorPhysicalAddress}}</h5>
+                        </div> -->
+
+                    </div>
+                </div>
+                <!-- Address Verification Documents -->
+                <div class="mb-4">
+                    <h3 class="primary fs-16 fw-600 mb-4">Address Verification Documents</h3>
+                    <div class="row Registration_information3">
+                        <div class="col-md-3" *ngIf="userDetail.personalInformationResponse">
+                            <h4 class="fs-15 fw-500 info mb_8">User (Applicant) </h4>
+                            <h4 class="fs-15 fw-500 info mb_8">{{userDetail.personalInformationResponse.userAddressVerificationType | textFormatter: '_'}} </h4>
+                            <h5 class="text_small fs-16 fw-600 mb_8" *ngIf="userDetail.personalInformationResponse.userAddressVerificationType == physicalAddressType.AIG_BLOCKCODE; else change">
+                                {{ userDetail.personalInformationResponse.userPhysicalAddressDetail }}
+                            </h5>
+                            <ng-template #change>
+                                <img [src]="userDetail.personalInformationResponse.userPhysicalAddressDetail" class="add_veri_doc_img " *ngIf="personalInformationDocumentType; else changeDocumentType">
+                                <ng-template #changeDocumentType>
+                                    <a [href]="userDetail.personalInformationResponse.userPhysicalAddressDetail">
+                                        <img [src]="personalPhysicalAddressImage" class="add_veri_doc_img">
+                                    </a>
+                                </ng-template>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-3" *ngIf="userDetail.businessInformationResponse">
+                            <h4 class="fs-15 fw-500 info mb_8">Business</h4>
+                            <h4 class="fs-15 fw-500 info mb_8">{{userDetail.businessInformationResponse.businessAddressVerificationType | textFormatter: '_'}} </h4>
+                            <h5 class="text_small fs-16 fw-600 mb_8" *ngIf="userDetail.businessInformationResponse.businessAddressVerificationType == physicalAddressType.AIG_BLOCKCODE; else change1">
+                                {{ userDetail.businessInformationResponse.businessPhysicalAddressDetail }}
+                            </h5>
+                            
+                            <ng-template #change1>
+                                <img [src]="userDetail.businessInformationResponse.businessPhysicalAddressDetail" class="add_veri_doc_img " *ngIf="BusinessVerificationDocumentType; else changeDocumentType1">
+                                <ng-template #changeDocumentType1>
+                                    <a [href]="userDetail.businessInformationResponse.businessPhysicalAddressDetail">
+                                        <img [src]="businessPhysicalAddressImage" class="add_veri_doc_img">
+                                    </a>
+                                </ng-template>
+                            </ng-template>
+                            
+                        </div>
+                        <div class="col-md-3" *ngIf="userDetail.directorInformationResponse">
+                            <h4 class="fs-15 fw-500 info mb_8">Director </h4>
+                            <h4 class="fs-15 fw-500 info mb_8">{{userDetail.directorInformationResponse.directorIdentityType | textFormatter: '_'}} </h4>
+                            <h5 class="text_small  fs-16 fw-600 mb_8">
+                                {{userDetail.directorInformationResponse.directorIdentityNumber}}</h5>
+                            <!-- <img src="assets/images/temp_img/address-vari-img.png" class="add_veri_doc_img"> -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Registration Details tabs end-->
+
+            <!-- API Keys tābs -->
+            <div class="tab-pane fade" id="APIKeys" role="tabpanel" aria-labelledby="pills-APIKeys-tab" tabindex="0">
+                <!-- API Keys  list -->
+                <div class="table_container mb-4 table-responsive">
+                    <div class="table-pagination page-nav empty" *ngIf="apiKeys.length==0 && (loaderService.isDataLoaded | async)">  <h4 class="primary mb-0 fs-26 fw-600">{{constant.NO_API_KEYS_AVAILABLE}} </h4></div>
+                    <div style="overflow-x:auto;" *ngIf="apiKeys.length!=0 && (loaderService.isDataLoaded | async)">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading">Project Name</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Project Description</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">API Key</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Created Date</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+
+                                <tr *ngFor="let obj of apiKeys">
+                                    <td class="fs-14 fw-500 info">{{obj.projectName}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.description}} </td>
+                                    <td class="fs-14 fw-500 info">{{obj.apiKey}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.createdDate | date:'shortDate'}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.updatedDate | date:'short'}}</td>
+
+                            </tbody>
+                        </table>
+                        <app-pagination [pageManager]="ApiKeyPagePagination" [pageRequest]="ApiKeyPageReqeust"
+                            [data]="apiKeys" (fetchData)="getUserApiKeys()"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!--  API Keys tābs end-->
+
+            <!-- Transaction  tabs -->
+            <div class="tab-pane fade" id="Transaction " role="tabpanel" aria-labelledby="pills-Transaction -tab"
+                tabindex="0">
+                <!-- Transaction   list -->
+                <div class="table_container mb-4 table-responsive">
+                    <div class="table-pagination page-nav empty" *ngIf="transactions.length==0 && (loaderService.isDataLoaded | async)">  <h4 class="primary mb-0 fs-26 fw-600">{{constant.NO_TRANSACTION_AVAILABLE}}</h4></div>
+                    <div style="overflow-x:auto;" *ngIf="transactions.length!=0 && (loaderService.isDataLoaded | async)">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading">Transaction ID</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Plan</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Transaction Date Time
+                                        Officer</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Benefit (No. of requests)
+                                    </th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+                                <tr *ngFor=" let obj of transactions">
+                                    <td class="fs-14 fw-500 info">{{obj.txnId}}</td>
+                                    <td><a (click)="navigateToComponent()"
+                                            class="fs-14 fw-600 theading mb-0 border-bottomLine  ">
+                                            {{obj.planName}}</a>
+                                    </td>
+                                    <td class="fs-14 fw-500 info">{{obj.date | date:'short'}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.requests}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.amount}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <app-pagination [pageManager]="transactionPagination" [pageRequest]="transactionPageRequest"
+                            [data]="transactions" (fetchData)="getAllTransaction()"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- Transaction tabs end-->
+
+        </div>
+    </div>

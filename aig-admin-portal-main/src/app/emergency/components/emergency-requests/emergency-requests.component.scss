@@ -1,0 +1,22 @@
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 600px;
+}
+
+.expanded {
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  display: block;
+}
+
+  .truncate-text {
+  display: inline-block;
+  max-width: 200px; /* adjust as per column size */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

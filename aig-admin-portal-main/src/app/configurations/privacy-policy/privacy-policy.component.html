@@ -1,0 +1,89 @@
+<!-- Privacy Policy -->
+<div class="content" data-number="24">
+
+  <!-- Officer Privacy Policy -->
+  <div class="background-card bg-transparent p-4 d-flex flex-column gap-4">
+    <h4 class="fs-20 fw-500 dark mb-0">Officer Privacy Policy</h4>
+
+    <!-- Editor -->
+    <div class="col-md-12">
+      <form action="" [formGroup]="officerForm">
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <!-- <h4 class="mb-0 fs-16 fw-400 black">Description</h4> -->
+          <div class="text-editor" id="editor-officer">
+            <!-- <ckeditor [editor]="Editor" [config]="editorConfig" formControlName="content">
+            </ckeditor> -->
+              <ngx-editor-menu [editor]="officerEditor" [toolbar]="toolbar">
+              </ngx-editor-menu>
+              <ngx-editor [editor]="officerEditor" formControlName="content"></ngx-editor>
+            <!-- <textarea formControlName="content">
+            </textarea> -->
+          </div>
+        </div>
+        <div *ngIf="officerForm.get('content')?.invalid && officerForm.get('content')?.touched">
+          <span *ngIf="officerForm.get('content')?.errors?.['required']" class="error">Please enter officer privacy
+            policy</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Button (Conditional) -->
+    <div class="d-flex justify-content-end gap-2"
+      *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.CREATE }">
+      <button *ngIf="!isOfficerEditeMode" class="btn_lg fs-16 fw-500 br_10" [disabled]="isSubmittingOfficer"
+        (click)="submitPrivacyPolicy('officer')">
+        {{ isSubmittingOfficer ? 'Saving...' : 'Save' }}
+      </button>
+
+      <button *ngIf="isOfficerEditeMode" class="btn_lg fs-16 fw-500 br_10 btn-outline-dark"
+        [disabled]="isSubmittingOfficer" (click)="updatePrivacyPolicy('officer')">
+        {{ isSubmittingOfficer ? 'Updating...' : 'Update' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- User Privacy Policy -->
+  <div class="background-card bg-transparent p-4 d-flex flex-column gap-4 mt-4">
+    <h4 class="fs-20 fw-500 dark mb-0">User Privacy Policy</h4>
+
+    <!-- Editor -->
+    <div class="col-md-12">
+      <form [formGroup]="userForm">
+        <div class="d-flex flex-column gap-2 w-100">
+          <!-- <h4 class="mb-0 fs-16 fw-400 black">Description</h4> -->
+          <div class="text-editor" id="editor-user">
+            <!-- <ckeditor [editor]="Editor" [config]="editorConfig" formControlName="content">
+                    </ckeditor> -->
+                     <ngx-editor-menu [editor]="userEditor" [toolbar]="toolbar">
+              </ngx-editor-menu>
+              <ngx-editor [editor]="userEditor" formControlName="content"></ngx-editor>
+            <!-- <textarea formControlName="content" placeholder="Enter description..."></textarea> -->
+          </div>
+        </div>
+        <div *ngIf="userForm.get('content')?.invalid && userForm.get('content')?.touched">
+          <span *ngIf="userForm.get('content')?.errors?.['required']" class="error">Please enter user privacy
+            policy</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- Button (Conditional) -->
+    <div class="d-flex justify-content-end gap-2"
+      *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.CREATE }">
+      <button *ngIf="!isUserEditeMode" class="btn_lg fs-16 fw-500 br_10" [disabled]="isSubmittingUser"
+        (click)="submitPrivacyPolicy('user')">
+        {{ isSubmittingUser ? 'Saving...' : 'Save' }}
+      </button>
+ 
+      <ng-container *ngIf="isUserEditeMode">
+
+        <button *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.UPDATE }"class="btn_lg fs-16 fw-500 br_10 btn-outline-dark" [disabled]="isSubmittingUser"
+          (click)="updatePrivacyPolicy('user')">
+          {{ isSubmittingUser ? 'Updating...' : 'Update' }}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

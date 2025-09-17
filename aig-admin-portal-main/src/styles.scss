@@ -1,0 +1,99 @@
+/* You can add global styles to this file, and also import other style files */
+.page-link.active {
+  z-index: 3;
+  color: var(--bs-pagination-active-color);
+  background-color: #174EA0;
+  border-color: var(--bs-pagination-active-border-color);
+}
+.active {
+  // color: white !important;
+  // border-radius: 9px;
+}
+.cur-point {
+  cursor: pointer;
+}
+.disable-click {
+  pointer-events: none;
+}
+a {
+  cursor: pointer;
+}
+
+.marker-label {
+  background-color: #174EA0;
+  padding: 5px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white !important;
+  margin-bottom: 66px;
+  // margin-left: 50px;
+}
+
+.page-nav {
+  background-color: #f6f8fd;
+  color: black;
+  border-radius: 0px 0px 10px 10px;
+  justify-content: center;
+}
+.height {
+  height: 90%;
+}
+
+.not-allowed {
+  cursor: not-allowed;
+}
+
+.pac-container {
+  z-index: 99999 !important;
+}
+
+.profile_input2 {
+    padding: 10px 18px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(232, 236, 244, 0.27) !important;
+    background: rgba(46, 51, 62, 0.06) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: var(--textColor);
+}
+.profile_input2::placeholder{
+  color: #8391A1;
+  font-weight: 400;
+}
+.spinner-border {
+  --bs-spinner-width: 1.5rem;
+  --bs-spinner-height:1.5rem;
+  --bs-spinner-vertical-align: -0.125em;
+  --bs-spinner-border-width: 0.25em;
+  --bs-spinner-animation-speed: 0.75s;
+  --bs-spinner-animation-name: spinner-border;
+  border: var(--bs-spinner-border-width) solid currentcolor;
+  border-right-color: transparent;
+}
+
+
+// .theading {
+//   color: #667085;
+// }
+
+.status_img img{
+  cursor: pointer;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.error-font{
+  font-size: 14px;
+}
+
+

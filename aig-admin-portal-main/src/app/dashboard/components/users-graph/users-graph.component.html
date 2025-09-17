@@ -1,0 +1,27 @@
+<div class="dashboard_content p-4">
+    <div class="user_heading flex-wrap gap-2">
+        <h4 class="fs-20 fw-600 dark mb-0">User Acquition</h4>
+        <div class="d-flex align-items-center  gap_30">
+            <div class="d-flex align-items-center gap-1">
+                <span class="user_circle"></span>
+                <h3 class="fs-14 fw-500 theading mb-0">User Onboarding</h3>
+            </div>
+            <!-- tabs -->
+
+            <select id="year" name="year" #userAcquition (change)="getUserAcquition(userAcquition.value)"
+                class="attendance_dropdown1 border-0 fs-14 fw-700 theading ">
+                <option [value]="-1">Monthly</option>
+                <option [value]="-2">Yearly</option>
+                <option *ngFor="let month of constants.MONTHS;index as i" [value]="i+1">{{month}}</option>
+            </select>
+        </div>
+    </div>
+    <div id="chart">
+        <apx-chart [series]="userGraphAcquition?.series" [chart]="userGraphAcquition?.chart"
+            [xaxis]="userGraphAcquition?.xaxis" [dataLabels]="userGraphAcquition?.dataLabels"
+            [grid]="userGraphAcquition?.grid" [stroke]="userGraphAcquition?.stroke" [title]="userGraphAcquition?.title"
+            [colors]="userGraphAcquition?.colors" [yaxis]="userGraphAcquition?.yaxis"
+            [tooltip]="userGraphAcquition?.tooltip" [legend]="userGraphAcquition?.legend"
+            [markers]="userGraphAcquition?.markers"></apx-chart>
+    </div>
+</div>

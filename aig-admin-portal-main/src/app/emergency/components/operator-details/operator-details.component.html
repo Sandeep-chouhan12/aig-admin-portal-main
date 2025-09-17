@@ -1,0 +1,261 @@
+<div class="container px-0 px-sm-2">
+    <div class="d-flex flex-column gap-4">
+        <!-- Officer Details box -->
+        <div class="content_box d-flex flex-column gap-4">
+            <div class="row align-items-center gy-4">
+                <div class="col-md-2 ">
+                    <img class="modal_profile" [src]="officer.profilePicture || appUtils.DEFAULT_IMAGE">
+                </div>
+                <div class="col-md-10 user_details">
+                    <div class="row gy-3">
+                        <div class="col-md-4 col-lg-3 col-sm-6">
+                            <h3>Officer Name</h3>
+                            <h4>{{officer!.firstName +' '+officer!.lastName}}</h4>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-sm-6">
+                            <h3>Email</h3>
+                            <h4>{{officer!.email}}</h4>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-sm-6">
+                            <h3>Phone Number</h3>
+                            <h4>{{officer!.phoneNumber}}</h4>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-sm-6">
+                            <h3>Emergency Type</h3>
+                            <h4>{{officer!.emergencyService!.name}}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Api Request -->
+            <div class="d-flex flex-column gap-3">
+                <h3 class="fs-16 fw-600 primary mb-0">Emergency Service Request</h3>
+                <div class="address_card">
+                    <div class="row gy-3">
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="fs-14 fw-500 info mb_8">Total Requests</h4>
+                            <h5 class="text_small  fs-15 fw-500 mb-0">{{totalEmergencyRequest.length}}</h5>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="fs-14 fw-500 info mb_8">Pending Requests</h4>
+                            <h5 class="text_small  fs-15 fw-500 mb-0">{{totalEmergencyPendingRequest.length}} </h5>
+                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <h4 class="fs-14 fw-500 info mb_8">Resolved Request</h4>
+                            <h5 class="text_small  fs-15 fw-500 mb-0">{{totalEmergencyResolvedRequest.length}} </h5>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- api user details tabs -->
+        <ul class="user-tabs-grid nav-pills mb-0" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="tabs_btn active fs-16 fw-600" id="TotalRequests" data-bs-toggle="pill"
+                    data-bs-target="#TotalRequest" type="button" role="tab" aria-controls="pills-TotalRequest"
+                    aria-selected="true">Total Request</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="tabs_btn fs-16 fw-600" id="PendingRequests" data-bs-toggle="pill"
+                    data-bs-target="#PendingRequest" type="button" role="tab" aria-controls="pills-PendingRequest"
+                    aria-selected="false">Pending Request</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="tabs_btn fs-16 fw-600" id="ResolvedRequests" data-bs-toggle="pill"
+                    data-bs-target="#ResolvedRequest" type="button" role="tab" aria-controls="pills-ResolvedRequest"
+                    aria-selected="false">Resolved Request</button>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+
+            <!-- Total Request tabs -->
+            <div class="tab-pane fade show active" id="TotalRequest" role="tabpanel"
+                aria-labelledby="pills-TotalRequest-tab" tabindex="0">
+                <div class="table_container content table-responsive">
+                    <div class="Officer_table">
+                        <div>
+                            <h4 class="fs-20 fw-600 dark mb-0"> Total Emergency Service Request</h4>
+                        </div>
+                    </div>
+                    <div class="table-pagination page-nav empty" *ngIf="totalEmergencyRequest.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Emergency Service Requests </h4>
+                    </div>
+                    <div style="overflow-x:auto;" *ngIf="totalEmergencyRequest.length!=0">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading">Requestsed User Name</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">User Contact</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Emergency</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Emergency Type</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Address</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Block Code</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Request Date & Time</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+                                <tr *ngFor="let obj of totalEmergencyRequest">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img [src]="obj.profilePicture || appUtils.DEFAULT_IMAGE"
+                                                class="address_icon">
+                                            <div class="varification_officer">
+                                                <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2">{{obj.firstName +' '+
+                                                    obj.lastName}}
+                                                </h5>
+                                                <!-- <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2">@olivia</h4> -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fs-14 fw-500 info">{{obj.phoneNumber}}</td>
+                                    <td class="fs-14 fw-500 info"><span class="Emergency_icon"><img
+                                                [src]=obj.emergencyImage></span></td>
+                                    <td class="fs-14 fw-500 info">{{obj.emergencyType}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.address}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.blockCode}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.date | date}}</td>
+                                    <td>
+                                        <!-- <button class="status_btn rejected_btn">{{obj.requestStatus}}</button> -->
+
+                                        <button
+                                            [ngClass]="obj.requestStatus =='Pending'?'status_btn Pending_btn':'status_btn Verified_btn'">{{obj.requestStatus}}</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination [pageManager]="totalPagination" [pageRequest]="totalPageRequest"
+                            [data]="totalEmergencyRequest" (fetchData)="getTotalEmergencyRequest()"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- Total Request tabs end-->
+
+            <!-- Pending Request tābs -->
+            <div class="tab-pane fade" id="PendingRequest" role="tabpanel" aria-labelledby="pills-PendingRequest-tab"
+                tabindex="0">
+                <div class="table_container content table-responsive">
+                    <div class="Officer_table">
+                        <div>
+                            <h4 class="fs-20 fw-600 dark mb-0"> Pending Emergency Service Request</h4>
+                        </div>
+                    </div>
+                    <div class="table-pagination page-nav empty" *ngIf="totalEmergencyPendingRequest.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Emergency Service Requests </h4>
+                    </div>
+                    <div style="overflow-x:auto;" *ngIf="totalEmergencyPendingRequest.length!=0">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading">Requestsed User Name</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">User Contact</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Emergency</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Emergency Type</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Address</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Block Code</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Request Date & Time</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+                                <tr *ngFor="let obj of totalEmergencyPendingRequest">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img [src]="obj.profilePicture || appUtils.DEFAULT_IMAGE"
+                                                class="address_icon">
+                                            <div class="varification_officer">
+                                                <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2">{{obj.firstName +' '+
+                                                    obj.lastName}}
+                                                </h5>
+                                                <!-- <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2">@olivia</h4> -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fs-14 fw-500 info">{{obj.phoneNumber}}</td>
+                                    <td class="fs-14 fw-500 info"><span class="Emergency_icon"><img
+                                                [src]="obj.emergencyImage"></span></td>
+                                    <td class="fs-14 fw-500 info">{{obj.emergencyType}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.address}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.blockCode}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.date | date}}</td>
+                                    <td>
+                                        <button class="status_btn Pending_btn">{{obj.requestStatus}}</button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <app-pagination [pageManager]="pendingPagination" [pageRequest]="pendingPageRequest"
+                            [data]="totalEmergencyPendingRequest"
+                            (fetchData)="getTotalEmergencyPendingRequest()"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!--  Pending Request tābs end-->
+
+            <!-- Resolved Request  tabs -->
+            <div class="tab-pane fade" id="ResolvedRequest" role="tabpanel" aria-labelledby="pills-ResolvedRequest-tab"
+                tabindex="0">
+                <div class="table_container content table-responsive">
+                    <div class="Officer_table">
+                        <div>
+                            <h4 class="fs-20 fw-600 dark mb-0"> Resolved Emergency Service Request</h4>
+                        </div>
+                    </div>
+                    <div class="table-pagination page-nav empty" *ngIf="totalEmergencyResolvedRequest.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Emergency Service Requests </h4>
+                    </div>
+                    <div style="overflow-x:auto;" *ngIf="totalEmergencyResolvedRequest.length!=0">
+                        <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                            <thead>
+                                <tr class="table_heading">
+                                    <th scope="col" class="fs-14 fw-500 theading">Requestsed User Name</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">User Contact</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Emergency</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Emergency Type</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Address</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Block Code</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Request Date & Time</th>
+                                    <th scope="col" class="fs-14 fw-500 theading">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg_light">
+                                <tr *ngFor="let obj of totalEmergencyResolvedRequest">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img [src]="obj.profilePicture || appUtils.DEFAULT_IMAGE"
+                                                class="address_icon">
+                                            <div class="varification_officer">
+                                                <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2">{{obj.firstName +' '+
+                                                    obj.lastName}}
+                                                </h5>
+                                                <!-- <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2">@olivia</h4> -->
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="fs-14 fw-500 info">{{obj.phoneNumber}}</td>
+                                    <td class="fs-14 fw-500 info"><span class="Emergency_icon"><img
+                                                [src]="obj.emergencyImage"></span></td>
+                                    <td class="fs-14 fw-500 info">{{obj.emergencyType}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.address}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.blockCode}}</td>
+                                    <td class="fs-14 fw-500 info">{{obj.date | date}}</td>
+                                    <td>
+                                        <button class="status_btn Verified_btn">{{obj.requestStatus}}</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <app-pagination [pageManager]="resolvedPagination" [pageRequest]="resolvedPageRequest"
+                            [data]="totalEmergencyResolvedRequest"
+                            (fetchData)="getTotalEmergencyResolvedRequest()"></app-pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- Resolved Request tabs end-->
+
+        </div>
+    </div>
+</div>

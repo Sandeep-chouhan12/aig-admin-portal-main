@@ -1,0 +1,19 @@
+<div class="d-flex">
+    <!-- SIDEBAR START -->
+    <app-side-bar (setTitleName)="title=$event" *ngIf="!hideSideNav"></app-side-bar>
+    <!-- SIDEBAR END -->
+    <!-- MIDDLE CONTENT START -->
+    <div [ngClass]="hideSideNav?'w-100':'middle_content'" id="middle-content">
+        <!-- top-navbar -->
+        <app-nav-bar [isInnerNav]="hideSideNav" [title]="title"></app-nav-bar> 
+        <!-- top-navbar end -->
+        <!-- MAIN CONTENT -->
+        <div class="main_content  scroll_bar custom-loader-wrapper" [ngClass]="!hideSideNav?'contentSection':''">
+            <h4 class="primary mb-0 fs-20 fw-600 mb-3 d-block d-sm-none" *ngIf="hideSideNav" >{{title}}</h4>
+
+           <router-outlet ></router-outlet>
+           <ngx-ui-loader [loaderId]="'loader-01'"></ngx-ui-loader>
+        </div>
+    </div>
+    <!-- MIDDLE CONTENT END -->
+</div>

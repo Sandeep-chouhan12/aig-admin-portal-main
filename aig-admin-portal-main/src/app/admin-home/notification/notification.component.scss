@@ -1,0 +1,24 @@
+.notification_card {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #d5deeb;
+  background: #fff;
+  height: calc(100% - 0vh);
+}
+.notification_profile {
+    border-radius: 12px;
+    border: 0.5px solid #D5DEEB;
+    width: 50px;
+    height: 50px;
+}
+.date_btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #D5DEEB;
+    background-color: transparent;
+}
+.notificartion_details {
+  display: flex;
+  gap: 12px;
+  /* height: 63px; */
+}

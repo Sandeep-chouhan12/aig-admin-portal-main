@@ -1,0 +1,103 @@
+<!-- Users -->
+<!-- user list -->
+<div class="table_container content d-flex flex-column justify-content-between h-100" data-number="2">
+    <div>
+        <div class="Officer_table">
+            <h4 class="fs-20 fw-600 dark mb-0">Users List</h4>
+        </div>
+        <div class="table-pagination page-nav empty" *ngIf="userList.length==0  &&(loaderService.isDataLoaded |async)">
+            <h4 class="primary mb-0 fs-26 fw-600">No Users </h4>
+        </div>
+        <div class="table-responsive table-data" *ngIf="userList && userList.length>0">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading">Name</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Email address</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Phone number</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Last update date</th>
+                        <th scope="col" class="fs-14 fw-500 theading status_img">Status <img
+                                *ngIf="sortIsActive==sortStatus.ALL" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.ALL)">
+                            <img *ngIf="sortIsActive==sortStatus.ACTIVE" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.ACTIVE)">
+                            <img *ngIf="sortIsActive==sortStatus.IN_ACTIVE" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.IN_ACTIVE)">
+                        </th>
+                        <th scope="col" class="fs-14 fw-500 theading">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let user of userList ; let i=index">
+                        <td>
+                            <a class="d-flex align-items-center"
+                                (click)="navigate(componentRoutes.USER_DETAILS_BASE+'/'+user.userId)">
+                                <img [src]="user.profilePicture || appUtils.DEFAULT_IMAGE" class="address_icon">
+                                <div class="varification_officer">
+                                    <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2">{{user.firstName + " "+
+                                        user.lastName}}
+                                    </h5>
+                                    <!-- <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2">@olivia</h4> -->
+                                </div>
+                            </a>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{user.email}}</td>
+                        <td class="fs-14 fw-500 info">{{user.phoneNumber}}</td>
+
+                        <td class="fs-14 fw-500 info">{{user.updatedDate | date:'dd/MM/YYYY'}}</td>
+                        <td class="fs-14 fw-500 info">
+                            <label class="switch" *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.UPDATE }">
+                                <input type="checkbox" (click)="updateUserStatus(user)" [checked]="user.isActive">
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class=" d-flex align-items-center gap-3">
+                                <a (click)="navigate(componentRoutes.USER_DETAILS_BASE+'/'+user.userId)" *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.UPDATE }"><img
+                                        src="assets/images/svg_img/edit-icon.svg" class="add_icons"></a>
+
+                                <a (click)="deleteId=user.userId"  *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.DELETE }"><img src="assets/images/svg_img/Trash.svg"
+                                        data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+   
+   <app-pagination [pageManager]="paginationManager" [pageRequest]="pageRequest" [data]="userList" 
+   *ngIf="paginationManager.totalElements > pageRequest.pageSize"
+                        (fetchData)="getAllUsers()"
+                       ></app-pagination>
+</div>
+
+
+
+<!-- Model Start -->
+
+<div class="modal fade" id="delete-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        User </h1>
+                    <h3 class="fs-16 fw-400 info mb-0  text-center">Are you sure you want to delete this
+                        User? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-delete-user">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" (click)="deleteUserById()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

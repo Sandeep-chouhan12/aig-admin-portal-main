@@ -1,0 +1,58 @@
+    <div class="container">
+        <div class="background-card bg-transparent p-4 d-flex flex-column gap-4 h-100">
+            <h4 class="fs-20 fw-500 dark mb-0">FAQ’s</h4>
+
+            <!-- User Type -->
+            <div class="col-md-4">
+                <label class="form-label fs-14">User Type</label>
+                <select class="form-select" [(ngModel)]="userType"
+                    (change)="faqForm.patchValue({ userType: userType })">
+                    <option value="user">User</option>
+                    <option value="officer">Officer</option>
+                </select>
+            </div>
+            <!-- Editor -->
+            <div class="col-md-12 h-100 ">
+
+                <form action="" [formGroup]="faqForm">
+                    <div class="d-flex flex-column gap-4  overflow-y-auto h-100 mb-4">
+                        <div class="d-flex flex-column gap-2 w-100">
+                            <h4 class="mb-0 fs-16 fw-400 black">Question</h4>
+                            <div class="text-editor" id="editor1-app">
+                                <ngx-editor-menu [editor]="titleEditor" [toolbar]="toolbar">
+                                </ngx-editor-menu>
+                                <ngx-editor [editor]="titleEditor" formControlName="title"></ngx-editor>
+                            </div>
+                            <div *ngIf="faqForm.get('title')?.invalid && faqForm.get('title')?.touched">
+                                <span class="error" *ngIf="faqForm.get('title')?.errors?.['required']"> Please enter
+                                    question</span>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column gap-2 w-100">
+                            <h4 class="mb-0 fs-16 fw-400 black">Answer</h4>
+                            <div class="text-editor" id="editor2-app">
+                                <ngx-editor-menu [editor]="descriptionEditor" [toolbar]="toolbar">
+                                </ngx-editor-menu>
+                                <ngx-editor [editor]="descriptionEditor" formControlName="description"></ngx-editor>
+                            </div>
+                            <div *ngIf="faqForm.get('description')?.invalid && faqForm.get('description')?.touched">
+                                <span class="error" *ngIf="faqForm.get('description')?.errors?.['required']"> Please
+                                    enter
+                                    answer</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+                <!-- Button -->
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn_lg fs-16 fw-500 br_10" [disabled]="isSubmitting" (click)="onSubmit()">
+                        {{ isSubmitting ? 'Submitting...' : (faqId ? 'Update' : 'Save') }}
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+

@@ -1,0 +1,137 @@
+<div class="tab-pane fade show active" id="RegistrationDetails" role="tabpanel"
+    aria-labelledby="pills-RegistrationDetails-tab" tabindex="0">
+    <!-- No Data Found -->
+    <div class="table-pagination empty d-flex flex-column gap-3 align-items-center justify-content-center" *ngIf="!(privateOrganizationDetailResponse?.personalInformationResponse 
+           || privateOrganizationDetailResponse?.businessInformationResponse 
+           || privateOrganizationDetailResponse?.directorInformationResponse) 
+           && (loaderService.isDataLoaded | async)">
+        <img src="assets/images/svg_img/data-not-found.svg" alt="No data">
+        <h4 class="primary mb-0 fs-24 fw-600">Oops! Data Not Found</h4>
+    </div>
+
+
+    <!-- Personal information -->
+    <div class="Registration_Details mb-4" *ngIf="privateOrganizationDetailResponse.personalInformationResponse">
+        <h3 class="primary fs-16 fw-600 mb-4">Representative</h3>
+        <div class="row gy-4">
+            <div class="col-md-3 col-lg-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">First Name</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.personalInformationResponse.firstName  || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-3 col-lg-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Last Name</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.personalInformationResponse.lastName  || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-3 col-lg-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Identification Number</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.personalInformationResponse.userIdentityNumber  || 'N/A'}}</h5>
+            </div>
+
+        </div>
+    </div>
+    <!-- Business information -->
+    <div class="Registration_Details mb-4" *ngIf="privateOrganizationDetailResponse.businessInformationResponse">
+        <h3 class="primary fs-16 fw-600 mb-4">Business information</h3>
+        <div class="row gy-4">
+            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Business Name</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.businessInformationResponse.businessName  || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Business Type</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.businessInformationResponse.businessType  || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Business Physical Address</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.businessInformationResponse.businessPhysicalAddress || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Registration No.</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.businessInformationResponse.registrationNumber || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Tax Identification Number </h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.businessInformationResponse.taxIdentificationNumber || 'N/A'}}</h5>
+            </div>
+
+        </div>
+    </div>
+    <!-- Business Director information -->
+    <div class="Registration_Details mb-4" *ngIf="privateOrganizationDetailResponse.directorInformationResponse">
+        <h3 class="primary fs-16 fw-600 mb-4">Business Director information</h3>
+        <div class="row gy-4">
+            <div class="col-md-3 col-lg-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Name of Director</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.directorInformationResponse.directorName || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-3 col-lg-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">Physical Address</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.directorInformationResponse.directorPhysicalAddress || 'N/A'}}</h5>
+            </div>
+            <div class="col-md-3 col-lg-2 col-sm-6">
+                <h4 class="fs-15 fw-500 subTextColor mb_8">AIG Code</h4>
+                <h5 class="text_small  fs-16 fw-600 mb-0">
+                    {{privateOrganizationDetailResponse.directorInformationResponse.directorIdentityNumber || 'N/A'}}</h5>
+            </div>
+
+        </div>
+    </div>
+    <!-- Address Verification Documents -->
+    {{privateOrganizationDetailResponse.businessInformationResponse.businessAddressVerificationType}}
+    <div class="mb-4" *ngIf="privateOrganizationDetailResponse.personalInformationResponse">
+        <h3 class="primary fs-16 fw-600 mb-4">Address Verification Documents</h3>
+        <div class="row gy-4">
+            <ng-container
+                *ngIf="privateOrganizationDetailResponse.personalInformationResponse.userAddressVerificationType === 'UTILITY_BILL'; else notUtilityBill">
+                <div class="col-md-4 col-lg-3 col-sm-6">
+                    <h4 class="fs-16 fw-500 subTextColor mb_8">User (Applicant)</h4>
+                    <h5 class="text_small fs-16 fw-600 mb_8">Utility Bill</h5>
+                    <img [src]="privateOrganizationDetailResponse.personalInformationResponse.userPhysicalAddressDetail || 'assets/images/temp_img/address-vari-img.png'"
+                        class="add_veri_doc_img">
+                </div>
+            </ng-container>
+
+            <ng-template #notUtilityBill>
+                <div class="col-md-3 col-lg-2 col-sm-6">
+                    <h4 class="fs-15 fw-500 subTextColor mb_8">AIG Code</h4>
+                    <h5 class="text_small fs-16 fw-600 mb-0">
+                        {{ privateOrganizationDetailResponse.personalInformationResponse.userPhysicalAddressDetail ||
+                        'N/A' }}
+                    </h5>
+                </div>
+            </ng-template>
+
+
+           <!-- business documents -->
+            <ng-container
+                *ngIf="privateOrganizationDetailResponse.businessInformationResponse.businessAddressVerificationType === 'UTILITY_BILL'; else notUtilityBillBusiness">
+                <div class="col-md-4 col-lg-3 col-sm-6">
+                    <h4 class="fs-16 fw-500 subTextColor mb_8">Business</h4>
+                    <h5 class="text_small fs-16 fw-600 mb_8">Utility Bill</h5>
+                    <img [src]="privateOrganizationDetailResponse.businessInformationResponse.businessPhysicalAddressDetail || 'assets/images/temp_img/address-vari-img.png'"
+                        class="add_veri_doc_img">
+                </div>
+            </ng-container>
+
+            <ng-template #notUtilityBillBusiness>
+                <div class="col-md-3 col-lg-2 col-sm-6">
+                    <h4 class="fs-15 fw-500 subTextColor mb_8">AIG Code</h4>
+                    <h5 class="text_small fs-16 fw-600 mb-0">
+                        {{ privateOrganizationDetailResponse.businessInformationResponse.businessPhysicalAddressDetail
+                        || 'N/A' }}
+                    </h5>
+                </div>
+            </ng-template>
+
+        </div>
+    </div>

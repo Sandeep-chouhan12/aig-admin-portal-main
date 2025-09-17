@@ -1,0 +1,1554 @@
+<div class="container h-100">
+  <div class="d-flex flex-column gap-4 h-100">
+    <!-- progressbar -->
+    <div class="progressBar">
+      <div
+        class="step-1"
+        id="checkout-progress"
+        [class]="'step-' + currentSection"
+        [attr.data-current-step]="currentSection"
+      >
+        <div class="progressBar">
+          <!-- Step 1 -->
+          <div
+            class="step step-1"
+            [class.active]="currentSection > 0"
+            [class.completed]="identityVerification.valid && currentSection > 1"
+          >
+            <svg
+              width="15"
+              height="12"
+              viewBox="0 0 15 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                [attr.stroke]="
+                  identityVerification.valid ? '#4CAF50' : '#777777'
+                "
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <div class="step-label">
+              Organization <span class="mobile-hide"> Info </span>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div
+            class="step step-2"
+            [class.active]="currentSection > 1"
+            [class.completed]="authorizedOfficer.valid && currentSection > 2"
+          >
+            <svg
+              width="15"
+              height="12"
+              viewBox="0 0 15 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                [attr.stroke]="
+                  authorizedOfficer.valid && currentSection > 2
+                    ? '#4CAF50'
+                    : '#777777'
+                "
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <div class="step-label">Representative</div>
+          </div>
+          <!-- Step 3 -->
+          <div
+            class="step step-3"
+            [class.active]="currentSection > 2"
+            [class.completed]="documentationUploads.valid && currentSection > 3"
+          >
+            <svg
+              width="15"
+              height="12"
+              viewBox="0 0 15 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                [attr.stroke]="
+                  documentationUploads.valid && currentSection > 3
+                    ? '#4CAF50'
+                    : '#777777'
+                "
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <div class="step-label">Verification</div>
+          </div>
+
+          <!-- Step 4 -->
+          <div
+            class="step step-4"
+            [class.active]="currentSection > 3"
+            [class.completed]="reviewInfo.valid"
+          >
+            <svg
+              width="15"
+              height="12"
+              viewBox="0 0 15 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                [attr.stroke]="reviewInfo.valid ? '#4CAF50' : '#777777'"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <div class="step-label">
+              Review <span class="mobile-hide">and Finish</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- content verification -->
+    <div class="Verify-details d-flex flex-column overflow-hidden">
+      <div class="verification-scrollbar-section">
+        <!-- Organization Info -->
+        <section id="section1" class="sections1" style="display: block">
+          <form [formGroup]="registrationForm">
+            <div
+              class="d-flex flex-column gap-4"
+              formGroupName="identityVerification"
+            >
+              <!-- Company Information -->
+              <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-column gap-2">
+                  <h2 class="fs-20 fw-500 black mb-0">Company Info</h2>
+                  <h3 class="fs-16 fw-400 info mb-0">
+                    Provide basic identity details of your government agency for
+                    verification and onboarding.
+                  </h3>
+                </div>
+
+                <!-- Logo Upload -->
+                <div class="d-flex flex-column gap-3">
+                  <h2 class="fs-16 fw-500 black mb-0">Logo</h2>
+                  <div class="d-flex">
+                    <div
+                      class="position-relative d-flex justify-content-center"
+                    >
+                      <input
+                        id="profilePic"
+                        type="file"
+                        class="d-none"
+                        (change)="onLogoUpload($event)"
+                        accept=".png, .jpeg, .jpg"
+                      />
+                      <img
+                        class="modal_profile"
+                        id="logoPreview"
+                        [src]="companyLogoPreview || appUtils.DEFAULT_IMAGE"
+                      />
+                      <label class="-label" for="profilePic">
+                        <a
+                          class="secondary fs-16 fw-500 edit_img d-flex justify-content-center align-items-center"
+                        >
+                          <i class="fi fi-sr-pencil white lh-0 fs-14"></i>
+                        </a>
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    *ngIf="
+                      identityVerification.get('profilePic')?.touched &&
+                      identityVerification.get('profilePic')?.invalid
+                    "
+                    class="error"
+                  >
+                    <div
+                      *ngIf="identityVerification.get('profilePic')?.errors?.['required']"
+                    >
+                      Company logo is required
+                    </div>
+                    <div
+                      *ngIf="identityVerification.get('profilePic')?.errors?.['invalidFileType']"
+                    >
+                      Only JPG/PNG images are allowed
+                    </div>
+                    <div
+                      *ngIf="identityVerification.get('profilePic')?.errors?.['fileTooLarge']"
+                    >
+                      Logo must be less than 5MB
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="row gy-4">
+                  <!-- Agency Name -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">Agency Name</label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control profile_edit"
+                          formControlName="agencyName"
+                          placeholder="Enter Agency Name"
+                        />
+                        <div
+                          *ngIf="
+                            identityVerification.get('agencyName')?.touched &&
+                            identityVerification.get('agencyName')?.invalid
+                          "
+                          class="error"
+                        >
+                          Agency name is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Govt. Body Type -->
+                  <div class="col-md-6 position-relative">
+                    <div class="w-100 select d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0"
+                        >Govt. Body Type</label
+                      >
+                      <div class="custom-select-wrapper">
+                        <div class="custom-select">
+                          <div
+                            class="select-display form-select d-flex justify-content-between align-items-center"
+                            (click)="toggleDropdown()"
+                          >
+                            <span class="fs-14 regular">
+                              {{ getGovtBodyTypeLabel() }}
+                            </span>
+                            <img
+                              src="assets/images/svg_img/arrow-select.svg"
+                              height="18"
+                              width="18"
+                            />
+                          </div>
+                          <div
+                            class="dropdown-options"
+                            *ngIf="showGovtBodyTypeDropdown"
+                          >
+                            <h5
+                              *ngFor="let data of govtBodyTypeOptions"
+                              class="dropdown-options-list fs-15 fw-400 mb-0"
+                              (click)="selectGovtType(data.value)"
+                            >
+                              {{ data.label }}
+                            </h5>
+                          </div>
+                        </div>
+                        <div
+                          *ngIf="
+                            identityVerification.get('bodyType')?.touched &&
+                            identityVerification.get('bodyType')?.invalid
+                          "
+                          class="error"
+                        >
+                          Please select a government body type
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">Email</label>
+                      <div>
+                        <input
+                          type="email"
+                          class="form-control profile_edit"
+                          formControlName="email"
+                          placeholder="Enter Email"
+                          [readonly]="updateMode"
+                        />
+                        <div
+                          *ngIf="
+                            identityVerification.get('email')?.touched &&
+                            identityVerification.get('email')?.invalid
+                          "
+                          class="error"
+                        >
+                          <div
+                            *ngIf="identityVerification.get('email')?.errors?.['required']"
+                          >
+                            Email is required
+                          </div>
+                          <div
+                            *ngIf="identityVerification.get('email')?.errors?.['email']"
+                          >
+                            Please enter a valid email address
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Phone Number -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0"
+                        >Phone Number</label
+                      >
+                      <div>
+                        <input
+                          type="tel"
+                          class="form-control profile_edit"
+                          formControlName="phoneNumber"
+                          placeholder="+234 8102585888"
+                          id="phoneInput"
+                          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                          [readonly]="updateMode"
+                        />
+
+                        <div
+                          *ngIf="
+                            identityVerification.get('phoneNumber')?.invalid &&
+                            identityVerification.get('phoneNumber')?.touched
+                          "
+                          class="error"
+                        >
+                          <p
+                            *ngIf="identityVerification.get('phoneNumber')?.errors?.['pattern']"
+                          >
+                            Phone Number is invalid
+                          </p>
+                          <p
+                            *ngIf="identityVerification.get('phoneNumber')?.errors?.['required']"
+                          >
+                            Phone Number is required
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="borderBottom"></div>
+
+              <!-- Official Contact Information -->
+              <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-column gap-2">
+                  <h2 class="fs-20 fw-500 black mb-0">Official Contact</h2>
+                  <h3 class="fs-16 fw-400 info mb-0">
+                    Enter your agency's official contact details for
+                    communication and verification purposes.
+                  </h3>
+                </div>
+
+                <div class="row gy-4">
+                  <!-- TIN Number -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">TIN Number</label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control profile_edit"
+                          formControlName="tinNumber"
+                          placeholder="Enter TIN Number"
+                        />
+
+                        <div
+                          *ngIf="
+                            identityVerification.get('tinNumber')?.touched &&
+                            identityVerification.get('tinNumber')?.invalid
+                          "
+                        >
+                          <div
+                            *ngIf="identityVerification.get('tinNumber')?.errors?.['required']"
+                            class="error"
+                          >
+                            TIN number is required
+                          </div>
+                          <div
+                            *ngIf="identityVerification.get('tinNumber')?.errors?.['pattern']"
+                            class="error"
+                          >
+                            TIN must be a 10-digit number
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- RC Number -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">RC Number</label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control profile_edit"
+                          formControlName="rcNumber"
+                          placeholder="RC1234567"
+                        />
+                        <div
+                          *ngIf="
+                            identityVerification.get('rcNumber')?.touched &&
+                            identityVerification.get('rcNumber')?.invalid
+                          "
+                        >
+                          <div
+                            class="error"
+                            *ngIf="identityVerification.get('rcNumber')?.errors?.['required']"
+                          >
+                            RC number is required
+                          </div>
+                          <div
+                            class="error"
+                            *ngIf="identityVerification.get('rcNumber')?.errors?.['pattern']"
+                          >
+                            RC must be a 10-digit number
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- State & LGA -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">State & LGA</label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control profile_edit"
+                          formControlName="stateOrLga"
+                          placeholder="Enter State & LGA"
+                        />
+                        <div
+                          *ngIf="
+                            identityVerification.get('stateOrLga')?.touched &&
+                            identityVerification.get('stateOrLga')?.invalid
+                          "
+                          class="error"
+                        >
+                          State & LGA is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Official Website -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0"
+                        >Official Website</label
+                      >
+                      <div>
+                        <input
+                          type="url"
+                          class="form-control profile_edit"
+                          formControlName="officialWebsite"
+                          placeholder="Enter Official Website"
+                        />
+                        <div
+                          *ngIf="
+                            identityVerification.get('officialWebsite')
+                              ?.touched &&
+                            identityVerification.get('officialWebsite')?.invalid
+                          "
+                          class="error"
+                        >
+                          <div
+                            *ngIf="identityVerification.get('officialWebsite')?.errors?.['required']"
+                          >
+                            Official website is required
+                          </div>
+                          <div
+                            *ngIf="identityVerification.get('officialWebsite')?.errors?.['invalidUrl']"
+                          >
+                            Please enter a valid URL
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Address -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">Address</label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control profile_edit"
+                          formControlName="address"
+                          placeholder="Enter Address"
+                        />
+                        <div
+                          *ngIf="
+                            identityVerification.get('address')?.touched &&
+                            identityVerification.get('address')?.invalid
+                          "
+                          class="error"
+                        >
+                          Address is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section id="section2" class="sections2" style="display: none">
+          <form [formGroup]="registrationForm">
+            <div
+              class="d-flex flex-column gap-4"
+              formGroupName="authorizedOfficer"
+            >
+              <!-- Representative Information -->
+              <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-column gap-2">
+                  <h2 class="fs-20 fw-500 black mb-0">Representative</h2>
+                  <h3 class="fs-16 fw-400 info mb-0">
+                    Fill in the authorized officer's information and upload
+                    required ID and letters.
+                  </h3>
+                </div>
+
+                <!-- Input Fields -->
+                <div class="row gy-4">
+                  <!-- Full Name -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">Full Name</label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control profile_edit"
+                          formControlName="fullName"
+                          placeholder="Enter Full Name"
+                        />
+                        <div
+                          *ngIf="
+                            authorizedOfficer.get('fullName')?.touched &&
+                            authorizedOfficer.get('fullName')?.invalid
+                          "
+                          class="error"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer.fullName
+                              .required
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Designation -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">Designation</label>
+                      <div>
+                        <input
+                          type="text"
+                          class="form-control profile_edit"
+                          formControlName="designation"
+                          placeholder="Enter Designation"
+                        />
+                        <div
+                          *ngIf="
+                            authorizedOfficer.get('designation')?.touched &&
+                            authorizedOfficer.get('designation')?.invalid
+                          "
+                          class="error"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer.designation
+                              .required
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Phone Number -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0"
+                        >Phone Number</label
+                      >
+                      <div>
+                        <input
+                          type="tel"
+                          class="form-control profile_edit"
+                          formControlName="phoneNumber"
+                          placeholder="+234 8102585888"
+                          id="phoneInput"
+                          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                          [readonly]="updateMode"
+                        />
+                        <div
+                          *ngIf="
+                            authorizedOfficer.get('phoneNumber')?.invalid &&
+                            authorizedOfficer.get('phoneNumber')?.touched
+                          "
+                          class="error"
+                        >
+                          <p
+                            *ngIf="authorizedOfficer.get('phoneNumber')?.errors?.['pattern']"
+                          >
+                            Phone Number is invalid
+                          </p>
+                          <p
+                            *ngIf="authorizedOfficer.get('phoneNumber')?.errors?.['required']"
+                          >
+                            Phone Number is required
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Email -->
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label class="black fs-16 fw-400 mb-0">Email</label>
+                      <div>
+                        <input
+                          type="email"
+                          class="form-control profile_edit"
+                          formControlName="email"
+                          placeholder="Enter Email"
+                          [readonly]="updateMode"
+                        />
+                        <div
+                          *ngIf="
+                            authorizedOfficer.get('email')?.touched &&
+                            authorizedOfficer.get('email')?.invalid
+                          "
+                          class="error"
+                        >
+                          <div
+                            *ngIf="authorizedOfficer.get('email')?.errors?.['required']"
+                          >
+                            {{
+                              validationMessages.authorizedOfficer.email
+                                .required
+                            }}
+                          </div>
+                          <div
+                            *ngIf="authorizedOfficer.get('email')?.errors?.['email']"
+                          >
+                            {{
+                              validationMessages.authorizedOfficer.email.email
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Means of Identification -->
+              <div class="d-flex flex-column gap-4 tab-list">
+                <h3 class="fs-16 medium black mb-0">Means of identification</h3>
+
+                <!-- ID Type Selection -->
+                <ul class="nav nav-pills gap-4" role="tablist">
+                  <li
+                    *ngFor="let idType of idTypeOptions"
+                    class="nav-item tabs"
+                    role="presentation"
+                  >
+                    <button
+                      class="nav-link"
+                      [class.active]="selectedIdType === idType.value"
+                      (click)="selectIdType(idType.value)"
+                    >
+                      {{ idType.label }}
+                    </button>
+                  </li>
+                </ul>
+
+                <!-- ID Number Input (Only for STAFF_ID or NATIONAL_ID) -->
+                <div
+                  class="col-md-12"
+                  *ngIf="selectedIdType !== 'PASSPORT_BIO_PAGE'"
+                >
+                  <div class="d-flex flex-column gap-2">
+                    <label class="black fs-16 fw-400 mb-0">
+                      {{
+                        selectedIdType === "NATIONAL_ID"
+                          ? "National ID Number"
+                          : "Staff
+                                            ID Number"
+                      }}
+                    </label>
+                    <div>
+                      <input
+                        type="text"
+                        class="form-control profile_edit"
+                        formControlName="idNumber"
+                        [placeholder]="
+                          selectedIdType === 'NATIONAL_ID'
+                            ? 'Enter National ID'
+                            : 'Enter Staff ID'
+                        "
+                      />
+                      <div
+                        *ngIf="
+                          authorizedOfficer.get('idNumber')?.touched &&
+                          authorizedOfficer.get('idNumber')?.invalid
+                        "
+                        class="error"
+                      >
+                        {{
+                          validationMessages.authorizedOfficer.idNumber.required
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Document Uploads (Only for PASSPORT) -->
+                <div
+                  *ngIf="selectedIdType === 'PASSPORT_BIO_PAGE'"
+                  class="d-flex flex-column gap-4"
+                >
+                  <!-- Introduction Letter -->
+                  <div class="d-flex flex-column gap-3">
+                    <h3 class="fs-16 medium black mb-0">Introduction Letter</h3>
+                    <div>
+                      <div class="position-relative file-select-box">
+                        <div
+                          *ngIf="
+                            !authorizedOfficer.get('introductionLetter')?.value
+                          "
+                        >
+                          <input
+                            type="file"
+                            class="input_feilds file-select d-none"
+                            accept=".png,.jpg,.jpeg"
+                            id="introLetter1"
+                            (change)="
+                              onPresentativeIntroLetterUpload(
+                                $event,
+                                'introductionLetter'
+                              )
+                            "
+                          />
+                          <label
+                            for="introLetter1"
+                            class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                          >
+                            <img
+                              src="assets/images/svg_img/plus-upload.svg"
+                              height="16"
+                              width="16"
+                            />
+                            Upload
+                          </label>
+                        </div>
+                        <div
+                          class="verify-img-preview"
+                          *ngIf="
+                            authorizedOfficer.get('introductionLetter')?.value
+                          "
+                        >
+                          <img
+                            alt="Preview"
+                            class="verify-img"
+                            id="introductionLetter"
+                            [src]="introductionLetterPreview"
+                          />
+                          <div class="bg-verify-img-close">
+                            <img
+                              src="assets/images/svg_img/modal-close.svg"
+                              (click)="
+                                removeFile(
+                                  'authorizedOfficer',
+                                  'introductionLetter'
+                                )
+                              "
+                              class="cursor-pointer verify-img-close"
+                              height="16"
+                              width="16px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="
+                          authorizedOfficer.get('introductionLetter')
+                            ?.touched &&
+                          authorizedOfficer.get('introductionLetter')?.invalid
+                        "
+                        class="error"
+                      >
+                        <div
+                          *ngIf="authorizedOfficer.get('introductionLetter')?.errors?.['required']"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer
+                              .introductionLetter.required
+                          }}
+                        </div>
+                        <div
+                          *ngIf="authorizedOfficer.get('introductionLetter')?.errors?.['invalidFileType']"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer
+                              .introductionLetter.invalidFileType
+                          }}
+                        </div>
+                        <div
+                          *ngIf="authorizedOfficer.get('introductionLetter')?.errors?.['fileTooLarge']"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer
+                              .introductionLetter.fileTooLarge
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Authorization Letter -->
+                  <div class="d-flex flex-column gap-3">
+                    <h3 class="fs-16 medium black mb-0">
+                      Official Letter of Authorization
+                    </h3>
+                    <div>
+                      <div class="position-relative file-select-box">
+                        <div
+                          *ngIf="
+                            !authorizedOfficer.get('authorizationLetter')?.value
+                          "
+                        >
+                          <input
+                            type="file"
+                            class="input_feilds file-select d-none"
+                            accept=".png, .jpeg, .jpg"
+                            id="authLetter"
+                            (change)="
+                              onPresentativeAuthLetterUpload(
+                                $event,
+                                'authorizationLetter'
+                              )
+                            "
+                          />
+                          <label
+                            for="authLetter"
+                            class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                          >
+                            <img
+                              src="assets/images/svg_img/plus-upload.svg"
+                              height="16"
+                              width="16"
+                            />
+                            Upload
+                          </label>
+                        </div>
+                        <div
+                          class="verify-img-preview"
+                          *ngIf="
+                            authorizedOfficer.get('authorizationLetter')?.value
+                          "
+                        >
+                          <img
+                            alt="Preview"
+                            class="verify-img"
+                            id="authorizationLetter"
+                            [src]="officialLetterPreview"
+                          />
+                          <div class="bg-verify-img-close">
+                            <img
+                              src="assets/images/svg_img/modal-close.svg"
+                              (click)="
+                                removeFile(
+                                  'authorizedOfficer',
+                                  'authorizationLetter'
+                                )
+                              "
+                              class="cursor-pointer verify-img-close"
+                              height="16"
+                              width="16px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="
+                          authorizedOfficer.get('authorizationLetter')
+                            ?.touched &&
+                          authorizedOfficer.get('authorizationLetter')?.invalid
+                        "
+                        class="error"
+                      >
+                        <div
+                          *ngIf="authorizedOfficer.get('authorizationLetter')?.errors?.['required']"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer
+                              .authorizationLetter.required
+                          }}
+                        </div>
+                        <div
+                          *ngIf="authorizedOfficer.get('authorizationLetter')?.errors?.['invalidFileType']"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer
+                              .authorizationLetter.invalidFileType
+                          }}
+                        </div>
+                        <div
+                          *ngIf="authorizedOfficer.get('authorizationLetter')?.errors?.['fileTooLarge']"
+                        >
+                          {{
+                            validationMessages.authorizedOfficer
+                              .authorizationLetter.fileTooLarge
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section id="section3" class="sections3" style="display: none">
+          <form [formGroup]="registrationForm">
+            <div
+              class="d-flex flex-column gap-4"
+              formGroupName="documentationUploads"
+            >
+              <!-- Verification Header -->
+              <div class="d-flex flex-column gap-2">
+                <h2 class="fs-20 fw-500 black mb-0">Verification</h2>
+                <h3 class="fs-16 fw-400 info mb-0">
+                  Submit official documentation and agree to regulatory and
+                  platform compliance terms.
+                </h3>
+              </div>
+
+              <!-- Documents Upload -->
+              <div class="row gy-4">
+                <!-- Introduction Letter -->
+                <div class="col-md-6 col-lg-4 col-xl-3 col-sm-12">
+                  <div class="d-flex flex-column gap-3">
+                    <h3 class="fs-16 medium black mb-0">Introduction Letter</h3>
+                    <div>
+                      <div class="position-relative file-select-box">
+                        <div
+                          *ngIf="
+                            !documentationUploads.get('introLetterUrl')?.value
+                          "
+                        >
+                          <input
+                            id="introLetterUrl"
+                            type="file"
+                            class="input_feilds file-select d-none"
+                            (change)="
+                              onIntroLetterUpload($event, 'introLetterUrl')
+                            "
+                            accept=".png, .jpeg, .jpg"
+                          />
+                          <label
+                            for="introLetterUrl"
+                            class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                          >
+                            <img
+                              src="assets/images/svg_img/plus-upload.svg"
+                              height="16"
+                              width="16"
+                            />
+                            Upload
+                          </label>
+                        </div>
+
+                        <div
+                          class="verify-img-preview"
+                          *ngIf="
+                            documentationUploads.get('introLetterUrl')?.value
+                          "
+                        >
+                          <img
+                            alt="Preview"
+                            class="verify-img"
+                            id="introLetterUrl"
+                            [src]="
+                              documentationUploads.get('introLetterUrl')?.value
+                            "
+                          />
+                          <div class="bg-verify-img-close">
+                            <img
+                              src="assets/images/svg_img/modal-close.svg"
+                              (click)="
+                                removeFile(
+                                  'documentationUploads',
+                                  'introLetterUrl'
+                                )
+                              "
+                              class="cursor-pointer verify-img-close"
+                              height="16"
+                              width="16px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        *ngIf="
+                          documentationUploads.get('introLetterUrl')?.touched &&
+                          documentationUploads.get('introLetterUrl')?.invalid
+                        "
+                        class="error"
+                      >
+                        <div
+                          *ngIf="documentationUploads.get('introLetterUrl')?.errors?.['required']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .introLetterUrl.required
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('introLetterUrl')?.errors?.['invalidFileType']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .introLetterUrl.invalidFileType
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('introLetterUrl')?.errors?.['fileTooLarge']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .introLetterUrl.fileTooLarge
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CAC/Gazette Certificate -->
+                <div class="col-md-6 col-lg-4 col-xl-3 col-sm-12">
+                  <div class="d-flex flex-column gap-3">
+                    <h3 class="fs-16 medium black mb-0">
+                      CAC/Gazette Certificate
+                    </h3>
+                    <div>
+                      <div class="position-relative file-select-box">
+                        <div
+                          *ngIf="
+                            !documentationUploads.get('certificateUrl')?.value
+                          "
+                        >
+                          <input
+                            type="file"
+                            id="certificateUrl"
+                            class="input_feilds file-select d-none"
+                            (change)="
+                              onCacCertificateUpload($event, 'certificateUrl')
+                            "
+                            accept=".png, .jpeg, .jpg"
+                          />
+                          <label
+                            for="certificateUrl"
+                            class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                          >
+                            <img
+                              src="assets/images/svg_img/plus-upload.svg"
+                              height="16"
+                              width="16"
+                            />
+                            Upload
+                          </label>
+                        </div>
+                        <div
+                          class="verify-img-preview"
+                          *ngIf="
+                            documentationUploads.get('certificateUrl')?.value
+                          "
+                        >
+                          <img
+                            alt="Preview"
+                            class="verify-img"
+                            id="certificateUrl"
+                            [src]="
+                              documentationUploads.get('certificateUrl')?.value
+                            "
+                          />
+                          <div class="bg-verify-img-close">
+                            <img
+                              src="assets/images/svg_img/modal-close.svg"
+                              (click)="
+                                removeFile(
+                                  'documentationUploads',
+                                  'certificateUrl'
+                                )
+                              "
+                              class="cursor-pointer verify-img-close"
+                              height="16"
+                              width="16px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="
+                          documentationUploads.get('certificateUrl')?.touched &&
+                          documentationUploads.get('certificateUrl')?.invalid
+                        "
+                        class="error"
+                      >
+                        <div
+                          *ngIf="documentationUploads.get('certificateUrl')?.errors?.['required']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .certificateUrl.required
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('certificateUrl')?.errors?.['invalidFileType']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .certificateUrl.invalidFileType
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('certificateUrl')?.errors?.['fileTooLarge']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .certificateUrl.fileTooLarge
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Letter of Intent -->
+                <div class="col-md-6 col-lg-4 col-xl-3 col-sm-12">
+                  <div class="d-flex flex-column gap-3">
+                    <h3 class="fs-16 medium black mb-0">Letter of Intent</h3>
+                    <div>
+                      <div class="position-relative file-select-box">
+                        <div
+                          *ngIf="
+                            !documentationUploads.get('letterOfIntentUrl')
+                              ?.value
+                          "
+                        >
+                          <input
+                            type="file"
+                            id="letterOfIntentUrl"
+                            class="input_feilds file-select d-none"
+                            (change)="
+                              onLetterOfIntentUpload(
+                                $event,
+                                'letterOfIntentUrl'
+                              )
+                            "
+                            accept=".png, .jpeg, .jpg"
+                          />
+                          <label
+                            for="letterOfIntentUrl"
+                            class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                          >
+                            <img
+                              src="assets/images/svg_img/plus-upload.svg"
+                              height="16"
+                              width="16"
+                            />
+                            Upload
+                          </label>
+                        </div>
+                        <div
+                          class="verify-img-preview"
+                          *ngIf="
+                            documentationUploads.get('letterOfIntentUrl')?.value
+                          "
+                        >
+                          <img
+                            alt="Preview"
+                            class="verify-img"
+                            id="letterOfIntentUrl"
+                            [src]="
+                              documentationUploads.get('letterOfIntentUrl')
+                                ?.value
+                            "
+                          />
+                          <div class="bg-verify-img-close">
+                            <img
+                              src="assets/images/svg_img/modal-close.svg"
+                              (click)="
+                                removeFile(
+                                  'documentationUploads',
+                                  'letterOfIntentUrl'
+                                )
+                              "
+                              class="cursor-pointer verify-img-close"
+                              height="16"
+                              width="16px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="
+                          documentationUploads.get('letterOfIntentUrl')
+                            ?.touched &&
+                          documentationUploads.get('letterOfIntentUrl')?.invalid
+                        "
+                        class="error"
+                      >
+                        <div
+                          *ngIf="documentationUploads.get('letterOfIntentUrl')?.errors?.['invalidFileType']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .letterOfIntentUrl.invalidFileType
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('letterOfIntentUrl')?.errors?.['required']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .letterOfIntentUrl.required
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('letterOfIntentUrl')?.errors?.['fileTooLarge']"
+                        >
+                          {{
+                            validationMessages.documentationUploads
+                              .letterOfIntentUrl.fileTooLarge
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- MoU/Agreement -->
+                <div class="col-md-6 col-lg-4 col-xl-3 col-sm-12">
+                  <div class="d-flex flex-column gap-3">
+                    <h3 class="fs-16 medium black mb-0">MoU/Agreement</h3>
+                    <div>
+                      <div class="position-relative file-select-box">
+                        <div *ngIf="!documentationUploads.get('mouUrl')?.value">
+                          <input
+                            type="file"
+                            id="mouUrl"
+                            class="input_feilds file-select d-none"
+                            (change)="onMouAgreementUpload($event, 'mouUrl')"
+                            accept=".png, .jpeg, .jpg"
+                          />
+                          <label
+                            for="mouUrl"
+                            class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                          >
+                            <img
+                              src="assets/images/svg_img/plus-upload.svg"
+                              height="16"
+                              width="16"
+                            />
+                            Upload
+                          </label>
+                        </div>
+                        <div
+                          class="verify-img-preview"
+                          *ngIf="documentationUploads.get('mouUrl')?.value"
+                        >
+                          <img
+                            alt="Preview"
+                            class="verify-img"
+                            id="mouUrl"
+                            [src]="documentationUploads.get('mouUrl')?.value"
+                          />
+                          <div class="bg-verify-img-close">
+                            <img
+                              src="assets/images/svg_img/modal-close.svg"
+                              (click)="
+                                removeFile('documentationUploads', 'mouUrl')
+                              "
+                              class="cursor-pointer verify-img-close"
+                              height="16"
+                              width="16px"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="
+                          documentationUploads.get('mouUrl')?.touched &&
+                          documentationUploads.get('mouUrl')?.invalid
+                        "
+                        class="error"
+                      >
+                        <div
+                          *ngIf="documentationUploads.get('mouUrl')?.errors?.['invalidFileType']"
+                        >
+                          {{
+                            validationMessages.documentationUploads.mouUrl
+                              .invalidFileType
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('mouUrl')?.errors?.['required']"
+                        >
+                          {{
+                            validationMessages.documentationUploads.mouUrl
+                              .required
+                          }}
+                        </div>
+                        <div
+                          *ngIf="documentationUploads.get('mouUrl')?.errors?.['fileTooLarge']"
+                        >
+                          {{
+                            validationMessages.documentationUploads.mouUrl
+                              .fileTooLarge
+                          }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Compliance Section -->
+              <div class="d-flex flex-column gap-3">
+                <h2 class="fs-20 fw-500 black mb-0">Compliance</h2>
+                <div class="d-flex flex-column gap-3">
+                  <!-- NDPR Compliant -->
+                  <div class="d-flex align-items-center gap-12">
+                    <label
+                      class="custom-checkbox position-relative cursor-pointer"
+                    >
+                      <input type="checkbox" formControlName="ndprCompliance" />
+                      <span class="checkmark"></span>
+                    </label>
+                    <h4 class="mb-0 fs-16 fw-400 black">NDPR Compliant</h4>
+                  </div>
+                  <!-- Terms & Privacy Policy -->
+                  <div class="d-flex align-items-center gap-12">
+                    <label
+                      class="custom-checkbox position-relative cursor-pointer"
+                    >
+                      <input type="checkbox" formControlName="acceptedTerms" />
+                      <span class="checkmark"></span>
+                    </label>
+                    <h4 class="mb-0 fs-16 fw-400 black">
+                      Agree to Terms & Privacy Policy
+                    </h4>
+                  </div>
+                  <!-- Authorized Use Only -->
+                  <div class="d-flex align-items-center gap-12">
+                    <label
+                      class="custom-checkbox position-relative cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        formControlName="authorizedUseOnly"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                    <h4 class="mb-0 fs-16 fw-400 black">Authorized Use Only</h4>
+                  </div>
+                  <!-- Security & NDA Protocols -->
+                  <div class="d-flex align-items-center gap-12">
+                    <label
+                      class="custom-checkbox position-relative cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        formControlName="nonDisclosureAccepted"
+                      />
+                      <span class="checkmark"></span>
+                    </label>
+                    <h4 class="mb-0 fs-16 fw-400 black">
+                      Accept Security & NDA Protocols
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- Review and finish-->
+        <section id="section4" class="sections4" style="display: none">
+          <div class="gap-40 d-flex flex-column">
+            <!-- personal information -->
+            <div class="d-flex flex-column gap-2">
+              <h2 class="fs-20 fw-500 black mb-0">Review and Finish</h2>
+              <h3 class="fs-16 fw-400 info mb-0">
+                Review the information provided in each section before
+                submitting your application.
+              </h3>
+            </div>
+            <div class="d-flex flex-column gap-4">
+              <!-- edit input -->
+              <div class="d-flex flex-column gap-4">
+                <div class="editor">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h3 class="primary fs-16 fw-600 mb-0">Organization Info</h3>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="navigateToSection(1)"
+                      class=""
+                      ><img
+                        src="assets/images/svg_img/edit-review.svg"
+                        height="24"
+                        width="24"
+                    /></a>
+                  </div>
+                </div>
+                <div class="editor">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h3 class="primary fs-16 fw-600 mb-0">Representative</h3>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="navigateToSection(2)"
+                      class=""
+                      ><img
+                        src="assets/images/svg_img/edit-review.svg"
+                        height="24"
+                        width="24"
+                    /></a>
+                  </div>
+                </div>
+                <div class="editor">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h3 class="primary fs-16 fw-600 mb-0">Verification</h3>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="navigateToSection(3)"
+                      class=""
+                      ><img
+                        src="assets/images/svg_img/edit-review.svg"
+                        height="24"
+                        width="24"
+                    /></a>
+                  </div>
+                </div>
+              </div>
+              <!-- checkbox -->
+
+              <form [formGroup]="registrationForm">
+                <div
+                  class="d-flex align-items-center gap-2"
+                  formGroupName="reviewInfo"
+                >
+                  <!-- Checkbox -->
+                  <label
+                    class="custom-checkbox position-relative cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      formControlName="finalAgreement"
+                      required
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                  <h5 class="fs-14 fw-400 info mb-0">
+                    By submitting this form, you agree to th
+                    <a
+                      class="primary cursor-pointer"
+                      [href]="'/Admin/Organization/terms-conditions'"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Terms of Service </a
+                    >, and
+
+                    <a
+                      class="primary cursor-pointer"
+                      [href]="'/Admin/Organization/privacy-policy'"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Privacy Policy </a
+                    >, to receiving text messages from AIG, and you certify that
+                    the information provided is complete and correct.
+                  </h5>
+                </div>
+                <div
+                  *ngIf="
+                    registrationForm.get('reviewInfo')?.get('finalAgreement')
+                      ?.invalid &&
+                    registrationForm.get('reviewInfo')?.get('finalAgreement')
+                      ?.touched
+                  "
+                  class="error"
+                  style="margin-top: 10px; margin-left: 27px"
+                >
+                  You must agree to the terms and conditions
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Buttons -->
+      <div class="button-container d-flex justify-content-end">
+        <button
+          class="btn_lg fs-16 fw-600 btn-next"
+          (click)="nextSection()"
+          *ngIf="currentSection < 4"
+        >
+          Continue
+        </button>
+        <!-- <button *ngIf="currentSection === totalSections" class="btn_lg fs-16 fw-600 btn-submit"
+                    (click)="submitForm()">
+                    Submit
+                </button> -->
+
+        <button
+          class="primary-button font-16 medium right_menu_toggle"
+          [ngClass]="{ 'disable-click': isLoading }"
+          *ngIf="currentSection === totalSections"
+          (click)="!isLoading && submitForm()"
+        >
+          <!-- Show Submit/Update when not loading -->
+          <span *ngIf="!isLoading">
+            {{ updateMode ? "Update" : "Submit" }}
+          </span>
+
+          <!-- Show Spinner when loading -->
+          <div *ngIf="isLoading" class="spinner-border"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

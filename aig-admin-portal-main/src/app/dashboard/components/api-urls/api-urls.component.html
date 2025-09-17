@@ -1,0 +1,28 @@
+<div class="dashboard_content p-0 h-100" data-number="4"
+style="display: block;">
+    <div class="card-heading">
+        <h4 class="fs-18 fw-600 dark mb-0">API</h4>
+    </div>
+<div class="api_scroll">
+    <table class="table mb-0 admin-table" id="dtHorizontalExample"
+        cellspacing="0" width="100%">
+        <thead>
+            <tr class="table_heading">
+                <th scope="col" class="fs-14 fw-500 theading">API Name</th>
+                <th scope="col" class="fs-14 fw-500 theading">No of Hits
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg_light">
+            <tr *ngFor="let api of apiHitsCount">
+                <td>
+                    <a 
+                        class="theading fs-14 fw-600">{{api.endPoint }}</a>
+                </td>
+                <td class="fs-14 fw-500 info">{{api.total}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+</div>

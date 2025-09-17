@@ -1,0 +1,225 @@
+<!-- Address Verification -->
+<div class="table_container content d-flex flex-column justify-content-between h-100" data-number="6">
+    <div>
+        <div class="Officer_table">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h4 class="fs-20 fw-600 dark mb-0">Address Verification Requests</h4>
+                <!--Filter options selector start-->
+                <div class="filter-box">
+                    <div class="select-menu">
+                        <div class="select-btn">
+                            <span class="sBtn-text">All</span>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.9655 9.51733L11.9999 14.4829L7.03442 9.51733" stroke="white"
+                                    stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+
+                        <ul class="options">
+                            <li class="option" (click)="pageRequest.pageNo=0"
+                                (click)="getAddressVerificationRequests(status.All)">
+                                <span class="option-text">All</span>
+                            </li>
+                            <li class="option" (click)="pageRequest.pageNo=0"
+                                (click)="getAddressVerificationRequests(status.Verified)">
+                                <span class="option-text">Verified</span>
+                            </li>
+                            <li class="option" (click)="pageRequest.pageNo=0"
+                                (click)="getAddressVerificationRequests(status.Pending)">
+                                <span class="option-text">Pending</span>
+                            </li>
+                            <li class="option" (click)="pageRequest.pageNo=0"
+                                (click)="getAddressVerificationRequests(status.Rejected)">
+                                <span class="option-text">Rejected</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table-pagination page-nav empty"
+            *ngIf="addressVerificationRequests.length==0  &&(loaderService.isDataLoaded |async)">
+            <h4 class="primary mb-0 fs-26 fw-600">No {{selectedStatus}} Requests </h4>
+        </div>
+        <div class="table-responsive add-table-data" *ngIf="addressVerificationRequests.length!=0">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 20%;">Assigned Verification Officer
+                        </th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">AIG Code</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 40%;">Address</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Address Type</th>
+                        <th scope="col" class="fs-14 fw-500 theading status_img" style="width: 10%;">Status <img
+                                *ngIf="sortIsActive==status.All" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(status.All)">
+                            <img *ngIf="sortIsActive==status.Pending" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(status.Pending)">
+                            <img *ngIf="sortIsActive==status.Rejected" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(status.Rejected)">
+                            <img *ngIf="sortIsActive==status.Verified" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(status.Verified)">
+                        </th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 20%;">Transaction Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let request of addressVerificationRequests">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img [src]="request.profilePic ||defaultImage" class="address_icon">
+                                <div class="mx_12 varification_officer">
+                                    <h5 class="fs-14 fw-500 black mb-1">{{request.verificationOfficerName}}</h5>
+                                    <a (click)="navigate(componentRoutes.VERI_OFFI_DETAILS_BASE+'/'+request.userId)"
+                                        class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                        View Profile</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{request.aigCode}}</td>
+                        <!-- <td class="fs-14 fw-500 info">{{request.address}} </td> -->
+
+                        <td class="fs-14 fw-500 info">
+                            <div [ngClass]="{ 'truncate': !(request.id==id) , 'expanded': request.id==id }">
+                                {{ request.address || (request.address.length || 0) <= 91 ? request.address :
+                                    (request.id !=id ? (request.address | slice:0:91) + '...' : (request.address ))
+                                    }}</div>
+                                    <a *ngIf="request.address && request.address.length > 91"
+                                        class="text-primary d-block mt-1" href="javascript:void(0)"
+                                        (click)="setId(request.id)">
+                                        {{ (request.id==id ) ? 'Show Less' : 'Show More' }}
+                                    </a>
+                        </td>
+                        <td>
+                            <h4 class="fs-14 fw-500 info mb-0 user_address_type"><img class="invert-filter"
+                                    [src]="request.addressTypeImage" height="16" width="16">{{request.addressType}}
+                            </h4>
+                        </td>
+                        <td>
+                            <!-- <button [ngClass]="request.status == status.Verified ? 'status_btn Verified_btn': request.status == status.Pending ? 'status_btn pending_btn':'status_btn rejected_btn'">{{request.status}}</button> -->
+                            <div class="d-flex align-items-center">
+                                <div class="verification_officer">
+                                    <button class="status_btn "
+                                        [ngClass]="request.status==status.Verified?'Verified_btn':(request.status==status.Pending?'Pending_btn':'rejected_btn')">
+                                        {{request.status==status.Verified?'Verified':(request.status==status.Pending?'Pending':'Rejected')}}</button>
+                                    <a *ngIf="request.status==status.Verified || request.status==status.Rejected"
+                                        (click)="getAddressverificationDetails(request.id)"
+                                        class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                        View Summary</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{request.transactionDateTime | date:'dd/MM/yy, h:mm a'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <nav aria-label="Page navigation example" class="table-pagination"
+        *ngIf=" pageManager.totalElements> pageRequest.pageSize">
+        <p class="text_dark fs-16 fw-600 mb-0 showing-entity">Showing {{pageManager.pageNumber*pageManager.pageSize+1}}
+            to
+            {{(pageManager.pageNumber*pageManager.pageSize)+pageManager.numberOfElements_currentPage}} of
+            {{pageManager.totalElements}} entries</p>
+        <ul class="pagination mb-0">
+            <li class="p-2  mx-2 ms-0"><a class="fs-16 fw-500 secondary"
+                    [ngClass]="pageManager.first?'theading disable-click ':' cur-point'"
+                    (click)="manageNext(false)">Previous</a></li>
+            <li class="page-item" *ngFor="let b of pageManager.showButtons ;" (click)="setPage(b)"><a class="page-link"
+                    [ngClass]="pageRequest.pageNo==b-1?'active':''" id="{{b}}" href="javascript:void(0)">{{b}}</a>
+            </li>
+            <li class="" *ngIf="pageManager.totalPages>pageManager.showButtons[pageManager.showButtons.length-1]"><a
+                    class="page-link" href="javascript:void(0)"
+                    (click)="setPage(pageManager.showButtons[pageManager.showButtons.length-1]+1)">...</a></li>
+
+            <li class="p-2  mx-0 ms-2"><a class="fs-16 fw-500 secondary" href="javascript:void(0)"
+                    [ngClass]="pageManager.last?'theading disable-click':' cur-point'"
+                    (click)="manageNext(true)">Next</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+
+<!-- USER ADDRESS EDIT MODAL -->
+<div class="modal fade" id="verificationModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    *ngIf="addressDetails && addressDetails.addressVerificationDetails" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <button type="button" class="close_btn d-flex justify-content-end mb-2" data-bs-dismiss="modal"
+                aria-label="Close"><i class="fi fi-rr-cross-circle"></i></button>
+            <div class=" p-0">
+                <div class="Address_Details mb_20">
+                    <h5 class="fs-18 fw-500 secondary mb-3">Verification Details</h5>
+                    <div class="view-details-grid">
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.propertyImage ||defaultPropertyImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+
+                        <div class="d-flex flex-column justify-content-between "
+                            *ngIf="addressDetails.addressVerificationDetails &&  addressDetails.addressVerificationDetails['certificate']">
+                            <img [src]="addressDetails.addressVerificationDetails['certificate']"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">
+                                {{ businessFileTypeMap[addressDetails.addressVerificationDetails.businessFileType] }}
+                            </h4>
+
+                        </div>
+                        <div class="d-flex flex-column justify-content-between "
+                            *ngIf="addressDetails.addressVerificationDetails &&  addressDetails.addressVerificationDetails['ninCard']">
+                            <img [src]="addressDetails.addressVerificationDetails['ninCard']"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">
+                                Nin Card
+                            </h4>
+
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.requestorImage ||defaultImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Requestor</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <div id="map" class="verification_image height mb_10"></div>
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Location map</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer p-0"
+                *ngIf="addressDetails && addressDetails.addressVerificationDetails && addressDetails.addressVerificationDetails.summary">
+                <div class="Address_Details col-md-12 m-0">
+                    <h5 class="fs-18 fw-500 secondary mb_10">Verification Summary</h5>
+                    <div class="Verification_Summary">
+                        <h4 class="mb-1 fs-15 fw-50 text_small">Comment</h4>
+                        <h5 class="fs-13 fw-500 grey mb-0">{{addressDetails.addressVerificationDetails.summary.comment}}
+                        </h5>
+                    </div>
+                    <div class="view-documents-grid">
+                        <div>
+                            <img [src]="addressDetails.addressVerificationDetails.summary.propertyImage ||defaultPropertyImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+                        <div>
+                            <img [src]="addressDetails.addressVerificationDetails.summary.requestorImage ||defaultImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Owner</h4>
+                        </div>
+                        <div>
+                            <img [src]="addressDetails.addressVerificationDetails.summary.govtIdImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Gov ID</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- USER ADDRESS EDIT MODAL END -->

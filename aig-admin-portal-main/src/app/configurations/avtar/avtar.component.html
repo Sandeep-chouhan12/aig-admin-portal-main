@@ -1,0 +1,178 @@
+<!-- Avatar -->
+<div class="content table_container" data-number="22">
+    <div class="d-flex flex-column justify-content-between h-100">
+        <div>
+            <!-- Table heading -->
+            <div class="Officer_table d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h4 class="fs-20 fw-500 dark mb-0">Avatar</h4>
+                <button class="primary-button fs-14 fw-500 px-3 gap-1" data-bs-target="#addAvatar" (click)="clearForm()"
+                    *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.CREATE }"
+                    data-bs-toggle="modal">
+                    <img src="assets/images/svg_img/plus.svg">
+                    Add Avatar
+                </button>
+            </div>
+            <!-- table start -->
+            <div class="table-responsive add-table-data">
+                <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+
+                    <thead>
+                        <tr class="table_heading">
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 33%;">Image</th>
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 33%;">Status
+                                <img src="assets/images/temp_img/down-arrow.png">
+                            </th>
+                            <th scope="col" class="fs-14 fw-500 theading" style="width: 33%;">Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg_light">
+                        <tr *ngFor="let avatar of avatars">
+                            <td>
+                                <img [src]="avatar.url" class="avatar-icon" alt="Avatar" />
+                            </td>
+                            <td class="fs-14 fw-500 info">
+                                <label class="switch"  *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.UPDATE }">
+                                    <input type="checkbox" [checked]="avatar.isActive"
+                                        (change)="toggleAvatarStatus(avatar)" />
+                                    <span class="slider round"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div data-bs-target="#addAvatar" data-bs-toggle="modal"
+                                        *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.UPDATE }"
+                                        (click)="editAvatar(avatar)">
+                                        <img src="assets/images/svg_img/pencil.svg" class="add_icons" />
+                                    </div>
+                                    <div data-bs-target="#delete-modal" data-bs-toggle="modal"
+                                        *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.DELETE }"
+                                        (click)="setDeleteId(avatar.id)">
+                                        <img src="assets/images/svg_img/Trash.svg" />
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tr  *ngIf="avatars.length==0 &&(loaderService.isDataLoaded |async)">
+                        <td colspan="6">
+                             <div class="table-pagination page-nav empty" *ngIf="avatars.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No avtar data available. </h4>
+                         </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <app-pagination [pageManager]="paginationManager" [pageRequest]="page" [data]="avatars"
+            (fetchData)="loadAvatars()" *ngIf="paginationManager.totalElements>page.pageSize"></app-pagination>
+    </div>
+</div>
+<!-- Add Avatar MODAL  -->
+<div class="modal fade" id="addAvatar" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="mb-4">
+                    <h3 class="theading fs-18 fw-500 mb-4">
+                        {{ editMode ? 'Edit Avatar' : 'Add Avatar' }}
+                    </h3>
+
+                    <!-- Avatar Upload Section -->
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="position-relative file_select_box">
+
+                            <!-- File Input -->
+                            <div *ngIf="!imagePreviewUrl">
+                                <input type="file" id="avatarUpload" class="input_feilds bg_light file_select"
+                                    (change)="onFileChange($event)" />
+                                <label for="avatarUpload" class="font-15 font-400 secondary cursor-pointer" style="left: 25%;">
+                                    <img src="assets/images/svg_img/plus.svg" class="blue-filter" />
+                                    Add Image
+                                </label>
+                            </div>
+
+                            <!-- Image Preview -->
+                            <div class="verify-img-preview" *ngIf="imagePreviewUrl">
+                                <img alt="Preview" class="verify-img" [src]="imagePreviewUrl" />
+                                <div class="bg-verify-img-close">
+                                    <img src="assets/images/svg_img/modal-close.svg" (click)="removeFile()"
+                                        class="cursor-pointer verify-img-close" height="16" width="16" />
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div *ngIf="submitted && f['image'].errors" class="error text-center">
+                        <div *ngIf="f['image'].errors['required']">Image is required</div>
+                    </div> -->
+
+                    <!-- Validation Errors -->
+                    <div *ngIf="submitted && f['image'].errors && submitted && f['image'].touched"
+                        class="error text-center">
+                        <div *ngIf="f['image'].errors['required']">Image is
+                            required</div>
+                        <div *ngIf="f['image'].errors['invalidFileType']">Only
+                            JPG/PNG images are allowed</div>
+                        <div *ngIf="f['image'].errors['fileTooBig']">Image must
+                            be less than 5MB</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Buttons -->
+            <div class="modal-footer p-0">
+                <div class="gap-4 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" id="modal-close"
+                        aria-label="Close" type="button">
+                        Cancel
+                    </button>
+                    <button class="btn_lg fs-16 fw-500 br_10" type="submit" (click)="onSubmit()" [disabled]="isLoading">
+                        <div class="spinner-border text-light" *ngIf="isLoading" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                        {{isLoading?'':editMode?'Update':'Add'}}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Add Avatar MODAL END -->
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="delete-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">
+                        Delete Avatar</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 mb-4 text-center">Are you
+                        sure you want to delete this
+                        Avatar? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" data-bs-dismiss="modal" id="delete-close"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" (click)="deleteAvatar()" [disabled]="isLoading">
+                        <div class="spinner-border text-light" *ngIf="isLoading" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                        {{isLoading?'':'Delete'}}
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DELETE MODAL END -->

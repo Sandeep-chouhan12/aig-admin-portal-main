@@ -1,0 +1,124 @@
+<!-- Profile Details -->
+<!-- <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                aria-labelledby="pills-Profile-tab" tabindex="0">
+                                <div class="content_box"> -->
+<!-- Organization Info -->
+<div class="Registration_Details mb-4" *ngIf="governmentOrganizationDetailResponse.identityVerificationResponse">
+    <h3 class="primary fs-16 fw-600 mb-4">Organization Info</h3>
+    <div class="row gy-4">
+        <div class="col-md-3 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">Tax Identification Number</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">
+                {{governmentOrganizationDetailResponse.identityVerificationResponse.tinNumber || 'N/A'}}</h5>
+        </div>
+        <div class="col-md-3 col-lg-3 col-xl-2 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">RC Number</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">
+                {{governmentOrganizationDetailResponse.identityVerificationResponse.rcNumber|| 'N/A'}}</h5>
+        </div>
+        <div class="col-md-3 col-lg-3 col-xl-2 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">Official Website</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">
+                {{governmentOrganizationDetailResponse.identityVerificationResponse.officialWebsite || 'N/A'}}</h5>
+        </div>
+        <div class="col-md-3 col-lg-3 col-xl-2 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">State & LGA</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">
+                {{governmentOrganizationDetailResponse.identityVerificationResponse.stateOrLga || 'N/A'}}</h5>
+        </div>
+        <div class="col-md-4 col-lg-4 col-xl-3 col-xxl-3 col-sm-12">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">Address</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">
+                {{governmentOrganizationDetailResponse.identityVerificationResponse.address || 'N/A'}}</h5>
+        </div>
+
+    </div>
+</div>
+<!-- Representative information -->
+<div class="Registration_Details mb-4"
+    *ngIf="governmentOrganizationDetailResponse.authorizedOfficerResponse as officer">
+    <h3 class="primary fs-16 fw-600 mb-4">Representative</h3>
+    <div class="row gy-4">
+        <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">Full Name</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">{{officer.fullName|| 'N/A'}}</h5>
+        </div>
+        <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">Designation</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">{{officer.designation || 'N/A'}}</h5>
+        </div>
+        <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">Phone Number
+            </h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">{{officer.phoneNumber || 'N/A'}}</h5>
+        </div>
+        <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+            <h4 class="fs-15 fw-500 subTextColor mb_8">Email</h4>
+            <h5 class="text_small  fs-16 fw-600 mb-0">{{officer.email || 'N/A'}}</h5>
+        </div>
+    </div>
+</div>
+<!-- Verification -->
+<div class="Registration_Details mb-4" *ngIf="governmentOrganizationDetailResponse.documentationUploadsResponse">
+    <h3 class="primary fs-16 fw-600 mb-4">Verification</h3>
+    <div class="row gy-4">
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <h5 class="text_small  fs-16 fw-500 mb_8">Introduction Letter</h5>
+            <img [src]="governmentOrganizationDetailResponse.documentationUploadsResponse.introLetterUrl ||'assets/images/temp_img/address-vari-img.png'"
+                class="add_veri_doc_img">
+        </div>
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <h5 class="text_small fs-16 fw-500 mb_8">CAC/Gazette Certificate.</h5>
+            <img [src]="governmentOrganizationDetailResponse.documentationUploadsResponse.certificateUrl ||'assets/images/temp_img/address-vari-img.png'"
+                class="add_veri_doc_img">
+        </div>
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <h5 class="text_small  fs-16 fw-500 mb_8">Letter of Intent</h5>
+            <img [src]="governmentOrganizationDetailResponse.documentationUploadsResponse.letterOfIntentUrl ||'assets/images/temp_img/address-vari-img.png'"
+                class="add_veri_doc_img">
+        </div>
+        <div class="col-md-4 col-lg-3 col-sm-6">
+            <h5 class="text_small  fs-16 fw-500 mb_8">MoU / Agreement</h5>
+            <img [src]="governmentOrganizationDetailResponse.documentationUploadsResponse.mouUrl ||'assets/images/temp_img/address-vari-img.png'"
+                class="add_veri_doc_img">
+        </div>
+    </div>
+</div>
+<!-- Organization Verification Documentation -->
+<div class="mb-4" *ngIf="governmentOrganizationDetailResponse.authorizedOfficerResponse">
+    <h3 class="primary fs-16 fw-600 mb-4">Organization Verification Documentation</h3>
+
+   <!-- NATIONAL_ID or STAFF_ID -->
+<div class="row gy-4"
+     *ngIf="governmentOrganizationDetailResponse.authorizedOfficerResponse.officialIdType === OfficialIdType.NATIONAL_ID 
+        || governmentOrganizationDetailResponse.authorizedOfficerResponse.officialIdType === OfficialIdType.STAFF_ID">
+    <div class="col-md-3">
+        <h5 class="text_small fs-16 fw-500 mb_8">National / Staff ID Number</h5>
+        <p class="text_small fs-16 fw-600 mb-0">
+            {{ governmentOrganizationDetailResponse.authorizedOfficerResponse.idNumber }}
+        </p>
+    </div>
+</div>
+
+
+
+   <!-- PASSPORT_BIO_PAGE -->
+<div class="row gy-4"
+     *ngIf="governmentOrganizationDetailResponse?.authorizedOfficerResponse?.officialIdType === OfficialIdType.PASSPORT_BIO_PAGE">
+    <div class="col-md-3">
+        <h4 class="subTextColor fs-16 fw-500 mb_8">Authorized Officer</h4>
+        <h5 class="text_small fs-16 fw-500 mb_8">Introduction Letter</h5>
+        <img [src]="governmentOrganizationDetailResponse.authorizedOfficerResponse.officialUploadPath || 'assets/images/temp_img/address-vari-img.png'"
+             class="add_veri_doc_img" />
+    </div>
+
+    <div class="col-md-3">
+        <div class="d-flex flex-column justify-content-end h-100">
+            <h5 class="text_small fs-16 fw-500 mb_8">Official Letter of Authorization</h5>
+            <img [src]="governmentOrganizationDetailResponse.authorizedOfficerResponse.officialLetter || 'assets/images/temp_img/address-vari-img.png'"
+                 class="add_veri_doc_img" />
+        </div>
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,311 @@
+<!-- Address -->
+<div class="table_container content d-flex flex-column justify-content-between h-100" data-number="4">
+    <div>
+        <div class="Officer_table">
+            <h4 class="fs-20 fw-600 dark mb-0">Address</h4>
+        </div>
+        <div class="table-pagination page-nav empty"
+            *ngIf="addressList.length==0  &&(loaderService.isDataLoaded |async)">
+            <h4 class="primary mb-0 fs-26 fw-600">No Addresses </h4>
+        </div>
+        <div class="table-responsive table-data" *ngIf="addressList && addressList.length>0">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">Address Holder</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">AIG Code</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 40%;">Address</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">Address Type</th>
+                        <th scope="col" class="fs-14 fw-500 theading status_img" style="width: 10%;">Status
+                            <img *ngIf="sortIsActive==sortStatus.ALL" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.ALL)">
+                            <img *ngIf="sortIsActive==sortStatus.ACTIVE" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.ACTIVE)">
+                            <img *ngIf="sortIsActive==sortStatus.IN_ACTIVE" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.IN_ACTIVE)">
+                        </th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 10%;">
+
+                            Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let address of addressList ; index as i">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img [src]="address.profilePicture || appUtils.DEFAULT_IMAGE" class="address_icon">
+                                <div class="mx_12 varification_officer">
+                                    <h5 class="fs-14 fw-500 black mb-1">{{address.userFirstName +" "+address.lastName}}
+                                    </h5>
+                                    <a (click)="navigate(componentRoutes.USER_DETAILS_BASE+'/'+address.userId)"
+                                        class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                        View Profile</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{address.aigcode}}</td>
+                        <td class="fs-14 fw-500 info">{{address.address}}</td>
+
+                        <td>
+                            <h4 class="fs-14 fw-500 info mb-0 user_address_type addressType"><img
+                                    [src]="address.addressTypeImage" height="16" width="16">{{address.addressType}}
+                            </h4>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="verification_officer">
+                                    <button class="status_btn "
+                                        [ngClass]="address.isVerified?'Verified_btn':'Unverified_btn'">
+                                        {{address.isVerified?'Verified':'Unverified'}}</button>
+                                    <a *ngIf="address.isVerified" (click)="getAddressDetails(address.id)"
+                                        data-bs-target="#VerificationSummary" data-bs-toggle="modal"
+                                        class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                        View Summary</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+
+                            <div class="d-flex align-items-center" *ngIf="address.isDeleted">
+                                <div class="mx_12 verification_officer">
+                                    <button class="status_btn rejected_btn"> Deleted</button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <a *ngIf="!address.isDeleted"
+                                    (click)="navigate(componentRoutes.ADDRESS_DETAILS_BASE+'/'+address.id)"><img
+                                        src="assets/images/svg_img/edit-icon.svg" class="add_icons"></a>
+                                <ng-container *ngIf="!address.isDeleted">
+                                    <a (click)="setEditData(address)" data-bs-target="#EditAddress" *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.UPDATE }"
+                                        data-bs-toggle="modal">
+                                        <img src="assets/images/svg_img/pencil.svg" class="add_icons">
+                                    </a>
+
+                                    <a href="javascript:void(0)" (click)="deleteId = address.id"  *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.DELETE }"
+                                        data-bs-target="#delete-modal" data-bs-toggle="modal">
+                                        <img src="assets/images/svg_img/Trash.svg">
+                                    </a>
+                                </ng-container>
+
+                            </div>
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <app-pagination *ngIf="pageManager.totalElements>pageRequest.pageSize" [data]="addressList"
+        [pageManager]="pageManager" [pageRequest]="pageRequest" (fetchData)="getAllAddresses($event)"></app-pagination>
+
+</div>
+
+
+
+<!-- MODAL START -->
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="delete-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        Address</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 text-center">Are you sure you want to delete this
+                        Address? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" data-bs-dismiss="modal" aria-label="Close"
+                        id="close-delete-address">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" (click)="deleteAddress()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DELETE MODAL END -->
+
+
+<!-- USER ADDRESS EDIT MODAL -->
+<div class="modal fade" id="EditAddress" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <div class="modal-header p-0 mb_40">
+                <h1 class="modal-title fs-18 fw-600 primary" id="exampleModalToggleLabel2">Edit Address
+                </h1>
+            </div>
+            <div class="p-0">
+                <form class="" [formGroup]="editForm">
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Address Type</label>
+                            <input type="text" formControlName="addressType" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.addressType">
+                            <div *ngIf="checkFieldValid('addressType',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">First Name</label>
+                            <input type="text" formControlName="firstName" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.firstName">
+                            <div *ngIf="checkFieldValid('firstName',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Surname</label>
+                            <input type="text" formControlName="surname" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.surname">
+                            <div *ngIf="checkFieldValid('surname',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">House No./Building</label>
+                            <input type="text" formControlName="buildingNo" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.buildingNo">
+                            <div *ngIf="checkFieldValid('buildingNo',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Area/Locality</label>
+                            <input type="text" formControlName="locality" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.locality">
+                            <div *ngIf="checkFieldValid('locality',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">Landmark</label>
+                            <input type="text" formControlName="landmark" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.landmark">
+                            <div *ngIf="checkFieldValid('landmark',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">LGA</label>
+                            <input type="text" class="form-control profile_edit not-allowed"
+                                [placeholder]="editAddress.lgaName" disabled>
+
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">State</label>
+                            <input type="text" class="form-control profile_edit not-allowed"
+                                [placeholder]="editAddress.state" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">City</label>
+                            <input type="text" formControlName="city" class="form-control profile_edit" placeholder=""
+                                [(ngModel)]="editAddress.city">
+                            <div *ngIf="checkFieldValid('city',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="black fs-16 fw-400 mb-2">ZipCode</label>
+                            <input type="text" formControlName="zipcode" class="form-control profile_edit"
+                                placeholder="" [(ngModel)]="editAddress.zipcode">
+                            <div *ngIf="checkFieldValid('zipcode',editForm)" class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+                        </div>
+
+                        <!-- <div _ngcontent-ng-c2519437422="" class="modal-footer p-0">
+                            <div _ngcontent-ng-c2519437422="" class="gap_20 d-flex"><button _ngcontent-ng-c2519437422=""
+                                    data-bs-dismiss="modal" aria-label="Close"
+                                    class="btn_lg2 fs-16 fw-500 br_10">Cancel</button><button
+                                    _ngcontent-ng-c2519437422="" class="btn_lg fs-16 fw-500 br_10">Add</button></div>
+                        </div> -->
+
+                        <div class="d-flex justify-content-end mt_40 gap_24 px-3 modal-button">
+                            <button class="btn_lg2" data-bs-dismiss="modal" id="close-update-modal"
+                                aria-label="Close">Cancel</button>
+                            <button class="btn_lg " [ngClass]="loading?'disable':''" (click)="updateAddress()">
+                                <div class="spinner-border text-light" *ngIf="loading" role="status">
+                                    <span class="sr-only"></span>
+                                </div>
+                                {{loading?'':'Submit'}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- USER ADDRESS EDIT MODAL END -->
+
+<!-- USER ADDRESS EDIT MODAL -->
+<div class="modal fade" id="VerificationSummary" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1" *ngIf="addressDetails && addressDetails.addressVerificationDetails">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <button type="button" class="close_btn d-flex justify-content-end mb-2" data-bs-dismiss="modal"
+                aria-label="Close"><i class="fi fi-rr-cross-circle"></i></button>
+            <div class="p-0">
+                <div class="Address_Details mb_20 col-md-12">
+                    <h5 class="fs-18 fw-500 secondary mb-3">Verification Details</h5>
+                    <div class="view-documents-grid">
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.propertyImage ||defaultPropertyImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.requestorImage ||defaultImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Requestor</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <div id="map" class="verification_image height mb_10"></div>
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Location map</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer p-0"
+                *ngIf="addressDetails && addressDetails.addressVerificationDetails && addressDetails.addressVerificationDetails.summary">
+                <div class="Address_Details col-md-12 m-0">
+                    <h5 class="fs-18 fw-500 secondary mb_10">Verification Summary</h5>
+                    <div class="Verification_Summary">
+                        <h4 class="mb-1 fs-15 fw-50 text_small">Comment</h4>
+                        <h5 class="fs-13 fw-500 grey mb-0">{{addressDetails.addressVerificationDetails.summary.comment}}
+                        </h5>
+                    </div>
+                    <div class="view-documents-grid">
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.propertyImage ||defaultPropertyImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.requestorImage ||defaultImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Owner</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.govtIdImage"
+                                class="verification_image mb_10 img-fluid">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Gov id</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- USER ADDRESS EDIT MODAL END -->

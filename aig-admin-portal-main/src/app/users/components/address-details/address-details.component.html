@@ -1,0 +1,306 @@
+<!-- Address details -->
+<div class="container px-0 px-sm-2" *ngIf="addressDetails">
+    <div class="mb_20">
+        <!-- Address Details -->
+        <div class="col-md-12">
+            <div class="Address_Details mb-4">
+                <div class="d-flex justify-content-between align-items-center mb_20 flex-wrap gap-2">
+                    <h4 class="fs-18 f-500 primary mb-0">Address Details</h4>
+                    <div class="add_details_btn">
+                        <button class="status_btn " [ngClass]="addressDetails.isVerified?'Verified_btn':'Pending_btn'">
+                            {{addressDetails.isVerified?'Verified':'Pending'}}</button>
+                        <button class="select-btn" data-bs-target="#VerificationSummary" data-bs-toggle="modal"
+                            *ngIf="addressDetails.isVerified">Verification Summary </button>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center mb_20 border_bottom">
+                    <img [src]="addressDetails.user.profilePicture || appUtil.DEFAULT_IMAGE" class="address_avtar">
+                    <h4 class="fs-14 fw-500 text_small mb-0 ms_12 ">{{addressDetails.user.firstName +"
+                        "+addressDetails.user.lastName}}</h4>
+                    <a (click)="navigate(componentRoutes.USER_DETAILS_BASE+'/'+addressDetails.user.userId)"
+                        class="fs-16 fw-600 primary mx-0 ms-auto border-bottomLine  ">View
+                        Profile</a>
+
+                </div>
+
+                <div class="mb_20">
+                    <h4 class="text_small fs-15 fw-600 ">{{addressDetails.aigcode}}</h4>
+                    <h5 class="warrning fs-13 fw-500 mb-0">{{addressDetails.address}}</h5>
+                </div>
+                <div class="address_card">
+                    <div class="details">
+                        <div class="row gy-4">
+                            <div class="col-md-4 col-sm-6">
+                                <h4 class="fs-13 fw-500 info mb-1">ZipCode</h4>
+                                <h5 class="text_small  fs-15 fw-500 mb-0">{{addressDetails.zipcode}}</h5>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <h4 class="fs-13 fw-500 info mb-1">AIG Code</h4>
+                                <h5 class="text_small  fs-15 fw-500 mb-0">{{addressDetails.aigcode}} </h5>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <h4 class="fs-13 fw-500 info mb-1">Block Code</h4>
+                                <h5 class="text_small  fs-15 fw-500 mb-0">{{addressDetails.blockCode}} </h5>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="details2">
+                        <div class="row gy-4">
+                            <div class="col-md-4 col-sm-6">
+                                <h4 class="fs-13 fw-500 info mb-1">Landmark</h4>
+                                <h5 class="text_small  fs-15 fw-500 mb-0">{{addressDetails.landmark}}</h5>
+                            </div>
+                            <div class="col-md-4 col-sm-6">
+                                <h4 class="fs-13 fw-500 info mb-1">Address Type</h4>
+                                <div class="d-flex align-items-center">
+                                    <img [src]="addressDetails.addressTypeImage" class="mx-1 ms-0 addressType-icon"
+                                        height="16" width="16">
+                                    <h5 class="text_small  fs-15 fw-500 mb-0">{{addressDetails.addressType}}</h5>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <h3 class="mb-0 text_small fs-15 fw-500" *ngIf="addressDetails.generalInfo">General info</h3>
+                    <h4 class="mb-0 fs-13 fw-500 warrning">{{addressDetails.generalInfo}}</h4>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="d-flex flex-column gap-4">
+            <!-- Route Video -->
+            <div class="Address_Details d-flex flex-column gap-3">
+                <h4 class="fs-18 fw-500 primary mb-1">Route Video</h4>
+                <div class="row">
+                    <div class="table-pagination page-nav empty" *ngIf="addressDetails.routeVideo.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Route Videos </h4>
+                    </div>
+                    <div class="col-md-6" *ngFor="let route of addressDetails.routeVideo">
+                        <div class="address_Duration_card">
+                            <div class="d-flex align-items-center mb_12">
+                                <div class="address_details_icon">
+                                    <a [href]="route.video" (click)="playVideo(route.video)"
+                                        data-bs-target="#video-player" data-bs-toggle="modal">
+                                        <img src="assets/images/svg_img/video.svg">
+                                    </a>
+                                </div>
+                                <div class="address_details">
+                                    <h2>Duration</h2>
+                                    <h3>{{route.duration}}</h3>
+                                </div>
+                                <div class="delete_icon mx-0 ms-auto" data-bs-target="#delete-route-modal"
+                                    data-bs-toggle="modal" (click)="deleteRouteVideoId=route.uuid">
+                                    <img src="assets/images/svg_img/delete-1.svg">
+                                </div>
+                            </div>
+                            <div class="add_card_details">
+                                <h3>Start Point</h3>
+                                <h4>{{route.startPoint}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Voice Directions -->
+            <div class="Address_Details d-flex flex-column gap-3">
+                <h4 class="fs-18 fw-500 primary mb-1">Voice Directions</h4>
+                <div class="row">
+                    <div class="table-pagination page-nav empty" *ngIf="addressDetails.voiceDirections.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Voice Directions </h4>
+                    </div>
+                    <div class="col-md-6" *ngFor="let direction of addressDetails.voiceDirections">
+                        <div class="address_Duration_card">
+                            <div class="d-flex align-items-center mb_12">
+                                <div class="address_details_icon">
+                                    <div class="videos_icon" data-bs-target="#showPlayer"
+                                        (click)="playAudio(direction.audio,direction.id)">
+                                        <a target="_blank"> <img *ngIf="!isPasswordVisible(direction.id)"
+                                                src="assets/images/svg_img/video.svg">
+                                            <div class="spinner" *ngIf="isPasswordVisible(direction.id)">
+                                                <div class="r1"></div>
+                                                <div class="r2"></div>
+                                                <div class="r3"></div>
+                                                <div class="r4"></div>
+                                                <div class="r5"></div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+                                <div class="address_details">
+                                    <h2>Duration</h2>
+                                    <h3>{{direction.duration}}</h3>
+                                </div>
+                                <div class="delete_icon mx-0 ms-auto" data-bs-target="#delete-modal"
+                                    data-bs-toggle="modal" (click)="deleteVoiceDirectionId=direction.uuid">
+                                    <img src="assets/images/svg_img/delete-1.svg">
+                                </div>
+                            </div>
+                            <div class="add_card_details">
+                                <h3>Start Point</h3>
+                                <h4>{{direction.startPoint}}</h4>
+                            </div>
+                            <!-- <audio  *ngIf="isPasswordVisible(direction.id)" controls><source [src]="direction.audio" type="audio/mpeg" /></audio>  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- property  -->
+            <div class="Address_Details d-flex flex-column gap-3">
+                <h5 class="fs-18 fw-500 secondary">Property </h5>
+                <div class="row Property_cards">
+                    <div class="table-pagination page-nav empty" *ngIf="addressDetails.propertyPhotos.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No Property Images </h4>
+                    </div>
+
+                    <div class="col-md-3 mt-3" *ngFor="let img of addressDetails.propertyPhotos">
+                        <img [src]="img.image" class="verification_image">
+                        <h4 class="text-center fs-15 fw-500 info  mb-0"></h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- USER ADDRESS EDIT MODAL -->
+<div class="modal fade" id="VerificationSummary" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1" *ngIf="addressDetails && addressDetails.addressVerificationDetails">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <button type="button" class="close_btn d-flex justify-content-end mb-2" data-bs-dismiss="modal"
+                aria-label="Close"><i class="fi fi-rr-cross-circle"></i></button>
+            <div class="modal-header p-0">
+                <div class="Address_Details mb_20 col-md-12">
+                    <h5 class="fs-18 fw-500 secondary mb-3">Verification Details</h5>
+                    <div class="view-documents-grid">
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.propertyImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.requestorImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Requestor</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <div id="map" class="verification_image height mb_10"></div>
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Location map</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer p-0"
+                *ngIf="addressDetails && addressDetails.addressVerificationDetails && addressDetails.addressVerificationDetails.summary">
+                <div class="Address_Details col-md-12 m-0">
+                    <h5 class="fs-18 fw-500 secondary mb_10">Verification Summary</h5>
+                    <div class="Verification_Summary">
+                        <h4 class="mb-1 fs-15 fw-50 text_small">Comment</h4>
+                        <h5 class="fs-13 fw-500 grey mb-0">{{addressDetails.addressVerificationDetails.summary.comment}}
+                        </h5>
+                    </div>
+                    <div class="view-documents-grid">
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.propertyImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Property</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.requestorImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Owner</h4>
+                        </div>
+                        <div class="d-flex flex-column justify-content-between ">
+                            <img [src]="addressDetails.addressVerificationDetails.summary.govtIdImage"
+                                class="verification_image mb_10">
+                            <h4 class="text-center fs-15 fw-500 grey mb-0">Gov id</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- USER ADDRESS EDIT MODAL END -->
+
+<!-- DELETE VOICE DIRECTION MODAL -->
+<div class="modal fade" id="delete-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        Voice Direction</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 text-center">Are you sure you want to delete this
+                        Voice Direction? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" id="delete-close" data-bs-dismiss="modal"
+                        aria-label="Close" (click)="clearData()">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" data-bs-dismiss="modal"
+                        (click)="deleteVoiceDirection()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DELETE VOICE DIRECTION MODAL END -->
+
+<!-- DELETE ROUTE  MODAL -->
+<div class="modal fade" id="delete-route-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        Route Video</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 text-center">Are you sure you want to delete this
+                        Route Video? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" id="delete-close" data-bs-dismiss="modal"
+                        aria-label="Close" (click)="clearData()">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" data-bs-dismiss="modal"
+                        (click)="deleteRouteVideo()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DELETE ROUTE MODAL END -->
+
+<!-- VIDEO PLAYER START -->
+<div class="modal fade" id="video-player" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    *ngIf=" addressDetails && addressDetails.routeVideo" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content video-model">
+            <video class="video_display" (focusout)="stopVideo()" controls id="video">
+                <source id="source" type="video/mp4">
+            </video>
+
+        </div>
+    </div>
+</div>
+<!-- VIDEO PLAYER END -->

@@ -1,0 +1,134 @@
+<div class="container h-100 px-0 px-sm-2">
+    <div class="table_container">
+        <div class="d-flex flex-column justify-content-between h-100">
+            <div class="d-flex flex-column">
+                <!-- Table heading -->
+                <div class="Officer_table d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h4 class="fs-20 fw-500 dark mb-0">Set Privileges</h4>
+                    <!-- Apply filter dropdown -->
+                    <div class="dropdown role-dropdown">
+                        <button class="apply-btn fs-15 fw-500 textColor dropdown-button"
+                            (click)="toggleDropdown()">Apply for <img src="assets/images/svg_img/arrow-apply.svg"
+                                height="16" width="16">
+                        </button>
+                        <div class="dropdown-menu" [class.show]="dropdownOpen" id="dropdownMenu">
+                            <div class="checkbox-group d-flex flex-column gap-2">
+                                <label>
+                                    All
+                                    <label class="custom-checkbox position-relative cursor-pointer">
+                                        <input type="checkbox" [(ngModel)]="filters.all"
+                                            (change)="onFilterChange('all')">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </label>
+                                <label>
+                                    Read
+                                    <label class="custom-checkbox position-relative cursor-pointer">
+                                        <input type="checkbox" [(ngModel)]="filters.canRead"
+                                            (change)="onFilterChange()">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </label>
+                                <label>
+                                    Create
+                                    <label class="custom-checkbox position-relative cursor-pointer">
+                                        <input type="checkbox" [(ngModel)]="filters.canCreate"
+                                            (change)="onFilterChange()">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </label>
+                                <label>
+                                    Update
+                                    <label class="custom-checkbox position-relative cursor-pointer">
+                                        <input type="checkbox" [(ngModel)]="filters.canUpdate"
+                                            (change)="onFilterChange()">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </label>
+                                <label>
+                                    Delete
+                                    <label class="custom-checkbox position-relative cursor-pointer">
+                                        <input type="checkbox" [(ngModel)]="filters.canDelete"
+                                            (change)="onFilterChange()">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </label>
+                            </div>
+                            <div class="d-flex gap-3 dropdown-footer mt-4">
+                                <button class="outline-btn bgPrimaryLight fs-12 medium w-50"
+                                    (click)="resetFilters()">Cancel</button>
+                                <button class="primary-button fs-12 medium w-50" 
+                                    (click)="applyBulkPermissionUpdate()">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- table start -->
+                <div class="table-responsive add-table-data">
+                    <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                        <thead>
+                            <tr class="table_heading">
+                                <th scope="col" style="width: 15%;"><label
+                                        class="custom-checkbox position-relative cursor-pointer">
+                                        <input type="checkbox" [(ngModel)]="allSelected" (change)="toggleAll()" />
+                                        <span class="checkmark"></span>
+                                    </label></th>
+                                <th scope="col" class="fs-14 fw-500 theading" style="width:15%;">Type</th>
+                                <th scope="col" class="fs-14 fw-500 theading" style="width:15%;">Read</th>
+                                <th scope="col" class="fs-14 fw-500 theading" style="width:15%;">Create
+                                </th>
+                                <th scope="col" class="fs-14 fw-500 theading" style="width:15%;">Update
+                                </th>
+                                <th scope="col" class="fs-14 fw-500 theading" style="width:15%;">Delete
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg_light">
+                            <tr *ngFor="let permission of permissions">
+                                <td>
+                                    <label class="custom-checkbox position-relative cursor-pointer">
+                                        <input type="checkbox" [(ngModel)]="permission.selected"
+                                            (change)="onSelectionChange()" />
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td class="fs-14 fw-500 info">{{ permission.title }}</td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="permission.canRead"
+                                            (change)="updatePermission(permission)" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="permission.canCreate"
+                                            (change)="updatePermission(permission)" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="permission.canUpdate"
+                                            (change)="updatePermission(permission)" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <label class="switch">
+                                        <input type="checkbox" [(ngModel)]="permission.canDelete"
+                                            (change)="updatePermission(permission)" />
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <app-pagination [pageManager]="paginationManager" [pageRequest]="page" [data]="permissions"
+                (fetchData)="loadPermissions()" *ngIf="paginationManager.totalElements>page.pageSize"></app-pagination>
+        </div>
+    </div>
+</div>

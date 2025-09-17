@@ -1,0 +1,16 @@
+
+
+  /* Optional: change axis text or tooltip color */
+  ::ng-deep .apexcharts-xaxis text,
+  ::ng-deep .apexcharts-yaxis text {
+    fill: #000000 !important; // axis label color
+  }
+
+  ::ng-deep .apexcharts-tooltip {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+  }
+
+.borderBottom{
+  border-bottom:1px solid #EAECF0;
+}

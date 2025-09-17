@@ -1,0 +1,39 @@
+<form [formGroup]="verifyOTPForm" (keyup.enter)="verifyOTP()" class="w-100">
+    <div class="login-container mx-auto d-flex flex-column justify-content-between">
+        <div class="d-flex justify-content-center">
+            <img src="assets/images/svg_img/login-logo.svg" class="img-fluid login_img">
+        </div>
+        <div class="d-flex flex-column scalable-gap-40-30">
+            <div class="d-flex flex-column gap-2">
+                <h1 class="fs-22 fw-600 text_small mb-0" id="exampleModalToggleLabel2">Verify OTP </h1>
+                <div class="d-flex flex-column gap-1">
+                    <h3 class="fs-16 fw-500 info mb-0 login_subtitle">Enter the verification code sent on </h3>
+                    <div class="d-flex align-items-center">
+                        <h3 class="mb-0 fs-15 fw-500 text_small">{{email}}</h3>
+                        <h5 class="mb-0 fs-14 fw-500 primary cur-pointer d-flex gap-1"
+                            (click)="appUtil.authFormController('btn2')">Edit <img src="assets/images/svg_img/edit.svg">
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="p-0">
+                <div class="d-flex gap_16" id="inputs">
+                    <input type="text" class="otp_number_input"
+                        [ngClass]="{'invalid-input': submitted && verifyOTPForm.controls['otp1'].errors}" name="otp1"
+                        formControlName="otp1" [(ngModel)]="otp1" placeholder="-" maxlength="1">
+                    <input type="text" class="otp_number_input"
+                        [ngClass]="{'invalid-input': submitted && verifyOTPForm.controls['otp2'].errors}" name="otp2"
+                        formControlName="otp2" [(ngModel)]="otp2" placeholder="-" maxlength="1">
+                    <input type="text" class="otp_number_input"
+                        [ngClass]="{'invalid-input': submitted && verifyOTPForm.controls['otp3'].errors}" name="otp3"
+                        formControlName="otp3" [(ngModel)]="otp3" placeholder="-" maxlength="1">
+                    <input type="text" class="otp_number_input"
+                        [ngClass]="{'invalid-input': submitted && verifyOTPForm.controls['otp4'].errors}" name="otp4"
+                        formControlName="otp4" [(ngModel)]="otp4" placeholder="-" maxlength="1">
+                </div>
+            </div>
+            <button class="btn-primary  fs-15 fw-600 w-100 m-0 right_menu_toggle" (click)="verifyOTP()"> Verify</button>
+        </div>
+
+    </div>
+</form>

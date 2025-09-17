@@ -1,0 +1,205 @@
+<div class="content table_container" data-number="20">
+    <div class="d-flex flex-column justify-content-between h-100">
+        <div>
+            <!-- Table heading -->
+            <div
+                class="Officer_table d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <h4 class="fs-20 fw-500 dark mb-0">Address Type</h4>
+                <button class="select-btn gap_6"  *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.CREATE }"
+                    data-bs-target="#addAddressType" data-bs-toggle="modal"
+                    (click)="clearForm()"><img
+                        src="assets/images/svg_img/plus.svg">Add
+                    Address Type</button>
+            </div>
+            <!-- table start -->
+
+
+            <div class="table-responsive add-table-data"  >
+                <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                    <thead>
+                        <tr class="table_heading">
+                            <th scope="col" class="fs-14 fw-500 theading"
+                                style="width: 33%;">Image</th>
+                            <th scope="col" class="fs-14 fw-500 theading"
+                                style="width: 33%;">Type</th>
+                            <th scope="col" class="fs-14 fw-500 theading"
+                                style="width: 33%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg_light partners" >
+                        <tr *ngFor="let type of addressTypes">
+                            <td class="fs-14 fw-500 info">
+                                <img [src]="type.image" height="28" width="28"
+                                    alt="Address Type" />
+                            </td>
+                            <td class="fs-14 fw-500 info">{{ formateName(type.name)}}</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <!-- Edit -->
+                                    <a href="#" (click)="editAddressType(type)"  *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.UPDATE }"
+                                        data-bs-target="#addAddressType"
+                                        data-bs-toggle="modal">
+                                        <img
+                                            src="assets/images/svg_img/pencil.svg"
+                                            class="add_icons" />
+                                    </a>
+                                    <!-- Delete -->
+                                    <a (click)="name=type.name" *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.DELETE }"
+                                        href="javascript:void(0)">
+                                        <img
+                                            src="assets/images/svg_img/Trash.svg"
+                                            data-bs-target="#delete-modal"
+                                            data-bs-toggle="modal" />
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tr *ngIf="addressTypes.length==0  &&(loaderService.isDataLoaded |async)">
+                        <td colspan="6">
+                            <div class="table-pagination page-nav empty" *ngIf="addressTypes.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No address type available. </h4>
+                         </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+       <app-pagination [pageManager]="paginationManager" [pageRequest]="pageRequest" [data]="addressTypes"
+            (fetchData)="loadAddressTypes()" *ngIf="paginationManager.totalElements>pageRequest.pageSize"></app-pagination>
+    </div>
+</div>
+<!-- Add AddressType MODAL  -->
+<div class="modal fade" id="addAddressType"
+    aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+       <div class="modal-content">
+  <form [formGroup]="addressForm" enctype="multipart/form-data" (ngSubmit)="onSubmit()">
+    <div class="modal-body p-0">
+      <div class="mb-4">
+        <h3 class="theading fs-18 fw-500 mb-4">
+          {{ isEditMode ? 'Edit Address Type' : 'Add Address Type' }}
+        </h3>
+
+        <!-- File Upload -->
+        <div class="d-flex justify-content-center mb-4">
+          <div class="position-relative file_select_box">
+
+            <!-- File Input shown only when no image preview -->
+            <div *ngIf="!imagePreviewUrl">
+              <input
+                type="file"
+                id="fileupload"
+                class="input_feilds bg_light file_select"
+                (change)="onFileChange($event)"
+              />
+              <label for="fileupload" class="font-15 font-400 secondary cursor-pointer" style="left: 25%;">
+                <img src="assets/images/svg_img/plus.svg" class="blue-filter" />Add Image
+              </label>
+            </div>
+
+            <!-- Preview shown only when image is valid -->
+            <div class="verify-img-preview" *ngIf="imagePreviewUrl">
+              <img alt="Preview" class="verify-img" [src]="imagePreviewUrl" />
+               <div class="bg-verify-img-close">
+                <img
+                src="assets/images/svg_img/modal-close.svg"
+                (click)="removeFile()"
+                class="cursor-pointer verify-img-close"
+                height="16"
+                width="16"
+              />
+               </div>
+              
+            </div>
+          </div>
+        </div>
+
+        <!-- Image Errors -->
+        <div *ngIf="f['image'].touched && f['image'].invalid && f['image'].errors" class="error text-center">
+          <div *ngIf="f['image'].errors['required']">Image is required</div>
+          <div *ngIf="f['image'].errors['invalidFileType']">Only JPG/PNG images are allowed</div>
+          <div *ngIf="f['image'].errors['fileTooBig']">Image must be less than 5MB</div>
+        </div>
+
+        <!-- Type Input -->
+        <div class="col-md-12 mb-4 ps-0 px-2">
+          <label for="type" class="black fs-15 fw-400 mb-2">Type</label>
+          <input
+            type="text"
+            class="form-control profile_edit"
+            formControlName="name"
+            id="type"
+            placeholder="Type"
+          />
+          <div *ngIf="f['name'].invalid && f['name'].touched && f['name'].errors" class="error">
+            <div *ngIf="f['name'].errors['required']">Type is required</div>
+            <div *ngIf="f['name'].errors['minlength']">Minimum 2 characters required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer p-0">
+      <div class="gap-4 d-flex">
+        <button class="btn_lg2 fs-16 fw-500 br_10" type="button" data-bs-dismiss="modal" aria-label="Close" id="modal-close">
+          Cancel
+        </button>
+        <button type="submit" class="btn_lg fs-16 fw-500 br_10" [disabled]="isLoading">
+
+
+          <div class="spinner-border text-light" *ngIf="isLoading" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                        {{isLoading?'':isEditMode?'Update':'Add'}}
+        
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+    </div>
+</div>
+
+<!-- Add AddressType MODAL END -->
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="delete-modal" aria-hidden="true"
+    aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon"
+                            src="assets/images/svg_img/delete.svg" height="80"
+                            width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        Address Type</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 mb-4 text-center">Are you sure you want to delete this Address Type? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12"
+                        data-bs-dismiss="modal" id="delete-close"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" [disabled]="isLoading"
+                        (click)="deleteType()">
+                        <div class="spinner-border text-light" *ngIf="isLoading" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                        {{isLoading?'':'Delete'}}
+                      </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DELETE MODAL END -->

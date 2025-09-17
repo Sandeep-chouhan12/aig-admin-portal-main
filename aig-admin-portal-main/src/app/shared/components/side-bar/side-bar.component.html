@@ -1,0 +1,275 @@
+<!-- SIDEBAR START -->
+
+<div class="sidebar" id="sidebar">
+    <div class="logo cur-point" (click)="navigateToDashboard()">
+        <img src="assets/images/temp_img/logo.png" class="logo_svg">
+    </div>
+    <div class="sidebar_navbar">
+        <!-- Getting Started Accordian -->
+        <div class="accordion" id="accordionExample">
+
+            <!-- Dashboard -->
+            <div class="accordion-item selectSection">
+                <h2 class="accordion-header">
+                    <button class="accordion-button mb-0 active" (click)="clearPage()"
+                        [ngClass]="activeClass==componentRoutes.DASHBOARD?'dash ':'collapsed'"
+                        [id]="constants.SIDE_BAR_ID.dashboard" data-number="1" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"
+                        (click)="getTitleName(constants.DASHBOARD); " routerLink="{{componentRoutes.DASHBOARD}}">
+                        <img src="assets/images/svg_img/dashboard.svg" class="accordian_svg ">Dashboard
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+
+                </div>
+            </div>
+
+            <!-- Users -->
+            <div class="accordion-item"
+                *appHasPermission="{ title: permissionTitle.USERS, accessType: permissionType.READ }">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed mb-0" type="button" [id]="constants.SIDE_BAR_ID.users"
+                        data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
+                        aria-controls="collapseTwo">
+                        <img src="assets/images/svg_img/user-2.svg" class="accordian_svg">Users
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="selectSection select_option">
+                            <button type="button" data-number="2" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.USER_LIST_BASE?'active':''"
+                                (click)="getTitleName(constants.USERS)"
+                                routerLink="{{componentRoutes.USER_LIST_BASE}}">Users List</button>
+                            <button type="button" data-number="3" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.USER_TRANSACTION_BASE?'active':''"
+                                (click)="getTitleName(constants.USERS)"
+                                routerLink="{{componentRoutes.USER_TRANSACTION_BASE}}">Transaction</button>
+                            <button type="button" data-number="4" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.USER_ADDRESS_BASE?'active':''"
+                                (click)="getTitleName(constants.USERS)"
+                                routerLink="{{componentRoutes.USER_ADDRESS_BASE}}">Address</button>
+                            <button type="button" data-number="5" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.USER_ANALYTICS_BASE?'active':''"
+                                (click)="getTitleName(constants.USERS)"
+                                routerLink="{{componentRoutes.USER_ANALYTICS_BASE}}">Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Officer -->
+            <div class="accordion-item"
+                *appHasPermission="{ title: permissionTitle.VERIFICATION_OFFICERS, accessType: permissionType.READ }">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed mb-0" type="button"
+                        [id]="constants.SIDE_BAR_ID.verification_officer" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <img src="assets/images/svg_img/varification-2.svg" class="accordian_svg">Verification
+                        Officer
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="selectSection select_option">
+                            <button type="button" data-number="6" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.VERI_OFFI_ADDRESS_VERIFICATION_REQ_BASE?'active':''"
+                                (click)="getTitleName(constants.VERIFICATION_OFFICER)"
+                                routerLink="{{componentRoutes.VERI_OFFI_ADDRESS_VERIFICATION_REQ_BASE}}">Address
+                                Verifications</button>
+                            <button type="button" data-number="7" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.VERIFICATION_OFFICER_LIST_BASE?'active':''"
+                                (click)="getTitleName(constants.VERIFICATION_OFFICER)"
+                                routerLink="{{componentRoutes.VERIFICATION_OFFICER_LIST_BASE}}">Verification
+                                Officer</button>
+                            <button type="button" data-number="7" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.VERI_OFFI_ANALYTICS_BASE?'active':''"
+                                (click)="getTitleName(constants.VERIFICATION_OFFICER)"
+                                routerLink="{{componentRoutes.VERI_OFFI_ANALYTICS_BASE}}">Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Portal -->
+            <div class="accordion-item selectSection"
+                *appHasPermission="{ title: permissionTitle.VERIFICATION_PORTAL, accessType: permissionType.READ }">
+                <h2 class="accordion-header">
+                    <button class="accordion-button  mb-0 active" [id]="constants.SIDE_BAR_ID.verification_portal"
+                        data-number="8" (click)="clearPage()" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"
+                        [ngClass]="activeClass==componentRoutes.VERIFICATION_PORTAL?'dash ':'collapsed'"
+                        (click)="getTitleName(constants.VERIFICATION_PORTAL)"
+                        routerLink="{{componentRoutes.VERIFICATION_PORTAL}}">
+                        <img src="assets/images/svg_img/v-portal.svg" class="accordian_svg">Verification Portal
+                    </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+
+                </div>
+            </div>
+
+            <!-- Emergency --> 
+            <div class="accordion-item"
+                *appHasPermission="{ title: permissionTitle.EMERGENCY, accessType: permissionType.READ }">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed mb-0" type="button" [id]="constants.SIDE_BAR_ID.emergency"
+                        data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false"
+                        aria-controls="collapseFive">
+                        <img src="assets/images/svg_img/Emergency.svg" class="accordian_svg">Emergency
+                    </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="selectSection select_option">
+                            <button type="button" data-number="9" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.EMERGENCY_REQUESTS_BASE?'active':''"
+                                (click)="getTitleName(constants.EMERGENCY)"
+                                routerLink="{{componentRoutes.EMERGENCY_REQUESTS_BASE}}">Emergency Requested</button>
+                            <button type="button" data-number="10" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.LIST_OF_EMERGENCY_OPERATORS_BASE?'active':''"
+                                (click)="getTitleName(constants.EMERGENCY)"
+                                routerLink="{{componentRoutes.LIST_OF_EMERGENCY_OPERATORS_BASE}}">List of
+                                Operators</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Oraganizations -->
+            <div class="accordion-item"
+                *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.READ }">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed mb-0" type="button"
+                        [id]="constants.SIDE_BAR_ID.Organization" data-bs-toggle="collapse"
+                        data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                        <img src="assets/images/svg_img/api.svg" class="accordian_svg">Organization
+                    </button>
+                </h2>
+                <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="selectSection select_option">
+
+
+                            <button type="button" data-number="11" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.REPRESENTATIVE_DETAILS_BASE?'active':''"
+                                (click)="getTitleName(constants.ORGANIZATION); "
+                                routerLink="{{componentRoutes.REPRESENTATIVE_DETAILS_BASE}}">Representatives</button>
+
+                            <button type="button" data-number="12" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.API_DOC_PARTNERS_BASE?'active':''"
+                                (click)="getTitleName(constants.ORGANIZATION)"
+                                routerLink="{{componentRoutes.API_DOC_PARTNERS_BASE}}">Partners</button>
+                            <button type="button" data-number="13" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.API_DOC_PLANS_BASE?'active':''"
+                                (click)="getTitleName(constants.ORGANIZATION)"
+                                routerLink="{{componentRoutes.API_DOC_PLANS_BASE}}">Plans</button>
+
+                            <button type="button" data-number="15" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.API_DOC_SUPPORT_BASE?'active':''"
+                                (click)="getTitleName(constants.ORGANIZATION)"
+                                routerLink="{{componentRoutes.API_DOC_SUPPORT_BASE}}">Support</button>
+                            <button type="button" data-number="16" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.API_DOC_FAQ_BASE?'active':''"
+                                (click)="getTitleName(constants.ORGANIZATION)"
+                                routerLink="{{componentRoutes.API_DOC_FAQ_BASE}}">FAQ's</button>
+
+                            <button type="button" data-number="234" (click)="clearPage()"
+                                (click)="getTitleName(constants.ORGANIZATION); "
+                                [ngClass]="activeClass==componentRoutes.ORGANIZATION_TERMS_AND_CONDITIONS_BASE?'active':''"
+                                routerLink="{{componentRoutes.ORGANIZATION_TERMS_AND_CONDITIONS_BASE}}">Terms & Condition</button>
+
+                            <button type="button" data-number="244" (click)="clearPage()"
+                                (click)="getTitleName(constants.ORGANIZATION); "
+                                [ngClass]="activeClass==componentRoutes.ORGANIZATION_PRIVACY_POLICY_BASE?'active':''"
+                                routerLink="{{componentRoutes.ORGANIZATION_PRIVACY_POLICY_BASE}}">Privacy Policy</button>
+
+
+                            <button type="button" data-number="14" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.API_DOC_ANALYTICS_BASE?'active':''"
+                                (click)="getTitleName(constants.ORGANIZATION)"
+                                routerLink="{{componentRoutes.API_DOC_ANALYTICS_BASE}}">Analytics</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Management -->
+            <div class="accordion-item"
+                *appHasPermission="{ title: permissionTitle.ROLE_MANAGEMENT, accessType: permissionType.READ }">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed mb-0" type="button" data-bs-toggle="collapse"
+                        [id]="constants.SIDE_BAR_ID.role_management" data-bs-target="#collapseSeven"
+                        aria-expanded="false" aria-controls="collapseSeven">
+                        <img src="assets/images/svg_img/roleManagement.svg" class="accordian_svg">Role
+                        Management
+                    </button>
+                </h2>
+                <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="selectSection select_option">
+                            <button type="button" data-number="14" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.SUB_ADMIN_LIST_BASE?'active':''"
+                                (click)="getTitleName(constants.ROLE_MANAGEMENT); "
+                                routerLink="{{componentRoutes.SUB_ADMIN_LIST_BASE}}">Sub Admin List</button>
+                            <button type="button" data-number="17" (click)="clearPage()"
+                                [ngClass]="activeClass==componentRoutes.ROLE_LIST_BASE?'active':''"
+                                (click)="getTitleName(constants.ROLE_MANAGEMENT); "
+                                routerLink="{{componentRoutes.ROLE_LIST_BASE}}">Role</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONFIGURATIONSS -->
+            <div class="accordion-item"
+                *appHasPermission="{ title: permissionTitle.CONFIGURATIONS, accessType: permissionType.READ }">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed mb-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseConfigurationss" aria-expanded="false"
+                        [id]="constants.SIDE_BAR_ID.Configuration" aria-controls="collapseConfigurationss">
+                        <img src="assets/images/svg_img/configurations.svg" class="accordian_svg">Configuration
+                    </button>
+                </h2>
+                <div id="collapseConfigurationss" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="selectSection select_option">
+                            <button type="button" data-number="20" (click)="clearPage()" (click)="loadPermission()"
+                                (click)="getTitleName(constants.CONFIGURATIONS); "
+                                [ngClass]="activeClass==componentRoutes.ADDRESS_TYPE_BASE?'active':''"
+                                routerLink="{{componentRoutes.ADDRESS_TYPE_BASE}}">Address Type</button>
+
+                            <button type="button" data-number="21" (click)="clearPage()"
+                                (click)="getTitleName(constants.CONFIGURATIONS); "
+                                [ngClass]="activeClass==componentRoutes.GENERAL_SUGGESTION_BASE?'active':''"
+                                routerLink="{{componentRoutes.GENERAL_SUGGESTION_BASE}}">General Suggestion</button>
+
+                            <button type="button" data-number="22" (click)="clearPage()"
+                                (click)="getTitleName(constants.CONFIGURATIONS); "
+                                [ngClass]="activeClass==componentRoutes.AVATAR_BASE?'active':''"
+                                routerLink="{{componentRoutes.AVATAR_BASE}}">Avatar</button>
+
+                            <button type="button" data-number="23" (click)="clearPage()"
+                                (click)="getTitleName(constants.CONFIGURATIONS); "
+                                [ngClass]="activeClass==componentRoutes.TERMS_AND_CONDITIONS_BASE?'active':''"
+                                routerLink="{{componentRoutes.TERMS_AND_CONDITIONS_BASE}}">Terms & Condition</button>
+
+                            <button type="button" data-number="24" (click)="clearPage()"
+                                (click)="getTitleName(constants.CONFIGURATIONS); "
+                                [ngClass]="activeClass==componentRoutes.PRIVACY_POLICY_BASE?'active':''"
+                                routerLink="{{componentRoutes.PRIVACY_POLICY_BASE}}">Privacy Policy</button>
+                            <button type="button" data-number="25" (click)="clearPage()"
+                                (click)="getTitleName(constants.FAQ); "
+                                [ngClass]="activeClass==componentRoutes.FAQ_BASE_ROUTE?'active':''"
+                                routerLink="{{componentRoutes.FAQ_BASE_ROUTE}}">FAQ's</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- SIDEBAR END -->

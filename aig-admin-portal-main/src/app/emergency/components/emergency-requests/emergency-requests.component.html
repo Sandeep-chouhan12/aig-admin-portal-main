@@ -1,0 +1,169 @@
+<!-- Emergency Requestsed -->
+<div class="table_container content  d-flex flex-column justify-content-between h-100" data-number="9">
+    <div>
+        <div class="Officer_table">
+            <h4 class="fs-20 fw-600 dark mb-0">Emergency Service History</h4>
+        </div>
+        <div class="table-pagination page-nav empty"
+            *ngIf="emergencyRequests.length==0 && (loaderService.isDataLoaded | async)">
+            <h4 class="primary mb-0 fs-26 fw-600">{{constant.NOT_EMERGENCY_REQUEST}}</h4>
+        </div>
+        <div class="table-responsive table-data" *ngIf="emergencyRequests.length!=0">
+            <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading">Requestsed User Name</th>
+                        <th scope="col" class="fs-14 fw-500 theading">User Contact</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Emergency</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Emergency Type</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Address</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Block Code</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Request Date & Time</th>
+                        <th scope="col" class="fs-14 fw-500 theading status_img">Status
+                            <img *ngIf="sortIsActive==sortStatus.All" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.All)">
+                            <img *ngIf="sortIsActive==sortStatus.PENDING" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.PENDING)">
+                            <img *ngIf="sortIsActive==sortStatus.RESOLVED" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.RESOLVED)">
+
+                        </th>
+                        <th scope="col" class="fs-14 fw-500 theading">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let obj of emergencyRequests">
+                        <td>
+                            <div class="d-flex align-items-center cur-point"
+                                (click)="navigateToComponent(componentRoutes.ADMIN_HOME+'/'+componentRoutes.USER_DETAILS_BASE+'/'+obj.userId)">
+                                <img [src]="obj.profilePicture" class="address_icon">
+                                <div class="varification_officer">
+                                    <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2">{{obj.firstName+' '+obj.lastName}}
+                                    </h5>
+                                    <!-- <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2">@olivia</h4> -->
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{obj.phoneNumber}}</td>
+                        <td class="fs-14 fw-500 info"><span class="Emergency_icon"><img
+                                    [src]="obj.emergencyImage"></span>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{obj.emergencyType}}</td>
+                         <td class="fs-14 fw-500 info">
+                            <div [ngClass]="{ 'truncate': !(obj.id==id) , 'expanded': obj.id==id }">
+                             {{ obj.expanded || (obj.address.length || 0) <= 91 ? obj.address : (obj.id != id ? (obj.address | slice:0:91) + '...' : (obj.address )) }}</div>
+                                    <a *ngIf="obj.address && obj.address.length > 91"
+                                        class="text-primary d-block mt-1" href="javascript:void(0)"
+                                        (click)="setId(obj.id)">
+                                        {{ (obj.id==id ) ? 'Show Less' : 'Show More' }}
+                                    </a>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{obj.blockCode}}</td>
+                        <td class="fs-14 fw-500 info">{{obj.date | date:'short'}}</td>
+                        <td>
+                            <button class="status_btn "
+                                [ngClass]="obj.requestStatus=='Pending'?'pending_btn':'Verified_btn'">{{obj.requestStatus}}</button>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <a data-bs-target="#Emergencyrequest" data-bs-toggle="modal"
+                                    (click)="setEmergencyRequestHistoryResponse(obj)"><img
+                                        src="assets/images/svg_img/edit-icon.svg" class="add_icons"></a>
+                                <a (click)="emergencyId = obj.id"><img src="assets/images/svg_img/Trash.svg" *appHasPermission="{ title: permissionTitle.EMERGENCY, accessType: permissionType.DELETE }"
+                                        data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                            </div>
+                        </td>
+
+                       
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <app-pagination [pageManager]="pagination" [pageRequest]="pageRequest" [data]="emergencyRequests"
+        (fetchData)="getAllEmergencyServiceHistory()"
+        *ngIf="pagination.totalElements>pageRequest.pageSize"></app-pagination>
+</div>
+
+<!--  View Emergency Request MODAL -->
+<div class="modal fade" id="Emergencyrequest" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <div class="d-flex justify-content-between align-items-center mb_20 flex-wrap gap-2">
+                <h3 class="fs-18 fw-600 primary mb-0">View Emergency Request</h3>
+                <div class="d-flex gap-2 button-end">
+                    <button class="status_btn "
+                        [ngClass]="emergencyRequestHistoryResponse.requestStatus=='Pending'?'pending_btn':'Verified_btn'">{{emergencyRequestHistoryResponse.requestStatus}}</button>
+                    <a target="_blank"
+                        [href]="'http://maps.google.com/maps?saddr=&daddr=' + emergencyRequestHistoryResponse.latitude + ',' + emergencyRequestHistoryResponse.longitude + '&directionsmode=driving'"
+                        class="Emergency_btn fs-15 fw-500 text_small"><img
+                            src="assets/images/svg_img/direction.svg"></a>
+                </div>
+            </div>
+            <div class="row mb_20 gy-3">
+                <div class="col-md-2">
+                    <img class="modal_profile" [src]="emergencyRequestHistoryResponse.profilePicture">
+                </div>
+                <div class="col-md-10 user_details">
+
+                    <div class="row mb_20 gy-3">
+                        <div class="col-md-4 col-sm-4">
+                            <h3>User Name</h3>
+                            <h4>{{emergencyRequestHistoryResponse.firstName +'
+                                '+emergencyRequestHistoryResponse.lastName}}</h4>
+                        </div>
+                        <div class="col-md-4  col-sm-4">
+                            <h3>Phone Number</h3>
+                            <h4>{{emergencyRequestHistoryResponse.phoneNumber}}</h4>
+                        </div>
+                        <div class="col-md-4  col-sm-4">
+                            <h3>Emergency Type</h3>
+                            <h4>{{emergencyRequestHistoryResponse.emergencyType}}</h4>
+                        </div>
+                    </div>
+                    <div class="row gy-3">
+                        <div class="col-md-4  col-sm-4">
+                            <h3>Request Date Time</h3>
+                            <h4>{{emergencyRequestHistoryResponse.date| date:'medium'}}</h4>
+                        </div>
+                        <div class="col-md-4  col-sm-4">
+                            <h3>Block Code</h3>
+                            <h4>{{emergencyRequestHistoryResponse.blockCode}}</h4>
+                        </div>
+                        <div class="col-md-4  col-sm-4">
+                            <h3>Emergency Icon</h3>
+                            <span class="view_Emergency_icon"><img
+                                    [src]="emergencyRequestHistoryResponse.emergencyImage"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="address_card mb_20">
+                <h3 class="fs-18 fw-500 info mb_8">Address</h3>
+                <h4 class="fs-16 fw-500 text_small mb-1">ABUM-5W149X</h4>
+                <h5 class="fs-15 fw-500 warrning mb-0">{{emergencyRequestHistoryResponse.address}}</h5>
+            </div>
+
+            <h3 class="fs-16 fw-600 mb_20 theading">Assigned Operator</h3>
+            <div class="row mb_20 Emergency_details gy-3">
+                <div class="col-md-4  col-sm-4">
+                    <h3>Assigned Operator Name</h3>
+                    <h4>{{emergencyRequestHistoryResponse.emergencyOfficerResponse.firstName+'
+                        '+emergencyRequestHistoryResponse.emergencyOfficerResponse.lastName}}</h4>
+                </div>
+                <div class="col-md-4  col-sm-4">
+                    <h3>Assigned Operator Contact</h3>
+                    <h4>{{emergencyRequestHistoryResponse.emergencyOfficerResponse.phoneNumber}}</h4>
+                </div>
+                <div class="col-md-4  col-sm-4">
+                    <h3>Assigned Operator Emergency Type</h3>
+                    <h4>{{emergencyRequestHistoryResponse.emergencyOfficerResponse.emergencyService.name}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- View Emergency Request MODAL END -->
+<app-delete-modal (onDelete)="deleteEmergencyHistory()"></app-delete-modal>

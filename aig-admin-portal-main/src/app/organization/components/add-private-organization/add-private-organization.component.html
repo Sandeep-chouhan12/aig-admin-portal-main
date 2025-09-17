@@ -1,0 +1,1632 @@
+<div class="container h-100">
+  <div class="d-flex flex-column gap-4 h-100">
+    <div class="progressBar">
+      <div
+        id="checkout-progress"
+        [class]="'step-' + currentSection"
+        [attr.data-current-step]="currentSection"
+      >
+        <div class="progressBar">
+          <!-- Step 1 -->
+          <div
+            class="step step-1"
+            [class.active]="currentSection > 0"
+            [class.completed]="
+              personalInformationRequest.valid && currentSection > 1
+            "
+          >
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+              <path
+                [attr.stroke]="
+                  personalInformationRequest.valid ? '#4CAF50' : '#777777'
+                "
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                stroke-width="1.5"
+              />
+            </svg>
+            <div class="step-label">
+              Basic <span class="mobile-hide">Info</span>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div
+            class="step step-2"
+            [class.active]="currentSection > 1"
+            [class.completed]="
+              businessInformationRequest.valid && currentSection > 2
+            "
+          >
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+              <path
+                [attr.stroke]="
+                  businessInformationRequest.valid ? '#4CAF50' : '#777777'
+                "
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                stroke-width="1.5"
+              />
+            </svg>
+            <div class="step-label">
+              Business <span class="mobile-hide">verification</span>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div
+            class="step step-3"
+            [class.active]="currentSection > 2"
+            [class.completed]="
+              directorInformationRequest.valid && currentSection > 3
+            "
+          >
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+              <path
+                [attr.stroke]="
+                  directorInformationRequest.valid ? '#4CAF50' : '#777777'
+                "
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                stroke-width="1.5"
+              />
+            </svg>
+            <div class="step-label">
+              Director <span class="mobile-hide">verification</span>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step step-4" [class.active]="currentSection > 3">
+            <svg width="15" height="12" viewBox="0 0 15 12" fill="none">
+              <path
+                stroke="#777777"
+                d="M1.04297 7.04327L4.68583 11.216L13.793 0.78418"
+                stroke-width="1.5"
+              />
+            </svg>
+            <div class="step-label">
+              Review <span class="mobile-hide">and Finish</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content verification -->
+    <div class="Verify-details d-flex flex-column overflow-hidden">
+      <!-- personal information -->
+      <div class="verification-scrollbar-section">
+        <form [formGroup]="registrationForm">
+          <section id="section1" class="sections1" style="display: block">
+            <div class="d-flex flex-column gap-4">
+              <!-- Company information -->
+              <div
+                class="d-flex flex-column gap-4"
+                formGroupName="personalInformationRequest"
+              >
+                <div class="d-flex flex-column gap-2">
+                  <h2 class="fs-20 fw-500 black mb-0">Company Info</h2>
+                  <h3 class="fs-16 fw-400 info mb-0">
+                    Enter the legal name and verified identity of the authorized
+                    person for this private organization.
+                  </h3>
+                </div>
+                <!-- Logo -->
+                <h2 class="fs-16 fw-500 black mb-0">Logo</h2>
+                <div class="d-flex">
+                  <div class="position-relative d-flex justify-content-center">
+                    <input
+                      type="file"
+                      id="file1"
+                      (change)="onFileChangeLogo($event, 'companyLogo')"
+                      class="d-none"
+                    />
+                    <img
+                      class="modal_profile"
+                      id="companyLogo"
+                      [src]="companyLogo ? companyLogo : appUtil.DEFAULT_IMAGE"
+                    />
+                    <label class="-label" for="file1">
+                      <a
+                        class="secondary fs-16 fw-500 edit_img d-flex justify-content-center align-items-center"
+                      >
+                        <i class="fi fi-sr-pencil white lh-0 fs-14"></i>
+                      </a>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  *ngIf="
+                    f['personalInformationRequest'].get('companyLogo')
+                      ?.touched &&
+                    f['personalInformationRequest'].get('companyLogo')?.invalid
+                  "
+                  class="error"
+                >
+                  <div
+                    *ngIf="f['personalInformationRequest'].get('companyLogo')?.errors?.['required']"
+                  >
+                    Company logo is required
+                  </div>
+
+                  <div
+                    *ngIf="f['personalInformationRequest'].get('companyLogo')?.errors?.['invalidFileType']"
+                  >
+                    Only JPG/PNG images are allowed
+                  </div>
+
+                  <div
+                    *ngIf="f['personalInformationRequest'].get('companyLogo')?.errors?.['fileTooLarge']"
+                  >
+                    Logo must be less than 5MB
+                  </div>
+                </div>
+
+                <!-- Input fields -->
+                <div class="row gy-4">
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <!-- {{registrationForm.value | json}} -->
+                      <label for="companyName" class="black fs-16 fw-400 mb-0"
+                        >Name</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="companyName"
+                          class="form-control profile_edit"
+                          formControlName="companyName"
+                          placeholder="Enter Name"
+                          [readonly]="updateMode"
+                        />
+                        <div
+                          *ngIf="f['personalInformationRequest'].get('companyName')?.touched && 
+                                        f['personalInformationRequest'].get('companyName')?.errors?.['required']"
+                          class="error"
+                        >
+                          Company name is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label for="phoneNumber" class="black fs-16 fw-400 mb-0"
+                        >Phone Number</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="phoneNumber"
+                          class="form-control profile_edit"
+                          formControlName="phoneNumber"
+                          placeholder="+234 8102585888"
+                          id="phoneInput"
+                          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                          [readonly]="updateMode"
+                        />
+
+                        <div
+                          *ngIf="
+                            f['personalInformationRequest'].get('phoneNumber')
+                              ?.invalid &&
+                            f['personalInformationRequest'].get('phoneNumber')
+                              ?.touched
+                          "
+                        >
+                          <p
+                            class="error"
+                            *ngIf="f['personalInformationRequest'].get('phoneNumber')?.errors?.['pattern']"
+                          >
+                            Phone Number is invalid
+                          </p>
+                          <p
+                            class="error"
+                            *ngIf="f['personalInformationRequest'].get('phoneNumber')?.errors?.['required']"
+                          >
+                            Phone Number is required
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label for="email" class="black fs-16 fw-400 mb-0"
+                        >Email</label
+                      >
+                      <div>
+                        <input
+                          type="email"
+                          id="email"
+                          class="form-control profile_edit"
+                          formControlName="email"
+                          placeholder=" Enter Email"
+                          [readonly]="updateMode"
+                        />
+                        <div
+                          *ngIf="f['personalInformationRequest'].get('email')?.touched && 
+                                        f['personalInformationRequest'].get('email')?.errors?.['required']"
+                          class="error"
+                        >
+                          Email is required
+                        </div>
+                        <div
+                          *ngIf="f['personalInformationRequest'].get('email')?.touched && 
+                                        f['personalInformationRequest'].get('email')?.errors?.['email']"
+                          class="error"
+                        >
+                          Please enter a valid email address
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="borderBottom"></div>
+
+              <!-- Representative information -->
+              <div
+                class="d-flex flex-column gap-4"
+                formGroupName="personalInformationRequest"
+              >
+                <div class="d-flex flex-column gap-2">
+                  <h2 class="fs-20 fw-500 black mb-0">Representative</h2>
+                  <h3 class="fs-16 fw-400 info mb-0">
+                    Enter the legal name and verified identity of the authorized
+                    person for this private organization.
+                  </h3>
+                </div>
+
+                <!-- Input fields -->
+                <div class="row gy-4">
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label for="firstName" class="black fs-16 fw-400 mb-0"
+                        >Legal First name</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="firstName"
+                          class="form-control profile_edit"
+                          formControlName="firstName"
+                          placeholder="Enter First name"
+                        />
+                        <div
+                          *ngIf="f['personalInformationRequest'].get('firstName')?.touched && 
+                                        f['personalInformationRequest'].get('firstName')?.errors?.['required']"
+                          class="error"
+                        >
+                          First name is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label for="lastName" class="black fs-16 fw-400 mb-0"
+                        >Legal Last name</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="lastName"
+                          class="form-control profile_edit"
+                          formControlName="lastName"
+                          placeholder="Enter Last name"
+                        />
+                        <div
+                          *ngIf="f['personalInformationRequest'].get('lastName')?.touched && 
+                                        f['personalInformationRequest'].get('lastName')?.errors?.['required']"
+                          class="error"
+                        >
+                          Last name is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Identification tabs section -->
+              <div
+                class="d-flex flex-column gap-3 tab-list"
+                formGroupName="personalInformationRequest"
+              >
+                <h3 class="fs-16 medium black mb-0">Means of identification</h3>
+                <ul class="nav nav-pills gap-4" id="pills-tab" role="tablist">
+                  <li class="nav-item tabs" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="pills-home-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-NINcard"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-NINcard1"
+                      aria-selected="true"
+                      [class.active]="
+                        f['personalInformationRequest'].get('userIdentityType')
+                          ?.value === 'NIN_CARD'
+                      "
+                      (click)="
+                        selectOption(
+                          'personalInformationRequest.userIdentityType',
+                          'NIN_CARD',
+                          'personalInformationRequest'
+                        )
+                      "
+                    >
+                      NIN card
+                    </button>
+                  </li>
+                  <li class="nav-item tabs" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-profile-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-Passport"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-Passport1"
+                      aria-selected="false"
+                      [class.active]="
+                        f['personalInformationRequest'].get('userIdentityType')
+                          ?.value === 'PASSPORT'
+                      "
+                      (click)="
+                        selectOption(
+                          'personalInformationRequest.userIdentityType',
+                          'PASSPORT',
+                          'personalInformationRequest'
+                        )
+                      "
+                    >
+                      Passport
+                    </button>
+                  </li>
+                  <li class="nav-item tabs" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="pills-contact-tab"
+                      data-bs-toggle="pill"
+                      data-bs-target="#pills-Driverslicense"
+                      type="button"
+                      role="tab"
+                      aria-controls="pills-Driverslicense1"
+                      aria-selected="false"
+                      [class.active]="
+                        f['personalInformationRequest'].get('userIdentityType')
+                          ?.value === 'DRIVERS_LICENCSE'
+                      "
+                      (click)="
+                        selectOption(
+                          'personalInformationRequest.userIdentityType',
+                          'DRIVERS_LICENCSE',
+                          'personalInformationRequest'
+                        )
+                      "
+                    >
+                      Drivers license
+                    </button>
+                  </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                  <div
+                    class="tab-pane fade show active"
+                    id="pills-NINcard"
+                    role="tabpanel"
+                    aria-labelledby="pills-home-tab"
+                    tabindex="0"
+                  >
+                    <div class="col-md-12">
+                      <div class="d-flex flex-column gap-2">
+                        <label
+                          for="userIdentityNumber"
+                          class="black fs-16 fw-400 mb-0"
+                          >NIN Number</label
+                        >
+                        <div>
+                          <div>
+                            <input
+                              type="text"
+                              id="userIdentityNumber"
+                              class="form-control profile_edit"
+                              formControlName="userIdentityNumber"
+                              placeholder="97864531255"
+                            />
+                            <div
+                              *ngIf="
+                                f['personalInformationRequest'].get(
+                                  'userIdentityNumber'
+                                )?.touched &&
+                                f['personalInformationRequest'].get(
+                                  'userIdentityNumber'
+                                )?.errors
+                              "
+                              class="error"
+                            >
+                              <div
+                                *ngIf="f['personalInformationRequest'].get('userIdentityNumber')?.errors?.['required']"
+                                class="error"
+                              >
+                                NIN number is required
+                              </div>
+                              <div
+                                *ngIf="f['personalInformationRequest'].get('userIdentityNumber')?.errors?.['pattern']"
+                                class="error"
+                              >
+                                Enter valid NIN number
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane fade"
+                    id="pills-Passport"
+                    role="tabpanel"
+                    aria-labelledby="pills-profile-tab"
+                    tabindex="0"
+                  >
+                    <div class="col-md-12">
+                      <div class="d-flex flex-column gap-2">
+                        <label
+                          for="userIdentityNumber"
+                          class="black fs-16 fw-400 mb-0"
+                          >Passport number</label
+                        >
+                        <div>
+                          <input
+                            type="text"
+                            id="userIdentityNumber"
+                            class="form-control profile_edit"
+                            formControlName="userIdentityNumber"
+                            placeholder="A1234567"
+                          />
+                          <div
+                            *ngIf="
+                              f['personalInformationRequest'].get(
+                                'userIdentityNumber'
+                              )?.touched &&
+                              f['personalInformationRequest'].get(
+                                'userIdentityNumber'
+                              )?.errors
+                            "
+                            class="error"
+                          >
+                            <div
+                              *ngIf="f['personalInformationRequest'].get('userIdentityNumber')?.errors?.['required']"
+                              class="error"
+                            >
+                              Passport number is required
+                            </div>
+                            <div
+                              *ngIf="f['personalInformationRequest'].get('userIdentityNumber')?.errors?.['pattern']"
+                              class="error"
+                            >
+                              Enter valid passport number
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="tab-pane fade"
+                    id="pills-Driverslicense"
+                    role="tabpanel"
+                    aria-labelledby="pills-contact-tab"
+                    tabindex="0"
+                  >
+                    <div class="col-md-12">
+                      <div class="d-flex flex-column gap-2">
+                        <label
+                          for="userIdentityNumber"
+                          class="black fs-16 fw-400 mb-0"
+                          >Drivers license number</label
+                        >
+                        <div>
+                          <input
+                            type="text"
+                            id="userIdentityNumber"
+                            class="form-control profile_edit"
+                            formControlName="userIdentityNumber"
+                            placeholder="AS354354546465"
+                          />
+                          <div
+                            *ngIf="
+                              f['personalInformationRequest'].get(
+                                'userIdentityNumber'
+                              )?.touched &&
+                              f['personalInformationRequest'].get(
+                                'userIdentityNumber'
+                              )?.errors
+                            "
+                            class="error"
+                          >
+                            <div
+                              *ngIf="f['personalInformationRequest'].get('userIdentityNumber')?.errors?.['required']"
+                              class="error"
+                            >
+                              Drivers license number is required
+                            </div>
+                            <div
+                              *ngIf="f['personalInformationRequest'].get('userIdentityNumber')?.errors?.['pattern']"
+                              class="error"
+                            >
+                              Enter valid drivers license number
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="d-flex flex-column gap-4 tab-list"
+                formGroupName="personalInformationRequest"
+              >
+                <h3 class="fs-16 medium black mb-0">
+                  Physical address verification
+                </h3>
+
+                <!-- Tab Selection -->
+                <ul class="nav nav-pills gap-4" role="tablist">
+                  <li class="nav-item">
+                    <button
+                      class="nav-link"
+                      [class.active]="
+                        f['personalInformationRequest'].get(
+                          'userAddressVerificationType'
+                        )?.value === 'UTILITY_BILL'
+                      "
+                      (click)="selectAddressMethod('personal', 'UTILITY_BILL')"
+                    >
+                      Utility bill
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button
+                      class="nav-link"
+                      [class.active]="
+                        f['personalInformationRequest'].get(
+                          'userAddressVerificationType'
+                        )?.value === 'AIG_BLOCKCODE'
+                      "
+                      (click)="selectAddressMethod('personal', 'AIG_BLOCKCODE')"
+                    >
+                      AIG blockcode
+                    </button>
+                  </li>
+                </ul>
+
+                <!-- Default Selection Error -->
+                <div
+                  *ngIf="
+                    f['personalInformationRequest'].get(
+                      'userAddressVerificationType'
+                    )?.touched &&
+                    f['personalInformationRequest'].get(
+                      'userAddressVerificationType'
+                    )?.invalid
+                  "
+                  class="error"
+                >
+                  Please select an address verification type.
+                </div>
+
+                <!-- Utility Bill Validation Error -->
+                <div
+                  *ngIf="
+                    f['personalInformationRequest'].get(
+                      'userAddressVerificationType'
+                    )?.value === 'UTILITY_BILL'
+                  "
+                >
+                  <div
+                    *ngIf="
+                      f['personalInformationRequest'].get(
+                        'userPhysicalAddressDetail'
+                      )?.touched &&
+                      f['personalInformationRequest'].get(
+                        'userPhysicalAddressDetail'
+                      )?.invalid
+                    "
+                    class="error"
+                  >
+                    <div
+                      *ngIf="f['personalInformationRequest'].get('userPhysicalAddressDetail')?.errors?.['required']"
+                    >
+                      Utility bill is required
+                    </div>
+
+                    <div
+                      *ngIf="f['personalInformationRequest'].get('userPhysicalAddressDetail')?.errors?.['invalidFiletype']"
+                    >
+                      Only JPG/PNG images are allowed
+                    </div>
+
+                    <div
+                      *ngIf="f['personalInformationRequest'].get('userPhysicalAddressDetail')?.errors?.['maxFileSizeExceeded']"
+                    >
+                      Logo must be less than 5MB
+                    </div>
+                  </div>
+                </div>
+                <!-- AIG Blockcode Validation Error -->
+                <div
+                  *ngIf="
+                    f['personalInformationRequest'].get(
+                      'userAddressVerificationType'
+                    )?.value === 'AIG_BLOCKCODE'
+                  "
+                >
+                  <div
+                    *ngIf="
+                      f['personalInformationRequest'].get(
+                        'userPhysicalAddressAIGBlockeCode'
+                      )?.touched &&
+                      f['personalInformationRequest'].get(
+                        'userPhysicalAddressAIGBlockeCode'
+                      )?.invalid
+                    "
+                  >
+                    <span
+                      *ngIf=" 
+                f['personalInformationRequest'].get('userPhysicalAddressAIGBlockeCode')?.errors?.['required']"
+                      class="error"
+                      >Aig block code is required.
+                    </span>
+
+                    <span
+                      class="error"
+                      *ngIf=" personalInformationRequest.get('userPhysicalAddressAIGBlockeCode')?.errors?.['pattern']"
+                      >Invalid Aig code</span
+                    >
+                  </div>
+                  <!-- Please enter a valid AIG blockcode. -->
+                </div>
+
+                <!-- Utility Bill Upload -->
+                <div
+                  *ngIf="
+                    f['personalInformationRequest'].get(
+                      'userAddressVerificationType'
+                    )?.value === 'UTILITY_BILL'
+                  "
+                >
+                  <div class="position-relative file-select-box">
+                    <div
+                      *ngIf="
+                        f['personalInformationRequest'].get(
+                          'userPhysicalAddressDetail'
+                        )?.invalid ||
+                        !f['personalInformationRequest'].get(
+                          'userPhysicalAddressDetail'
+                        )?.value
+                      "
+                    >
+                      <input
+                        type="file"
+                        class="input_feilds file-select d-none"
+                        id="personalUtilityBillImage"
+                        accept="image/png, image/gif, image/jpeg"
+                        (change)="
+                          onFileChange(
+                            $event,
+                            'personal',
+                            'personalUtilityBill'
+                          )
+                        "
+                      />
+                      <label
+                        class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                        for="personalUtilityBillImage"
+                      >
+                        <img
+                          src="assets/images/svg_img/plus-upload.svg"
+                          height="16"
+                          width="16"
+                        />
+                        Upload Utility bill
+                      </label>
+                    </div>
+                    <div
+                      class="verify-img-preview"
+                      *ngIf="
+                        f['personalInformationRequest'].get(
+                          'userPhysicalAddressDetail'
+                        )?.value &&
+                        f['personalInformationRequest'].get(
+                          'userPhysicalAddressDetail'
+                        )?.valid
+                      "
+                    >
+                      <img
+                        alt="Preview"
+                        class="verify-img"
+                        id="personalUtilityBill"
+                        [src]="
+                          f['personalInformationRequest'].get(
+                            'userPhysicalAddressDetail'
+                          )?.value
+                        "
+                      />
+                      <div class="bg-verify-img-close">
+                        <img
+                          src="assets/images/svg_img/modal-close.svg"
+                          (click)="removeFile('personal')"
+                          class="cursor-pointer verify-img-close"
+                          height="16"
+                          width="16px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- AIG Blockcode Input -->
+                <div
+                  *ngIf="
+                    f['personalInformationRequest'].get(
+                      'userAddressVerificationType'
+                    )?.value === 'AIG_BLOCKCODE'
+                  "
+                >
+                  <input
+                    type="text"
+                    class="form-control profile_edit"
+                    formControlName="userPhysicalAddressAIGBlockeCode"
+                    placeholder=" Enter AIG blockcode"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+
+        <form [formGroup]="registrationForm">
+          <!-- Business Verification -->
+          <section id="section2" class="sections2" style="display: none">
+            <div
+              class="d-flex flex-column gap-4"
+              formGroupName="businessInformationRequest"
+            >
+              <!-- Business information -->
+              <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-column gap-2">
+                  <h2 class="fs-20 fw-500 black mb-0">Business Verification</h2>
+                  <h3 class="fs-16 fw-400 info mb-0">
+                    Provide verified business details and address proof to
+                    complete business verification.
+                  </h3>
+                </div>
+
+                <!-- Input fields -->
+                <div class="row gy-4">
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label for="businessName" class="black fs-16 fw-400 mb-0"
+                        >Business name</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="businessName"
+                          class="form-control profile_edit"
+                          formControlName="businessName"
+                          placeholder="Enter Business name"
+                        />
+                        <div
+                          *ngIf="f['businessInformationRequest'].get('businessName')?.touched && 
+                                        f['businessInformationRequest'].get('businessName')?.errors?.['required']"
+                          class="error"
+                        >
+                          Business name is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Address Verification Type Select -->
+                  <div class="col-md-6 position-relative">
+                    <div class="w-100 select d-flex flex-column gap-2">
+                      <label for class="black fs-16 fw-400 mb-0">Type</label>
+                      <div class="custom-select-wrapper">
+                        <div class="custom-select position-relative">
+                          <div
+                            id="selectType"
+                            class="select-display form-select d-flex justify-content-between align-items-center"
+                          >
+                            <!-- <span class="fs-14 regular">Select
+                                                            Type</span> -->
+
+                            <span
+                              class="fs-14 regular"
+                              *ngIf="selectedBusinessTypeName; else showDefault"
+                            >
+                              {{ selectedBusinessTypeName }}
+                            </span>
+                            <ng-template #showDefault>
+                              <span class="fs-14 regular">Select Type</span>
+                            </ng-template>
+                            <img
+                              src="assets/images/svg_img/arrow-select.svg"
+                              height="18"
+                              width="18"
+                            />
+                          </div>
+
+                          <div class="dropdown-options">
+                            <h5
+                              class="dropdown-options-list fs-15 fw-400 mb-0"
+                              *ngFor="let type of businessTypes"
+                              id="{{ 'businessType' + type.id }}"
+                              (click)="selectBusinessType(type)"
+                            >
+                              {{ type.type }}
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="f['businessInformationRequest'].get('businessType')?.touched && 
+                                            f['businessInformationRequest'].get('businessType')?.errors?.['required']"
+                        class="error"
+                      >
+                        Business type is required
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label
+                        for="businessPhysicalAddress"
+                        class="black fs-16 fw-400 mb-0"
+                        >Business physical address</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="businessPhysicalAddress"
+                          class="form-control profile_edit"
+                          formControlName="businessPhysicalAddress"
+                          placeholder="Enter Business physical address"
+                        />
+                        <div
+                          *ngIf="f['businessInformationRequest'].get('businessPhysicalAddress')?.touched && 
+                                        f['businessInformationRequest'].get('businessPhysicalAddress')?.errors?.['required']"
+                          class="error"
+                        >
+                          Business address is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label
+                        for="registrationNumber"
+                        class="black fs-16 fw-400 mb-0"
+                        >Registration number</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="registrationNumber"
+                          class="form-control profile_edit"
+                          formControlName="registrationNumber"
+                          placeholder="Enter Registration number"
+                        />
+                        <div
+                          *ngIf="f['businessInformationRequest'].get('registrationNumber')?.touched && 
+                                        f['businessInformationRequest'].get('registrationNumber')?.errors?.['required']"
+                          class="error"
+                        >
+                          Registration number is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="d-flex flex-column gap-2">
+                      <label
+                        for="taxIdentificationNumber"
+                        class="black fs-16 fw-400 mb-0"
+                        >Tax Identification Number</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="taxIdentificationNumber"
+                          class="form-control profile_edit"
+                          formControlName="taxIdentificationNumber"
+                          placeholder="Enter Tax Identification Number"
+                        />
+                        <div
+                          *ngIf="f['businessInformationRequest'].get('taxIdentificationNumber')?.touched && 
+                                        f['businessInformationRequest'].get('taxIdentificationNumber')?.errors?.['required']"
+                          class="error"
+                        >
+                          TIN is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Business address verification tabs section -->
+              <div class="d-flex flex-column gap-4 tab-list">
+                <h3 class="fs-16 medium black mb-0">
+                  Business address verification
+                </h3>
+
+                <!-- Tab Selection -->
+                <ul class="nav nav-pills gap-4" role="tablist">
+                  <li class="nav-item">
+                    <button
+                      class="nav-link"
+                      [class.active]="
+                        f['businessInformationRequest'].get(
+                          'businessAddressVerificationType'
+                        )?.value === 'UTILITY_BILL'
+                      "
+                      (click)="selectAddressMethod('business', 'UTILITY_BILL')"
+                    >
+                      Utility bill
+                    </button>
+                  </li>
+
+                  <li class="nav-item">
+                    <button
+                      class="nav-link"
+                      [class.active]="
+                        f['businessInformationRequest'].get(
+                          'businessAddressVerificationType'
+                        )?.value === 'AIG_BLOCKCODE'
+                      "
+                      (click)="selectAddressMethod('business', 'AIG_BLOCKCODE')"
+                    >
+                      AIG blockcode
+                    </button>
+                  </li>
+                </ul>
+
+                <!-- Default Selection Error -->
+                <div
+                  *ngIf="
+                    f['businessInformationRequest'].get(
+                      'businessAddressVerificationType'
+                    )?.touched &&
+                    f['businessInformationRequest'].get(
+                      'businessAddressVerificationType'
+                    )?.invalid
+                  "
+                  class="error"
+                >
+                  Please select an address verification type.
+                </div>
+
+                <!-- Utility Bill Validation Error -->
+                <div
+                  *ngIf="
+                    f['businessInformationRequest'].get(
+                      'businessAddressVerificationType'
+                    )?.value === 'UTILITY_BILL'
+                  "
+                >
+                  <div
+                    *ngIf="
+                      f['businessInformationRequest'].get(
+                        'businessPhysicalAddressDetail'
+                      )?.touched &&
+                      f['businessInformationRequest'].get(
+                        'businessPhysicalAddressDetail'
+                      )?.invalid
+                    "
+                    class="error"
+                  >
+                    <div
+                      *ngIf="f['businessInformationRequest'].get('businessPhysicalAddressDetail')?.errors?.['required']"
+                    >
+                      Utility Bill is required
+                    </div>
+
+                    <div
+                      *ngIf="f['businessInformationRequest'].get('businessPhysicalAddressDetail')?.errors?.['invalidFiletype']"
+                    >
+                      Only JPG/PNG images are allowed
+                    </div>
+
+                    <div
+                      *ngIf="f['businessInformationRequest'].get('businessPhysicalAddressDetail')?.errors?.['maxFileSizeExceeded']"
+                    >
+                      Logo must be less than 5MB
+                    </div>
+                  </div>
+                </div>
+
+                <!-- AIG Blockcode Validation Error -->
+                <div
+                  *ngIf="
+                    f['businessInformationRequest'].get(
+                      'businessAddressVerificationType'
+                    )?.value === 'AIG_BLOCKCODE'
+                  "
+                >
+                  <div
+                    *ngIf="
+                      f['businessInformationRequest'].get(
+                        'businessPhysicalAddressAIGBlockeCode'
+                      )?.touched &&
+                      f['businessInformationRequest'].get(
+                        'businessPhysicalAddressAIGBlockeCode'
+                      )?.invalid
+                    "
+                  >
+                    <span
+                      *ngIf=" 
+                f['businessInformationRequest'].get('businessPhysicalAddressAIGBlockeCode')?.errors?.['required']"
+                      class="error"
+                      >Aig block code is required.
+                    </span>
+
+                    <span
+                      class="error"
+                      *ngIf=" businessInformationRequest.get('businessPhysicalAddressAIGBlockeCode')?.errors?.['pattern']"
+                      >Invalid Aig code</span
+                    >
+                  </div>
+                </div>
+
+                <!-- Utility Bill Upload -->
+                <div
+                  *ngIf="
+                    f['businessInformationRequest'].get(
+                      'businessAddressVerificationType'
+                    )?.value === 'UTILITY_BILL'
+                  "
+                >
+                  <div class="position-relative file-select-box">
+                    <div
+                      *ngIf="
+                        f['businessInformationRequest'].get(
+                          'businessPhysicalAddressDetail'
+                        )?.invalid ||
+                        !f['businessInformationRequest'].get(
+                          'businessPhysicalAddressDetail'
+                        )?.value
+                      "
+                    >
+                      <input
+                        type="file"
+                        class="input_feilds file-select d-none"
+                        id="businessUtilityBill"
+                        accept="image/png, image/gif, image/jpeg"
+                        (change)="
+                          onFileChange(
+                            $event,
+                            'business',
+                            'businessUtilityBillImage'
+                          )
+                        "
+                      />
+                      <label
+                        class="font-16 font-400 primary w-75 gap-1 cursor-pointer"
+                        for="businessUtilityBill"
+                      >
+                        <img
+                          src="assets/images/svg_img/plus-upload.svg"
+                          height="16"
+                          width="16"
+                        />
+                        Upload Utility bill
+                      </label>
+                    </div>
+                    <div
+                      class="verify-img-preview"
+                      *ngIf="
+                        f['businessInformationRequest'].get(
+                          'businessPhysicalAddressDetail'
+                        )?.value &&
+                        f['businessInformationRequest'].get(
+                          'businessPhysicalAddressDetail'
+                        )?.valid
+                      "
+                    >
+                      <img
+                        alt="Preview"
+                        class="verify-img"
+                        id="businessUtilityBillImage"
+                        [src]="
+                          businessInformationRequest.get(
+                            'businessPhysicalAddressDetail'
+                          )?.value
+                        "
+                      />
+                      <div class="bg-verify-img-close">
+                        <img
+                          src="assets/images/svg_img/modal-close.svg"
+                          (click)="removeFile('business')"
+                          class="cursor-pointer verify-img-close"
+                          height="16"
+                          width="16px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- AIG Blockcode Input -->
+                <div
+                  *ngIf="
+                    f['businessInformationRequest'].get(
+                      'businessAddressVerificationType'
+                    )?.value === 'AIG_BLOCKCODE'
+                  "
+                >
+                  <input
+                    type="text"
+                    class="form-control profile_edit"
+                    formControlName="businessPhysicalAddressAIGBlockeCode"
+                    placeholder=" Enter AIG blockcode"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+
+        <form [formGroup]="registrationForm">
+          <!-- Director Verification-->
+          <section id="section3" class="sections3" style="display: none">
+            <div
+              class="d-flex flex-column gap-4"
+              formGroupName="directorInformationRequest"
+            >
+              <!-- Director verification information -->
+              <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-column gap-2">
+                  <h2 class="fs-20 fw-500 black mb-0">Director verification</h2>
+                  <h3 class="fs-16 fw-400 info mb-0">
+                    Confirm the identity and address of the organization's
+                    director with valid documentation.
+                  </h3>
+                </div>
+
+                <!-- Input fields -->
+                <div class="row gy-4">
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label for="directorName" class="black fs-16 fw-400 mb-0"
+                        >Name of Director</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="directorName"
+                          class="form-control profile_edit"
+                          formControlName="directorName"
+                          placeholder="Enter Name of director"
+                        />
+                        <div
+                          *ngIf="f['directorInformationRequest'].get('directorName')?.touched && 
+                                        f['directorInformationRequest'].get('directorName')?.errors?.['required']"
+                          class="error"
+                        >
+                          Director name is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="d-flex flex-column gap-2">
+                      <label
+                        for="directorPhysicalAddress"
+                        class="black fs-16 fw-400 mb-0"
+                        >Physical address</label
+                      >
+                      <div>
+                        <input
+                          type="text"
+                          id="directorPhysicalAddress"
+                          class="form-control profile_edit"
+                          formControlName="directorPhysicalAddress"
+                          placeholder="Enter Physical address"
+                        />
+                        <div
+                          *ngIf="f['directorInformationRequest'].get('directorPhysicalAddress')?.touched && 
+                                        f['directorInformationRequest'].get('directorPhysicalAddress')?.errors?.['required']"
+                          class="error"
+                        >
+                          Director address is required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex flex-column gap-3 tab-list">
+                <h3 class="fs-16 medium black mb-0">Means of identification</h3>
+                <ul class="nav nav-pills gap-4" id="pills-tab" role="tablist">
+                  <li class="nav-item tabs" role="presentation">
+                    <button
+                      class="nav-link"
+                      [class.active]="selectedDirectorIdType === 'NIN_CARD'"
+                      (click)="
+                        selectOption(
+                          'directorInformationRequest.directorIdentityType',
+                          'NIN_CARD',
+                          'directorInformationRequest'
+                        )
+                      "
+                    >
+                      NIN card
+                    </button>
+                  </li>
+                  <li class="nav-item tabs" role="presentation">
+                    <button
+                      class="nav-link"
+                      [class.active]="selectedDirectorIdType === 'PASSPORT'"
+                      (click)="
+                        selectOption(
+                          'directorInformationRequest.directorIdentityType',
+                          'PASSPORT',
+                          'directorInformationRequest'
+                        )
+                      "
+                    >
+                      Passport
+                    </button>
+                  </li>
+                  <li class="nav-item tabs" role="presentation">
+                    <button
+                      class="nav-link"
+                      [class.active]="
+                        selectedDirectorIdType === 'DRIVERS_LICENCSE'
+                      "
+                      (click)="
+                        selectOption(
+                          'directorInformationRequest.directorIdentityType',
+                          'DRIVERS_LICENCSE',
+                          'directorInformationRequest'
+                        )
+                      "
+                    >
+                      Drivers license
+                    </button>
+                  </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                  <!-- NIN Card -->
+                  <div
+                    class="tab-pane"
+                    [class.active]="selectedDirectorIdType === 'NIN_CARD'"
+                    role="tabpanel"
+                  >
+                    <div class="col-md-12">
+                      <div class="d-flex flex-column gap-2">
+                        <label for="ninNumber" class="black fs-16 fw-400 mb-0"
+                          >NIN Number</label
+                        >
+                        <div>
+                          <input
+                            type="text"
+                            id="ninNumber"
+                            class="form-control profile_edit"
+                            formControlName="directorIdentityNumber"
+                            placeholder="97864531255"
+                          />
+                          <div
+                            *ngIf="
+                              f['directorInformationRequest'].get(
+                                'directorIdentityNumber'
+                              )?.touched &&
+                              f['directorInformationRequest'].get(
+                                'directorIdentityNumber'
+                              )?.errors
+                            "
+                            class="error"
+                          >
+                            <div
+                              *ngIf="f['directorInformationRequest'].get('directorIdentityNumber')?.errors?.['required']"
+                            >
+                              NIN number is required
+                            </div>
+                            <div
+                              *ngIf="f['directorInformationRequest'].get('directorIdentityNumber')?.errors?.['pattern']"
+                            >
+                              NIN number is invalid
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Passport -->
+                  <div
+                    class="tab-pane"
+                    [class.active]="selectedDirectorIdType === 'PASSPORT'"
+                    role="tabpanel"
+                  >
+                    <div class="col-md-12">
+                      <div class="d-flex flex-column gap-2">
+                        <label
+                          for="passportNumber"
+                          class="black fs-16 fw-400 mb-0"
+                          >Passport number</label
+                        >
+                        <div>
+                          <input
+                            type="text"
+                            id="passportNumber"
+                            class="form-control profile_edit"
+                            formControlName="directorIdentityNumber"
+                            placeholder="A1234567"
+                          />
+                          <div
+                            *ngIf="
+                              f['directorInformationRequest'].get(
+                                'directorIdentityNumber'
+                              )?.touched &&
+                              f['directorInformationRequest'].get(
+                                'directorIdentityNumber'
+                              )?.errors
+                            "
+                            class="error"
+                          >
+                            <div
+                              *ngIf="f['directorInformationRequest'].get('directorIdentityNumber')?.errors?.['required']"
+                            >
+                              Passport number is required
+                            </div>
+                            <div
+                              *ngIf="f['directorInformationRequest'].get('directorIdentityNumber')?.errors?.['pattern']"
+                            >
+                              Passport number is invalid
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Driver's License -->
+                  <div
+                    class="tab-pane"
+                    [class.active]="
+                      selectedDirectorIdType === 'DRIVERS_LICENCSE'
+                    "
+                    role="tabpanel"
+                  >
+                    <div class="col-md-12">
+                      <div class="d-flex flex-column gap-2">
+                        <label
+                          for="licenseNumber"
+                          class="black fs-16 fw-400 mb-0"
+                          >Drivers license number</label
+                        >
+                        <div>
+                          <input
+                            type="text"
+                            id="licenseNumber"
+                            class="form-control profile_edit"
+                            formControlName="directorIdentityNumber"
+                            placeholder="AS354354546465"
+                          />
+                          <div
+                            *ngIf="
+                              f['directorInformationRequest'].get(
+                                'directorIdentityNumber'
+                              )?.touched &&
+                              f['directorInformationRequest'].get(
+                                'directorIdentityNumber'
+                              )?.errors
+                            "
+                            class="error"
+                          >
+                            <div
+                              *ngIf="f['directorInformationRequest'].get('directorIdentityNumber')?.errors?.['required']"
+                            >
+                              Drivers license number is required
+                            </div>
+                            <div
+                              *ngIf="f['directorInformationRequest'].get('directorIdentityNumber')?.errors?.['pattern']"
+                            >
+                              Enter valid drivers license number
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </form>
+
+        <!-- Review and finish-->
+        <section id="section4" class="sections4" style="display: none">
+          <div class="gap-40 d-flex flex-column">
+            <!-- personal information -->
+            <div class="d-flex flex-column gap-2">
+              <h2 class="fs-20 fw-500 black mb-0">Review and Finish</h2>
+              <h3 class="fs-16 fw-400 info mb-0">
+                Review the information provided in each section before
+                submitting your application.
+              </h3>
+            </div>
+
+            <div class="d-flex flex-column gap-4">
+              <!-- edit input -->
+              <div class="d-flex flex-column gap-4">
+                <div class="editor">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h3 class="primary fs-16 fw-600 mb-0">Basic Info</h3>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="navigateToSection(1)"
+                      class
+                    >
+                      <img
+                        src="assets/images/svg_img/edit-review.svg"
+                        height="24"
+                        width="24"
+                      />
+                    </a>
+                  </div>
+                </div>
+
+                <div class="editor">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h3 class="primary fs-16 fw-600 mb-0">
+                      Business verification
+                    </h3>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="navigateToSection(2)"
+                      class
+                    >
+                      <img
+                        src="assets/images/svg_img/edit-review.svg"
+                        height="24"
+                        width="24"
+                      />
+                    </a>
+                  </div>
+                </div>
+
+                <div class="editor">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h3 class="primary fs-16 fw-600 mb-0">
+                      Director verification
+                    </h3>
+                    <a
+                      href="javascript:void(0)"
+                      (click)="navigateToSection(3)"
+                      class
+                    >
+                      <img
+                        src="assets/images/svg_img/edit-review.svg"
+                        height="24"
+                        width="24"
+                      />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- checkbox -->
+              <form [formGroup]="registrationForm">
+                <div
+                  class="d-flex align-items-center gap-2"
+                  formGroupName="reviewInfo"
+                >
+                  <!-- Checkbox -->
+                  <label
+                    class="custom-checkbox position-relative cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      formControlName="finalAgreement"
+                      required
+                    />
+                    <span class="checkmark"></span>
+                  </label>
+                  <h5 class="fs-14 fw-400 info mb-0">
+                    By submitting this form, you agree to th
+                    <a
+                      class="primary cursor-pointer"
+                      [href]="'/Admin/Organization/terms-conditions'"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Terms of Service </a
+                    >, and
+
+                    <a
+                      class="primary cursor-pointer"
+                      [href]="'/Admin/Organization/privacy-policy'"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Privacy Policy </a
+                    >, to receiving text messages from AIG, and you certify that
+                    the information provided is complete and correct.
+                  </h5>
+                </div>
+                <div
+                  *ngIf="
+                    registrationForm.get('reviewInfo')?.get('finalAgreement')
+                      ?.invalid &&
+                    registrationForm.get('reviewInfo')?.get('finalAgreement')
+                      ?.touched
+                  "
+                  class="error"
+                  style="margin-top: 10px; margin-left: 27px"
+                >
+                  You must agree to the terms and conditions
+                </div>
+              </form>
+
+              <!-- Submit button -->
+              <!-- <button type="button" class="btn btn-primary" (click)="submitForm()">Submit
+                                        Application</button> -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- buttons -->
+      <div class="button-container d-flex justify-content-end">
+        <!-- <div class="btn btn-prev disabled"> previous step</div> -->
+        <button
+          class="btn_lg fs-16 fw-600 btn-next"
+          *ngIf="currentSection < 4"
+          (click)="nextSection()"
+        >
+          Continue
+        </button>
+        <!-- <div class="btn_lg fs-16 fw-600 btn-submit cursor-pointer" *ngIf="currentSection ==4" (click)="submitForm()">
+                    Submit
+                </div> -->
+
+        <button
+          class="primary-button font-16 medium right_menu_toggle"
+          [ngClass]="{ 'disable-click': isLoading }"
+          *ngIf="currentSection == 4"
+          (click)="!isLoading && submitForm()"
+        >
+          <!-- Show Submit/Update when not loading -->
+          <span *ngIf="!isLoading">
+            {{ updateMode ? "Update" : "Submit" }}
+          </span>
+
+          <!-- Show Spinner when loading -->
+          <div *ngIf="isLoading" class="spinner-border"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

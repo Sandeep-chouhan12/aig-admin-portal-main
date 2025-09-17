@@ -1,0 +1,65 @@
+<!-- Plans -->
+<div class="table_container content d-flex flex-column justify-content-between h-100" data-number="13">
+    <div>
+        <div class="Officer_table">
+            <div class="d-flex align-items-center justify-content-between">
+                <h4 class="fs-20 fw-600 dark mb-0">Support</h4>
+            </div>
+        </div>
+
+        <div class="table-responsive table-data">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 18%;">Full Name</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 18%;">Email</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 18%;">Phone number</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 18%;">Description</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 18%;">Created Date</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let obj of supportList">
+                        <td class="fs-14 fw-500 info">{{obj.fullName}}</td>
+                        <td class="fs-14 fw-500 info">{{obj.email}}</td>
+                        <td class="fs-14 fw-500 info">{{obj.phoneNumber}}</td>
+                        <!-- <td class="fs-14 fw-500 info">{{obj.description}}</td> -->
+
+                        <td class="fs-14 fw-500 info">
+                             <div [ngClass]="{ 'truncate': !(obj.supportId==id) , 'expanded': obj.supportId==id }">
+                             {{ obj.expanded || (obj?.description?.length || 0) <= 91 ? obj.description : (obj.supportId != id ? (obj.description | slice:0:91) + '...' : (obj.description )) }}</div>
+                                    <a *ngIf="obj.description && obj.description.length > 91"
+                                        class="text-primary d-block mt-1" href="javascript:void(0)"
+                                        (click)="setId(obj.supportId)">
+                                        {{ (obj.supportId==id ) ? 'Show Less' : 'Show More' }}
+                                    </a>
+                        </td>
+
+
+
+                        <td class="fs-14 fw-500 info">{{obj.createdDate | date:'dd/MM/YYYY'}} </td>
+
+                        <td>
+
+                            <a (click)="supportId=obj.supportId" *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.DELETE }"><img src="assets/images/svg_img/Trash.svg" 
+                                    data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tr *ngIf="supportList.length==0 &&(loaderService.isDataLoaded |async)">
+                    <td colspan="6">
+                         <div class="table-pagination page-nav empty" *ngIf="supportList.length==0">
+                        <h4 class="primary mb-0 fs-18 fw-600">No support requests found.</h4>
+                    </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- pagination -->
+</div>
+
+
+<app-delete-modal (onDelete)="deleteSupport()" [isloading]="loading"></app-delete-modal>

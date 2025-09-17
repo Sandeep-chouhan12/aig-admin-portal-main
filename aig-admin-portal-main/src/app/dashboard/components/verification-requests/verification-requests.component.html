@@ -1,0 +1,25 @@
+<div class="dashboard_content mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="dark fs-18 fw-600 mb-0 Verification_Requests">Verification Requests</h3>
+        <select id="year" name="year" (change)="getVerificationRequestsStatistics(month.value)" #month
+            class="attendance_dropdown1 border-0 fs-14 fw-700 theading ">
+            <option [value]="-2">All</option>
+            <option *ngFor="let month of constants.MONTHS;index as i" [value]="i+1">{{month}}</option>
+        </select>
+    </div>
+    <!--The content below is only a placeholder and can be replaced.-->
+    <div id="chart" class="w-100" *ngIf="!showEmpty">
+        <apx-chart [series]="verificationRequestsChart?.series" [chart]="verificationRequestsChart?.chart"
+            [labels]="verificationRequestsChart?.labels" [responsive]="verificationRequestsChart?.responsive"
+            [legend]="verificationRequestsChart?.legend" [stroke]="verificationRequestsChart?.stroke"
+            [colors]="verificationRequestsChart?.colors" [dataLabels]="verificationRequestsChart?.dataLabels"
+            [fill]="verificationRequestsChart?.fill" [tooltip]="verificationRequestsChart?.tooltip"></apx-chart>
+    </div>
+    <div id="empty-chart" class="w-100" *ngIf="showEmpty">
+        <apx-chart [series]="emptyPieChart?.series" [chart]="emptyPieChart?.chart" [labels]="emptyPieChart?.labels"
+            [responsive]="emptyPieChart?.responsive" [legend]="emptyPieChart?.legend" [stroke]="emptyPieChart?.stroke"
+            [colors]="emptyPieChart?.colors" [dataLabels]="emptyPieChart?.dataLabels" [fill]="emptyPieChart?.fill"
+            [tooltip]="emptyPieChart?.tooltip" [plotOptions]="emptyPieChart?.plotOptions"
+            [noData]="emptyPieChart?.noData"></apx-chart>
+    </div>
+</div>

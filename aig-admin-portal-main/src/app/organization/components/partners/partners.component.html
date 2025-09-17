@@ -1,0 +1,218 @@
+<!-- Partners -->
+<div class="table_container content d-flex flex-column justify-content-between h-100" data-number="12">
+    <div>
+        <div class="Officer_table">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <h4 class="fs-20 fw-600 dark mb-0">Partners</h4>
+                <button class="select-btn gap_6" data-bs-target="#add-modal" data-bs-toggle="modal"
+                    *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.CREATE }"
+                    (click)="resetPartner()"><img src="assets/images/svg_img/plus.svg">Add
+                    Partner</button>
+            </div>
+        </div>
+
+       
+        <div class="table-responsive add-table-data">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading">Partner Name</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Partner Image</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light partners">
+                    <tr *ngFor="let obj of partners">
+                        <td class="fs-14 fw-500 info">{{obj.partnerName}}</td>
+                        <td class="fs-14 fw-500 info"><img [src]="obj.partnerImage" class="partners_img"></td>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <a data-bs-target="#edit-modal" data-bs-toggle="modal"
+                                    *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.UPDATE }"
+                                    (click)="getPartnerById(obj)"><img src="assets/images/svg_img/pencil.svg"
+                                        class="add_icons"></a>
+                                <a (click)="partnerId=obj.id"><img src="assets/images/svg_img/Trash.svg"
+                                        *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.DELETE }"
+                                        data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+                
+                <tr *ngIf="partners.length==0 &&(loaderService.isDataLoaded |async)">
+                    <td colspan="6">
+                        <div class="table-pagination page-nav empty" *ngIf="partners.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No partners yet. </h4>
+                    </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <app-pagination [pageManager]="paginationManager" [pageRequest]="pageRequest" [data]="partners"
+        (fetchData)="getAllPartners()" *ngIf="paginationManager.totalElements>pageRequest.pageSize"></app-pagination>
+
+</div>
+
+<!-- ADD Partners MODAL  -->
+<div class="modal fade" id="add-modal" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+
+            </div>
+            <form [formGroup]="partnerForm">
+                <div class="modal-body p-0">
+                    <div class="mb-4">
+                        <h3 class="theading fs-18 fw-500 mb-3">Add Partner</h3>
+
+                        <div class="d-flex justify-content-center mb-0"
+                            *ngIf="partner.partnerImage==null else imageBlock1">
+                            <div class="position-relative  file_select_box">
+                                <input type="file" class="input_feilds bg_light file_select" name="partnerImage"
+                                     accept="image/*"   (click)="resetFileInput($event)"   (change)="setImage($event)"  id="fileupload">
+                                <label for="fileupload" class="font-15 font-400 secondary cursor-pointer"><i
+                                        class="fi fi-br-plus-small lh-0"></i>Add
+                                    Partner Image</label>
+                            </div>
+                        </div>
+                        <ng-template #imageBlock1>
+                            <div class="modal-header p-0 justify-content-center">
+                                <div>
+                                    <div class="mb-4 position-relative  d-flex justify-content-center">
+
+                                        <input id="file12" type="file" (click)="resetFileInput($event)"  accept="image/*"  (change)="setImage($event)"  class="d-none">
+                                        <img class="modal_profile" id="output2" [src]="imagePreview">
+
+                                        <label class="label" for="file12">
+                                            <a
+                                                class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                                <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                                            </a>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <div *ngIf="partnerForm.get('partnerImage')?.touched && partnerForm.get('partnerImage')?.invalid"
+                            class="error">
+                            <div *ngIf="partnerForm.get('partnerImage')?.errors?.['required']">
+                                Partner image is required
+                            </div>
+                            <div *ngIf="partnerForm.get('partnerImage')?.errors?.['invalidFileType']">
+                                Only JPG/PNG images are allowed
+                            </div>
+                            <div *ngIf="partnerForm.get('partnerImage')?.errors?.['fileTooLarge']">
+                                Image must be less than 5MB
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 mb-4 ps-0 px-2 mt-3">
+                            <label for="" class="black fs-15 fw-400 mb-2">Partner
+                                Name</label>
+                            <input type="text" class="form-control profile_edit" placeholder="Enter Partner Name"
+                                [(ngModel)]="partner.partnerName" name="partnerName" formControlName="partnerName">
+                            <div class="error"
+                                *ngIf="partnerForm.get('partnerName')?.hasError('required') && partnerForm.get('partnerName')?.touched">
+                                {{constant.INVALID_FIELD}}</div>
+                            <div class="error"
+                                *ngIf="partnerForm.get('partnerName')?.hasError('invalidName') && partnerForm.get('partnerName')?.touched">
+                                {{constant.INVALID_NAME}}</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" id="add-modal-close"
+                        aria-label="Close">Cancel</button>
+                   <button class="btn_lg fs-16 fw-500 br_10" (click)="addPartner()">
+  <!-- Loader show kare sirf jab loading true hai -->
+  <div class="spinner-border text-light" *ngIf="loading" role="status"></div>
+  
+  <!-- Text show kare jab loading false hai -->
+  <span *ngIf="!loading">Add</span>
+</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD Partners MODAL  END -->
+
+<div class="modal fade" id="edit-modal" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+            </div>
+            <form [formGroup]="updatePartnerForm">
+                <div class="modal-body p-0">
+                    <div class="mb-4">
+                        <h3 class="theading fs-18 fw-500 mb-3">Edit Partner</h3>
+
+                        <div class="modal-header p-0 justify-content-center">
+                            <div>
+                                <div class="mb-4 position-relative  d-flex justify-content-center">
+
+                                    <input id="file2" type="file" accept="image/*"  (click)="resetFileInput($event)"  (change)="setImage($event)"
+                                        class="d-none">
+                                    <img class="modal_profile" id="output3"
+                                        [src]="imagePreview || partner.partnerImage">
+
+                                    <label class="label" for="file2">
+                                        <a
+                                            class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                            <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                                        </a>
+                                    </label>
+                                </div>
+                                <div *ngIf="partnerForm.get('partnerImage')?.touched && partnerForm.get('partnerImage')?.invalid"
+                                    class="error">
+                                    <div *ngIf="partnerForm.get('partnerImage')?.errors?.['required']">
+                                        Partner image is required
+                                    </div>
+                                    <div *ngIf="partnerForm.get('partnerImage')?.errors?.['invalidFileType']">
+                                        Only JPG/PNG images are allowed
+                                    </div>
+                                    <div *ngIf="partnerForm.get('partnerImage')?.errors?.['fileTooLarge']">
+                                        Image must be less than 5MB
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb_40 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Partner
+                                Name</label>
+                            <input type="text" class="form-control profile_edit" placeholder="Enter Partner Name" 
+                                [(ngModel)]="partner.partnerName" name="partnerName" formControlName="partnerName">
+                            <div class="error"
+                                *ngIf="updatePartnerForm.get('partnerName')?.hasError('required') && updatePartnerForm.get('partnerName')?.touched">
+                                {{constant.INVALID_FIELD}}</div>
+                            <div class="error"
+                                *ngIf="updatePartnerForm.get('partnerName')?.hasError('invalidName') && updatePartnerForm.get('partnerName')?.touched">
+                                {{constant.INVALID_NAME}}</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" id="edit-modal-close"
+                        aria-label="Close" id="edit-modal-close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10" (click)="updatePartner()">
+                        <div class="spinner-border text-light" *ngIf="loading" role="status"></div>
+                        {{loading?'':'Update'}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-delete-modal (onDelete)="deletePartner()" [isloading]="loading"></app-delete-modal>

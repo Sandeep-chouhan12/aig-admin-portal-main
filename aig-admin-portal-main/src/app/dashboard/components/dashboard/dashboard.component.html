@@ -1,0 +1,568 @@
+
+
+<!-- Dashboard -->
+<div class="content" data-number="1">
+    <div class="row dashboard_cardss gy-4">
+
+        <!-- dashboard right side -->
+        <div class="col-md-8">
+            
+            <app-activity-overview-count></app-activity-overview-count>
+
+            <!-- Users graph -->
+            <div class="col-md-12 mb-4">
+                <app-users-graph></app-users-graph>
+            </div>
+            
+            <div class="row gy-4">
+
+                <!-- Address Management  -->
+                <div class="col-md-6">
+                    <app-address-management></app-address-management>
+                </div>
+
+                <!-- API -->
+                <div class="col-md-6">
+                    <app-api-urls></app-api-urls>
+                </div>
+            </div>
+        </div>
+
+        <!-- dashboard left side -->
+        <div class="col-md-4 dashboard_right_cards">
+            <!-- verification-requests pie chart -->
+            <div class="left_graph">
+                <!-- pie chart -->
+                <div class="col-md-12">
+            <app-verification-requests></app-verification-requests>
+
+            <!-- Top Verification Officer table list -->
+            <app-top-verification-officers></app-top-verification-officers>
+            </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<!-- MODAL START -->
+<!-- USER ADDRESS EDIT MODAL -->
+<div class="modal fade" id="EditAddress" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <div class="modal-header p-0 mb_40">
+                <h1 class="modal-title fs-18 fw-600 primary" id="exampleModalToggleLabel2">Edit Address
+                </h1>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="row">
+                    <div class="col-md-6 mb_20 ps-0 px-2">
+                        <label for="" class="black fs-16 fw-400 mb-2">Address Type</label>
+                        <input type="text" class="form-control profile_edit" placeholder="Home">
+                    </div>
+                    <div class="col-md-6 mb_20 ps-2 px-0">
+                        <label for="" class="black fs-16 fw-400 mb-2">Name of House/Office</label>
+                        <input type="text" class="form-control profile_edit" placeholder="Vijay">
+                    </div>
+                    <div class="col-md-6 m_20 ps-0 px-2">
+                        <label for="" class="black fs-16 fw-400 mb-2">House No./Building</label>
+                        <input type="text" class="form-control profile_edit" placeholder="26">
+                    </div>
+                    <div class="col-md-6 mb_20 ps-2 px-0">
+                        <label for="" class="black fs-16 fw-400 mb-2">Area/Locality</label>
+                        <input type="text" class="form-control profile_edit" placeholder="indore">
+                    </div>
+                    <div class="col-md-6 mb_20 ps-0 px-2">
+                        <label for="" class="black fs-16 fw-400 mb-2">Landmark</label>
+                        <input type="text" class="form-control profile_edit" placeholder="20">
+                    </div>
+                    <div class="col-md-6 mb_20 ps-2 px-0">
+                        <label for="" class="black fs-16 fw-400 mb-2">LGA</label>
+                        <input type="text" class="form-control profile_edit" placeholder="indore">
+                    </div>
+                    <div class="col-md-6 mb_20 ps-0 px-2">
+                        <label for="" class="black fs-16 fw-400 mb-2">State</label>
+                        <input type="text" class="form-control profile_edit" placeholder="MP">
+                    </div>
+                    <div class="col-md-6 mb_20 ps-2 px-0">
+                        <label for="" class="black fs-16 fw-400 mb-2">City</label>
+                        <input type="text" class="form-control profile_edit" placeholder="indore">
+                    </div>
+                    <div class="col-md-6  ps-2 px-0">
+                        <label for="" class="black fs-16 fw-400 mb-2">ZipCode</label>
+                        <input type="password" class="form-control profile_edit" placeholder=".......">
+                    </div>
+                    <div class="d-flex justify-content-end mt_40 gap_24">
+                        <button class="close_btn2" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="btn-primary ">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- USER ADDRESS EDIT MODAL END -->
+
+<!-- CHANGE PASSWORD MODAL -->
+<div class="modal fade" id="exampleModalToggle4" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 d-block">
+                <div>
+                    <div class=" mb-0 d-flex justify-content-between">
+                        <h1 class="fs-22 fw-600 text_small mb-0" id="exampleModalToggleLabel2">Change
+                            password</h1>
+                        <button type="button" class="close_btn" data-bs-dismiss="modal" aria-label="Close"><i
+                                class="fi fi-rr-cross-circle"></i></button>
+                    </div>
+                    <h3 class="fs-16 fw-500 info mb-0">Set a new login password for your account</h3>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4 mt-4">
+                    <div class="col-md-12 mb-3">
+                        <div class="position-relative">
+                            <i class="fi fi-rr-lock lock_icon"></i>
+                            <input type="text" class="form-control password_input" placeholder="Current Password">
+                            <i class="fi fi-rr-eye eye_icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <div class="position-relative">
+                            <i class="fi fi-rr-lock lock_icon"></i>
+                            <input type="text" class="form-control password_input" placeholder="New Password">
+                            <i class="fi fi-rr-eye eye_icon"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="position-relative">
+                            <i class="fi fi-rr-lock lock_icon"></i>
+                            <input type="text" class="form-control password_input" placeholder="Confirm Password">
+                            <i class="fi fi-rr-eye-crossed eye_icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <button class="btn-primary  fs-16 fw-500 w-100 m-0">Save Password</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- CHANGE PASSWORD MODAL END -->
+
+<!-- LOGOUT MODAL -->
+<div class="modal fade" id="exampleModalToggle5" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <h1 class="fs-22 fw-600 text_small mb_10 text-center" id="exampleModalToggleLabel2">Logout
+                        Verification</h1>
+                    <h3 class="fs-16 fw-400 info mb-0">Are you sure you want to logout this verification ?</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- LOGOUT MODAL END -->
+
+<!-- DELETE MODAL -->
+<div class="modal fade" id="delete-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        Verification Officer</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 mb-4 text-center">Are you sure you want to delete this
+                        verification officer's profile? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" data-bs-dismiss="modal"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- DELETE MODAL END -->
+
+<!-- ADD OFFICER MODAL  -->
+<div class="modal fade" id="addofficer" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div>
+
+                    <div class="mb-4 position-relative  d-flex justify-content-center">
+
+                        <input id="file" type="file" onchange="loadFile(event)" class="d-none">
+                        <img class="modal_profile" id="output" src="assets/images/temp_img/add-officer.png">
+                        <label class="-label" for="file">
+                            <a
+                                class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                            </a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4">
+                    <div class="">
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Name</label>
+                            <input type="text" class="form-control profile_edit" placeholder="Yash Jain">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Email Address</label>
+                            <input type="text" class="form-control profile_edit"
+                                placeholder="vijayhencha@gmail.com">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Phone Number</label>
+                            <input type="text" class="form-control profile_edit" placeholder="9876543210">
+                        </div>
+                        <div class="position-relative  mb-3 ">
+                            <label for="" class="black fs-15 fw-400 mb-2">Password</label>
+                            <input type="password" class="form-control  profile_edit password"
+                                placeholder="........">
+                            <i class="fi fi-rr-eye-crossed eye_icon2 lh-0"></i>
+                        </div>
+
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">LGA Code</label>
+                            <input type="email" class="form-control profile_edit" placeholder="AIG009">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Address</label>
+                            <input type="email" class="form-control profile_edit"
+                                placeholder="2972 Westheimer Rd. Santa Ana, Illinois 85486 ">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD OFFICER MODAL  END -->
+
+<!-- ADD Plans MODAL  -->
+<div class="modal fade" id="addplans" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4">
+                    <h3 class="theading fs-18 fw-500 mb-3">Add Plan</h3>
+                    <div class="">
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Plan Name</label>
+                            <input type="text" class="form-control profile_edit" placeholder="xyz">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">No. of Request</label>
+                            <input type="text" class="form-control profile_edit" placeholder="40">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Price</label>
+                            <input type="text" class="form-control profile_edit" placeholder="4854">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Description</label>
+                            <textarea class="form-control profile_edit" id="exampleFormControlTextarea1"
+                                rows="3"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD Plans MODAL  END -->
+
+<!-- ADD Partners MODAL  -->
+<div class="modal fade" id="addPartners" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4">
+                    <h3 class="theading fs-18 fw-500 mb-3">Add Partner</h3>
+
+                    <div class="d-flex justify-content-center mb_30">
+                        <div class="position-relative  file_select_box">
+                            <input type="file" class="input_feilds bg_light file_select" name="fileupload">
+                            <label for="fileupload" class="font-15 font-400 secondary"><i
+                                    class="fi fi-br-plus-small lh-0 fs-20"></i>Add Partner Image</label>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 mb_40 ps-0 px-2">
+                        <label for="" class="black fs-15 fw-400 mb-2">Partner Name</label>
+                        <input type="text" class="form-control profile_edit" placeholder="xyz">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD Partners MODAL  END -->
+
+<!-- ADD VARIFICATION OFFICER MODAL  -->
+<div class="modal fade" id="verificationaddofficer" aria-labelledby="exampleModalToggleLabel2" tabindex="-1"
+    aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div>
+
+                    <div class="mb-4 position-relative  d-flex justify-content-center">
+
+                        <input id="file" type="file" onchange="loadFile(event1)" class="d-none">
+                        <img class="modal_profile" id="output1" src="assets/images/temp_img/add-officer.png">
+                        <label class="-label" for="file">
+                            <a
+                                class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                            </a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4">
+                    <div class="">
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Name</label>
+                            <input type="text" class="form-control profile_edit" placeholder="Yash Jain">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Email Address</label>
+                            <input type="text" class="form-control profile_edit"
+                                placeholder="vijayhencha@gmail.com">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Phone Number</label>
+                            <input type="text" class="form-control profile_edit" placeholder="9876543210">
+                        </div>
+                        <div class="position-relative  mb-3 ">
+                            <label for="" class="black fs-15 fw-400 mb-2">Password</label>
+                            <input type="password" class="form-control  profile_edit password"
+                                placeholder="........">
+                            <i class="fi fi-rr-eye-crossed eye_icon2 lh-0"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD VARIFICATION OFFICER MODAL  END -->
+
+
+<!--  View Emergency Request MODAL -->
+<div class="modal fade" id="Emergencyrequest" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+    tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered profile_modal">
+        <div class="modal-content">
+            <div class="d-flex justify-content-between align-items-center mb_20">
+                <h3 class="fs-18 fw-600 primary mb-0">View Emergency Request</h3>
+                <div class="d-flex gap_24">
+                    <button class="status_btn Verified_btn">Verified</button>
+                    <a href="" class="Emergency_btn fs-15 fw-500 text_small"><img
+                            src="assets/images/svg_img/direction.svg"></a>
+                </div>
+            </div>
+            <div class="row mb_20">
+                <div class="col-md-2 ">
+                    <img class="modal_profile" src="assets/images/temp_img/user-details.png">
+                </div>
+                <div class="col-md-10 user_details">
+
+                    <div class="row mb_20">
+                        <div class="col-md-4">
+                            <h3>User Name</h3>
+                            <h4>Olamide Adekunle</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Phone Number</h3>
+                            <h4>9876543210</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Emergency Type</h3>
+                            <h4>Medical Emergency</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3>Request Date Time</h3>
+                            <h4>12/01/2024 00:30</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Block Code</h3>
+                            <h4>AIR009</h4>
+                        </div>
+                        <div class="col-md-4">
+                            <h3>Emergency Icon</h3>
+                            <span class="view_Emergency_icon"><img src="assets/images/svg_img/e1.svg"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="address_card mb_20">
+                <h3 class="fs-18 fw-500 info mb_8">Address</h3>
+                <h4 class="fs-16 fw-500 text_small mb-1">ABUM-5W149X</h4>
+                <h5 class="fs-15 fw-500 warrning mb-0">Suite 301, Omega Plaza, Herbert Macaulay Way, Yaba, Lagos,
+                    Nigeria Suite 301, Omega Plaza, Herbert Macaulay Way, Yaba, Lagos, Nigeria</h5>
+            </div>
+
+            <h3 class="fs-16 fw-600 mb_20 theading">Assigned Operator</h3>
+            <div class="row mb_20 Emergency_details">
+                <div class="col-md-4">
+                    <h3>Assigned Operator Name</h3>
+                    <h4>Yashhhh</h4>
+                </div>
+                <div class="col-md-4">
+                    <h3>Assigned Operator Contact</h3>
+                    <h4>9876543210</h4>
+                </div>
+                <div class="col-md-4">
+                    <h3>Assigned Operator Emergency Type</h3>
+                    <h4>Medical Emergency</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- View Emergency Request MODAL END -->
+
+<!-- ADD Operator OFFICER MODAL  -->
+<div class="modal fade" id="AddOperator" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div>
+
+                    <div class="mb-4 position-relative  d-flex justify-content-center">
+
+                        <input id="file" type="file" onchange="loadFile(event2)" class="d-none">
+                        <img class="modal_profile" id="output2" src="assets/images/temp_img/add-officer.png">
+                        <label class="-label" for="file">
+                            <a
+                                class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                            </a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4">
+                    <div class="">
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Name</label>
+                            <input type="text" class="form-control profile_edit" placeholder="Yash Jain">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Email Address</label>
+                            <input type="text" class="form-control profile_edit"
+                                placeholder="vijayhencha@gmail.com">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Phone Number</label>
+                            <input type="text" class="form-control profile_edit" placeholder="9876543210">
+                        </div>
+                        <div class="col-md-12 mb-3 ps-0 px-2">
+                            <label for="" class="black fs-15 fw-400 mb-2">Emergency Service Type</label>
+                            <select class="form-select profile_edit" aria-label="Default select example">
+                                <option selected>Medical</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                        </div>
+                        <div class="position-relative  mb-3 ">
+                            <label for="" class="black fs-15 fw-400 mb-2">Password</label>
+                            <input type="password" class="form-control  profile_edit password"
+                                placeholder="........">
+                            <i class="fi fi-rr-eye-crossed eye_icon2 lh-0"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ADD Operator OFFICER MODAL  END -->

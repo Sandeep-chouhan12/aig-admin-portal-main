@@ -1,0 +1,456 @@
+<div class="main_content scroll_bar">
+    <div class="container">
+        <div class="d-flex flex-column gap-4">
+            <!-- user list details -->
+            <div class="content_box p-4 d-flex flex-column gap-4 ">
+                <div class=" d-flex gap-4 align-items-center user-details-container">
+                    <div class="d-flex align-items-start h-100">
+                        <img [src]=" appUtil.DEFAULT_IMAGE" class="user-profile" style="height: 100px;width: 100px;">
+                    </div>
+                    <div class="user-card-grid w-100">
+                        <!-- User Name -->
+                        <div class="d-flex flex-column gap-2 user-details-name">
+                            <h3 class="mb-0 fs-16 fw-500">User Name</h3>
+                            <h4 class="mb-0 fs-16 fw-600">Praveen Sharma</h4>
+                        </div>
+                        <!-- Phone Number -->
+                        <div class="d-flex flex-column gap-2 user-details-name">
+                            <h3 class="mb-0 fs-16 fw-500">Type</h3>
+                            <h4 class="mb-0 fs-16 fw-600">Software
+                                Development</h4>
+                        </div>
+                        <!-- Email -->
+                        <div class="d-flex flex-column gap-2 user-details-name">
+                            <h3 class="mb-0 fs-16 fw-500">Email</h3>
+                            <h4 class="mb-0 fs-16 fw-600">olamideadekunlegmail.com</h4>
+                        </div>
+                        <!-- Occupation -->
+                        <div class="d-flex flex-column gap-2 user-details-name">
+                            <h3 class="mb-0 fs-16 fw-500">Phone Number</h3>
+                            <h4 class="mb-0 fs-16 fw-600">9876543210</h4>
+                        </div>
+                        <!-- Status -->
+                        <div class="d-flex flex-column gap-2">
+                            <h3 class="mb-0 fs-16 fw-500">Status</h3>
+                            <label class="switch"><input type="checkbox"><span
+                                    class="slider round cursor_pointer"></span></label>
+                        </div>
+                        <!-- Verified -->
+                        <div class="d-flex align-items-center">
+                            <button class="status_btn Verified_btn fs-14">Verified</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Api Request -->
+                <div class="d-flex flex-column gap-12">
+                    <h2 class="mb-0 fs-18 fw-600 primary">Api Request</h2>
+                    <div class="background-card">
+                        <div class="row gy-4">
+                            <div class="col-md-3 col-sm-6 col-12">
+                                <div class="d-flex flex-column gap-2">
+                                    <h2 class="fs-16 fw-500 mb-0 info">Remaining
+                                        Request</h2>
+                                    <h3 class="mb-0 fs-16 fw-500 text_small">1500</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-12">
+                                <div class="d-flex flex-column gap-2">
+                                    <h2 class="fs-16 fw-500 mb-0 info">Request
+                                        Today</h2>
+                                    <h3 class="mb-0 fs-16 fw-500 text_small">100</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-12">
+                                <div class="d-flex flex-column gap-2">
+                                    <h2 class="fs-16 fw-500 mb-0 info">Request
+                                        Last 7 days</h2>
+                                    <h3 class="mb-0 fs-16 fw-500 text_small">800</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-12">
+                                <div class="d-flex flex-column gap-2">
+                                    <h2 class="fs-16 fw-500 mb-0 info">Lifetime
+                                        Request</h2>
+                                    <h3 class="mb-0 fs-16 fw-500 text_small">600</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- api user details tabs -->
+            <ul class="nav-pills gap-12 mb-0 user-tabs-grid" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="tabs_btn active fs-16 fw-600" id="RegistrationDetailss" data-bs-toggle="pill"
+                        data-bs-target="#RegistrationDetails" type="button" role="tab"
+                        aria-controls="pills-RegistrationDetails" aria-selected="true">Registration
+                        Details</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="tabs_btn fs-16 fw-600" id="APIKeyss" data-bs-toggle="pill" data-bs-target="#APIKeys"
+                        type="button" role="tab" aria-controls="pills-APIKeys" aria-selected="false">API Keys</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="tabs_btn fs-16 fw-600" id="Transactions" data-bs-toggle="pill"
+                        data-bs-target="#Transaction " type="button" role="tab" aria-controls="pills-Transaction "
+                        aria-selected="false">Transaction </button>
+                </li>
+
+            </ul>
+            <!-- api user details tabs-content -->
+            <div class="tab-content" id="pills-tabContent">
+
+                <!-- Registration Details tabs -->
+                <div class="tab-pane fade show active content_box" id="RegistrationDetails" role="tabpanel"
+                    aria-labelledby="pills-RegistrationDetails-tab" tabindex="0">
+                    <!-- Personal information -->
+                    <div class="Registration_Details mb-4">
+                        <h3 class="primary fs-16 fw-600 mb-4">Representative</h3>
+                        <div class="row gy-4">
+                            <div class="col-md-3 col-lg-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">First
+                                    Name</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">Yash</h5>
+                            </div>
+                            <div class="col-md-3 col-lg-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Last
+                                    Name</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">Jain</h5>
+                            </div>
+                            <div class="col-md-3 col-lg-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Identification
+                                    Number</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">NIN
+                                    Card - 123456</h5>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Business information -->
+                    <div class="Registration_Details mb-4">
+                        <h3 class="primary fs-16 fw-600 mb-4">Business
+                            information</h3>
+                        <div class="row gy-4">
+                            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Business
+                                    Name</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">My
+                                    Company</h5>
+                            </div>
+                            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Business
+                                    Type</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">Olamide
+                                    Adekunle</h5>
+                            </div>
+                            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Business
+                                    Physical Address</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">NIN
+                                    Number - 123456</h5>
+                            </div>
+                            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Registration
+                                    No.</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">NIN
+                                    Number - 123456</h5>
+                            </div>
+                            <div class="col-md-4 col-lg-3 col-xl-3 col-xxl-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Tax
+                                    Identification Number </h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">NIN
+                                    Number - 123456</h5>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Business Director information -->
+                    <div class="Registration_Details mb-4">
+                        <h3 class="primary fs-16 fw-600 mb-4">Business Director
+                            information</h3>
+                        <div class="row gy-4">
+                            <div class="col-md-3 col-lg-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Name
+                                    of Director</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">My
+                                    Company</h5>
+                            </div>
+                            <div class="col-md-3 col-lg-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">Physical
+                                    Address</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">NIN
+                                    Number - 123456</h5>
+                            </div>
+                            <div class="col-md-3 col-lg-2 col-sm-6">
+                                <h4 class="fs-15 fw-500 subTextColor mb_8">AIG
+                                    Code</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb-0">Rashmi009</h5>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Address Verification Documents -->
+                    <div class="mb-4">
+                        <h3 class="primary fs-16 fw-600 mb-4">Address
+                            Verification Documents</h3>
+                        <div class="row gy-4">
+                            <div class="col-md-4 col-lg-3 col-sm-6">
+                                <h4 class="fs-16 fw-500 subTextColor mb_8">User
+                                    (Applicant) </h4>
+                                <h5 class="text_small  fs-16 fw-600 mb_8">Utility
+                                    Bill</h5>
+                                <img src="assets/images/temp_img/address-vari-img.png" class="add_veri_doc_img">
+                            </div>
+                            <div class="col-md-4 col-lg-3 col-sm-6">
+                                <h4 class="fs-16 fw-500 subTextColor mb_8">Business</h4>
+                                <h5 class="text_small  fs-16 fw-600 mb_8">Utility
+                                    Bill</h5>
+                                <img src="assets/images/temp_img/address-vari-img.png" class="add_veri_doc_img">
+                            </div>
+                            <div class="col-md-4 col-lg-3 col-sm-6">
+                                <h4 class="fs-16 fw-500 subTextColor mb_8">Director
+                                </h4>
+                                <h5 class="text_small  fs-16 fw-600 mb_8">Utility
+                                    Bill</h5>
+                                <img src="assets/images/temp_img/address-vari-img.png" class="add_veri_doc_img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Registration Details tabs end-->
+
+                <!-- API Keys tābs -->
+                <div class="tab-pane fade" id="APIKeys" role="tabpanel" aria-labelledby="pills-APIKeys-tab"
+                    tabindex="0">
+                    <!-- API Keys  list -->
+                    <div class="table_container table-responsive mb-4">
+                        <!-- Table heading -->
+                        <div class="Officer_table">
+                            <h4 class="fs-20 fw-500 dark mb-0">API Key</h4>
+                        </div>
+                        <div class="add-table-data" style="overflow-x:auto;">
+                            <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr class="table_heading">
+                                        <th scope="col" class="fs-14 fw-500 theading">Project
+                                            Name</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Project
+                                            Description
+                                        </th>
+                                        <th scope="col" class="fs-14 fw-500 theading">API
+                                            Key</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Created
+                                            Date</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Last
+                                            Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg_light">
+
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">AIG</td>
+                                        <td class="fs-14 fw-500 info">Lorem
+                                            ipsum dolor sit amet,
+                                            consectetur
+                                            adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore
+                                        </td>
+                                        <td class="fs-14 fw-500 info">RSVSRAWLA</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">AIG</td>
+                                        <td class="fs-14 fw-500 info">Lorem
+                                            ipsum dolor sit amet,
+                                            consectetur
+                                            adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore
+                                        </td>
+                                        <td class="fs-14 fw-500 info">RSVSRAWLA</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">AIG</td>
+                                        <td class="fs-14 fw-500 info">Lorem
+                                            ipsum dolor sit amet,
+                                            consectetur
+                                            adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore
+                                        </td>
+                                        <td class="fs-14 fw-500 info">RSVSRAWLA</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">AIG</td>
+                                        <td class="fs-14 fw-500 info">Lorem
+                                            ipsum dolor sit amet,
+                                            consectetur
+                                            adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore
+                                        </td>
+                                        <td class="fs-14 fw-500 info">RSVSRAWLA</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">AIG</td>
+                                        <td class="fs-14 fw-500 info">Lorem
+                                            ipsum dolor sit amet,
+                                            consectetur
+                                            adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore
+                                        </td>
+                                        <td class="fs-14 fw-500 info">RSVSRAWLA</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">AIG</td>
+                                        <td class="fs-14 fw-500 info">Lorem
+                                            ipsum dolor sit amet,
+                                            consectetur
+                                            adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore
+                                        </td>
+                                        <td class="fs-14 fw-500 info">RSVSRAWLA</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation example" class="table-pagination">
+                            <a class="fs-16 fw-500 black d-flex align-items-center gap-2 py-2 px-3 ms-0 me-2 pagination-left"
+                                href="#"><img src="assets/images/svg_img/pagination-leftIcon.svg" height="16"
+                                    width="16"><span class="pagination-hide-text">Previous</span></a>
+                            <ul class="pagination mb-0">
+
+                                <li class="page-item"><a class="page-link active" href="#">1</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                            </ul>
+                            <a class="fs-16 fw-500 black d-flex align-items-center gap-2 py-2 px-3  ms-2 me-0 pagination-right"
+                                href="#"><span class="pagination-hide-text">Next</span><img
+                                    src="assets/images/svg_img/pagination-righticon.svg" height="16" width="16"></a>
+                        </nav>
+                    </div>
+                </div>
+                <!--  API Keys tābs end-->
+                <!-- Transaction  tabs -->
+                <div class="tab-pane fade" id="Transaction " role="tabpanel" aria-labelledby="pills-Transaction -tab"
+                    tabindex="0">
+                    <!-- Transaction   list -->
+                    <div class="table_container mb-4 table-responsive">
+                        <!-- Table heading -->
+                        <div class="Officer_table">
+                            <h4 class="fs-20 fw-500 dark mb-0">Transaction</h4>
+                        </div>
+                        <div class="add-table-data" style="overflow-x:auto;">
+                            <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr class="table_heading">
+                                        <th scope="col" class="fs-14 fw-500 theading">Transaction
+                                            ID</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Plan</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Benefit
+                                            (No. of
+                                            requests)
+                                        </th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Transaction
+                                            Date Time
+                                            Officer</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg_light">
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">123456789</td>
+                                        <td><a href class="fs-14 fw-600 theading mb-0 border-bottomLine  ">
+                                                Saver</a>
+                                        </td>
+                                        <td class="fs-14 fw-500 info">1000</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                        <td class="fs-14 fw-500 info">1500</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">123456789</td>
+                                        <td><a href class="fs-14 fw-600 theading mb-0 border-bottomLine  ">
+                                                Saver</a>
+                                        </td>
+                                        <td class="fs-14 fw-500 info">1000</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                        <td class="fs-14 fw-500 info">1500</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">123456789</td>
+                                        <td><a href class="fs-14 fw-600 theading mb-0 border-bottomLine  ">
+                                                Saver</a>
+                                        </td>
+                                        <td class="fs-14 fw-500 info">1000</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                        <td class="fs-14 fw-500 info">1500</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">123456789</td>
+                                        <td><a href class="fs-14 fw-600 theading mb-0 border-bottomLine  ">
+                                                Saver</a>
+                                        </td>
+                                        <td class="fs-14 fw-500 info">1000</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                        <td class="fs-14 fw-500 info">1500</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs-14 fw-500 info">123456789</td>
+                                        <td><a href class="fs-14 fw-600 theading mb-0 border-bottomLine  ">
+                                                Saver</a>
+                                        </td>
+                                        <td class="fs-14 fw-500 info">1000</td>
+                                        <td class="fs-14 fw-500 info">12/01/2024
+                                            00:30</td>
+                                        <td class="fs-14 fw-500 info">1500</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav aria-label="Page navigation example" class="table-pagination">
+                            <a class="fs-16 fw-500 black d-flex align-items-center gap-2 py-2 px-3 ms-0 me-2 pagination-left"
+                                href="#"><img src="assets/images/svg_img/pagination-leftIcon.svg" height="16"
+                                    width="16"><span class="pagination-hide-text">Previous</span></a>
+                            <ul class="pagination mb-0">
+
+                                <li class="page-item"><a class="page-link active" href="#">1</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                            </ul>
+                            <a class="fs-16 fw-500 black d-flex align-items-center gap-2 py-2 px-3  ms-2 me-0 pagination-right"
+                                href="#"><span class="pagination-hide-text">Next</span><img
+                                    src="assets/images/svg_img/pagination-righticon.svg" height="16" width="16"></a>
+                        </nav>
+                    </div>
+                </div>
+                <!-- Transaction tabs end-->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+<!-- API Documentation user -->
+<div class="table_container content table-responsive" data-number="11">
+    <div class="Officer_table">
+        <div>
+            <h4 class="fs-20 fw-600 dark mb-0">Users</h4>
+        </div>
+    </div>
+    <div class="table-pagination page-nav empty" *ngIf="users.length==0 &&(loaderService.isDataLoaded |async)">  <h4 class="primary mb-0 fs-26 fw-600">{{constant.NOT_USERS_YET}}</h4></div>
+    <div style="overflow-x:auto;" *ngIf="users.length!=0">
+        <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+            <thead>
+                <tr class="table_heading">
+                    <th scope="col" class="fs-14 fw-500 theading">Name</th>
+                    <th scope="col" class="fs-14 fw-500 theading">Email address</th>
+                    <th scope="col" class="fs-14 fw-500 theading">Phone number</th>
+                    <th scope="col" class="fs-14 fw-500 theading status_img">Status <img  *ngIf="sortIsActive==sortStatus.ALL"
+                        src="assets/images/temp_img/down-arrow.png" (click)="sortByStatus(sortStatus.ALL)">
+                        <img  *ngIf="sortIsActive==sortStatus.ACTIVE"
+                        src="assets/images/temp_img/down-arrow.png" (click)="sortByStatus(sortStatus.ACTIVE)">
+                        <img  *ngIf="sortIsActive==sortStatus.IN_ACTIVE"
+                        src="assets/images/temp_img/down-arrow.png" (click)="sortByStatus(sortStatus.IN_ACTIVE)"></th>
+                    <th scope="col" class="fs-14 fw-500 theading">Action</th>
+                </tr>
+            </thead>
+            <tbody class="bg_light">
+                <tr *ngFor="let obj  of users ;let i = index">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img [src]="obj.profilePicture || appUtil.DEFAULT_IMAGE" class="address_icon">
+                            <div class="varification_officer" >
+                                <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2" *ngIf="obj.personalInformationResponse">{{obj.personalInformationResponse.firstName +' '+obj.personalInformationResponse.lastName}}</h5>
+                                <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2"></h4>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="fs-14 fw-500 info">{{obj.email}}</td>
+                    <td class="fs-14 fw-500 info">{{obj.phoneNumber}}</td>
+                    <td class="fs-14 fw-500 info">
+                        <label class="switch">
+                            <input type="checkbox" [checked]="obj.isActive" (click)="changeStatus(obj)">
+                            <span class="slider round"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <a><img src="assets/images/svg_img/edit-icon.svg"  routerLink="/Admin/Api-Documentation/api-user-details/{{obj.id}}"
+                                class="add_icons"></a>
+                        <a data-bs-target="#edit-modal" data-bs-toggle="modal" (click)="setUserData(obj)"><img
+                                src="assets/images/svg_img/pencil.svg" class="add_icons"></a>
+                        <a (click)="deleteId=obj.id"><img src="assets/images/svg_img/Trash.svg"
+                                data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                    </td>
+
+            </tbody>
+        </table>
+       
+        <app-pagination [pageManager]="paginationManager" [pageRequest]="pageRequest" [data]="users"
+            (fetchData)="getAllApiUsers()" *ngIf="paginationManager.totalElements>pageRequest.pageSize"></app-pagination>
+    </div>
+</div>
+
+
+<app-delete-modal (onDelete)="deleteApiUser()" [isloading]="loading" ></app-delete-modal>
+
+
+<!-- ADD Operator OFFICER MODAL  -->
+<div class="modal fade" id="edit-modal" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog" *ngIf="user.personalInformationResponse">
+    <form [formGroup]="updateUserForm">
+        <div class="modal-dialog modal-dialog-centered" >
+            <div class="modal-content">
+                <div class="modal-header p-0 justify-content-center">
+                    <div>
+
+                        <div class="mb-4 position-relative  d-flex justify-content-center">
+
+                            <input id="file1" type="file"  (change)="setUserImage($event)" class="d-none"  accept="image/*"
+                             >
+                            <img class="modal_profile" id="output2" [src]="selectedImage || appUtil.DEFAULT_IMAGE">
+
+                            <label class="-label" for="file1">
+                                <a
+                                    class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                    <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                                </a>
+                            </label>
+                        </div>
+                   
+                    </div>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="mb-4">
+                        <div class="">
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">First Name</label>
+                                <input type="text" class="form-control profile_edit" placeholder="Enter First Name"
+                                    name="firstName" formControlName="firstName" [(ngModel)]="user.personalInformationResponse.firstName">
+                                <div *ngIf="updateUserForm.get('firstName')?.hasError('required') && updateUserForm.get('firstName')?.touched "
+                                    class="error">{{constant.INVALID_FIELD}}</div>
+                                    <div *ngIf="updateUserForm.get('firstName')?.hasError('invalidName') && updateUserForm.get('firstName')?.touched "
+                                    class="error">{{constant.INVALID_NAME}}</div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Last Name</label>
+                                <input type="text" class="form-control profile_edit" placeholder="Enter Last Name"
+                                    [(ngModel)]="user.personalInformationResponse.lastName" name="lastName" formControlName="lastName">
+                                <div *ngIf="updateUserForm.get('lastName')?.hasError('required') && updateUserForm.get('lastName')?.touched "
+                                    class="error">{{constant.INVALID_FIELD}}</div>
+                                    <div *ngIf="updateUserForm.get('lastName')?.hasError('invalidName') && updateUserForm.get('lastName')?.touched "
+                                    class="error">{{constant.INVALID_NAME}}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-0">
+                    <div class="gap_20 d-flex">
+                        <a class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal"
+                            aria-label="Close" id="modal">Cancel</a>
+                        <a class="btn_lg fs-16 fw-500 br_10"  (click)="updateUser()"><div class="spinner-border text-light" *ngIf="loading" role="status"></div>{{loading?'':'Update'}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- ADD Operator OFFICER MODAL  END -->

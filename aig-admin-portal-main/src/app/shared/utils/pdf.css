@@ -1,0 +1,64 @@
+.top_border {
+    background-color: rgba(31, 55, 120, 0.40);
+    height: 30.584px;
+}
+.bottom_border{
+    background-color: #30417E;
+    height: 33px;
+    position: absolute;
+bottom: 0;
+width: 100%;
+}
+.logo_background {
+width: 270px;
+flex-shrink: 0;
+background-color: #1F3778;
+padding: 30px 40px;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 0px 0px 40px 0px;
+position: absolute;
+top: 0;
+}
+.invoice_details {
+padding-top: 209px;
+}
+.invoice_text h2,
+.invoice_text h3{
+font-size: 18px;
+font-weight: 600;
+color:#1A1A1A;
+}
+.invoice_title{
+font-size: 24px;
+font-weight: 900;
+color: #1A1A1A;
+}
+.table_background{
+background-color: #EDEFF4;
+padding: 8px;
+margin:50px 0px 50px;
+}
+.table_invoice{
+background-color: #fff;
+}
+tr{
+border-color: inherit;
+border-style: hidden;
+border-width: 0;
+}
+.invoice_total h3,
+.invoice_total h4{
+font-size: 18px;
+font-weight: 600;
+color: #1F3778;
+}
+.subtotal{
+background-color: #1F3778;
+color: #fff;
+padding: 12px;
+}
+.invoice_content{
+height: 100vh;
+}

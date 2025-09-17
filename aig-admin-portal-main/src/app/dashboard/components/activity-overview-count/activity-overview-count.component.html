@@ -1,0 +1,61 @@
+
+
+<div class="dashboard_content mb-4">
+    <div class="row verification-cards gy-4">
+        <div class="col-md-6">
+            <div class="dashboard_card2  bg_user cur-point" (click)="navigateToComponent(componentRoutes.USER_LIST_BASE,constants.SIDE_BAR_ID.users)">
+               <div class="d-flex gap_20  align-items-center mb-3 dashboard_heading">
+                <div class="dashboard_icon dash_icon1">
+                    <img src="assets/images/svg_img/totalUsers.svg">
+                </div>
+                <h3 class="fs-18 fw-500 secondary mb-1">Total Users</h3>
+               </div>
+               <div class="card_title">
+                <h5 class="fs-30 fw-600 black mb-0" id="counter1"></h5>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="dashboard_card2 bg_portal cur-point" (click)="navigateToComponent(componentRoutes.VERIFICATION_PORTAL,constants.SIDE_BAR_ID.verification_portal)">
+                <div class="d-flex gap_20  align-items-center mb-3 dashboard_heading">
+                    <div class="dashboard_icon dash_icon2">
+                        <img src="assets/images/svg_img/totalVerification.svg">
+                    </div>
+                    <h3 class="fs-18 fw-500 secondary mb-1">Total Verification Portal
+                        Officer</h3>
+                </div>
+                <div class="card_title">  
+                    <h5 class="fs-30 fw-600 black mb-0" id="counter2"></h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="dashboard_card2  bg_address cur-point" (click)="navigateToComponent(componentRoutes.USER_ADDRESS_BASE,constants.SIDE_BAR_ID.users)">
+                <div class="d-flex gap_20  align-items-center mb-3 dashboard_heading">
+                    <div class="dashboard_icon dash_icon3">
+                        <img src="assets/images/svg_img/totalAddress.svg">
+                    </div>
+                    <h3 class="fs-18 fw-500 secondary mb-1">Total Addresses</h3>
+                </div>
+                <div class="card_title">
+                    <h5 class="fs-30 fw-600 black mb-0"id="counter3"></h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="dashboard_card2 bg_officer cur-point" (click)="navigateToComponent(componentRoutes.VERIFICATION_OFFICER_LIST_BASE,constants.SIDE_BAR_ID.verification_officer)">
+                <div class="d-flex gap_20   align-items-center mb-3 dashboard_heading">
+                    <div class="dashboard_icon dash_icon4">
+                        <img src="assets/images/svg_img/totalVerificationOffice.svg">
+                    </div>
+                    <h3 class="fs-18 fw-500 secondary mb-1">Total Verification Officer</h3>
+                </div>
+                <div class="card_title">
+                    <h5 class="fs-30 fw-600 black mb-0" id="counter4"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

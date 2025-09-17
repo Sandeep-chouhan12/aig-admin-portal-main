@@ -1,0 +1,284 @@
+<!-- Verification Portal -->
+<div class="table_container content  d-flex flex-column justify-content-between h-100" data-number="8">
+    <div>
+        <div class="Officer_table">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <h4 class="fs-20 fw-600 dark mb-0">Verification Portal Officer</h4>
+                <button class="select-btn gap_6" data-bs-target="#add-modal" data-bs-toggle="modal"
+                    *appHasPermission="{ title: permissionTitle.VERIFICATION_PORTAL, accessType: permissionType.CREATE }"
+                    (click)="clearOfficer()"><img src="assets/images/svg_img/plus.svg">Add Officer</button>
+            </div>
+        </div>
+        <div class="table-pagination page-nav empty" *ngIf="verifiactionOfficers.length==0  && isDataLoaded">
+            <h4 class="primary mb-0 fs-26 fw-600">{{constants.NO_VERIFICATION_PORTAL_OFFICERS}}</h4>
+        </div>
+        <div class="table-responsive add-table-data" *ngIf="verifiactionOfficers.length!=0">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading">Name</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Email address</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Phone number</th>
+                        <th scope="col" class="fs-14 fw-500 theading status_img">Status <img
+                                *ngIf="sortIsActive==sortStatus.ALL" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.ALL)">
+                            <img *ngIf="sortIsActive==sortStatus.ACTIVE" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.ACTIVE)">
+                            <img *ngIf="sortIsActive==sortStatus.IN_ACTIVE" src="assets/images/temp_img/down-arrow.png"
+                                (click)="sortByStatus(sortStatus.IN_ACTIVE)">
+                        </th>
+                        <th scope="col" class="fs-14 fw-500 theading">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor=" let  obj of verifiactionOfficers;let i = index">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img [src]="obj.profilePicture || appUtil.DEFAULT_IMAGE"
+                                    ngxImgFallback="assets/images/temp_img/error_image_icon" class="address_icon">
+                                <div class="varification_officer">
+                                    <h5 class="fs-14 fw-500 black mb-0 mx-0 ms-2">{{obj.firstName +' ' + obj.lastName}}
+                                    </h5>
+                                    <!-- <h4 class="fs-14 fw-500 grey2 mb-0 mx-0 ms-2">@view Profile</h4> -->
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{obj.email}}</td>
+                        <td class="fs-14 fw-500 info">{{obj.phoneNumber}}</td>
+                        <td class="fs-14 fw-500 info">
+                            <label class="switch"
+                                *appHasPermission="{ title: permissionTitle.VERIFICATION_PORTAL, accessType: permissionType.UPDATE }">
+                                <input type="checkbox" [checked]="obj.isActive"
+                                    (change)="changeVerificationPortalOfficerStatus(obj)">
+                                <span class="slider round"></span>
+                            </label>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <a data-bs-target="#edit-modal" data-bs-toggle="modal" (click)="setOfficer(obj,i)"
+                                    *appHasPermission="{ title: permissionTitle.VERIFICATION_PORTAL, accessType: permissionType.UPDATE }"><img
+                                        src="assets/images/svg_img/pencil.svg" class="add_icons"></a>
+                                <a (click)="officerId=obj.id"
+                                    *appHasPermission="{ title: permissionTitle.VERIFICATION_PORTAL, accessType: permissionType.DELETE }"><img
+                                        src="assets/images/svg_img/Trash.svg" data-bs-target="#delete-modal"
+                                        data-bs-toggle="modal"></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <app-pagination [pageManager]="pagination" [pageRequest]="pageRequest" [data]="verifiactionOfficers"
+        (fetchData)="getAllVerificationOffficers($event)"
+        *ngIf="pagination.totalElements>pageRequest.pageSize"></app-pagination>
+</div>
+
+<app-delete-modal (onDelete)="deleleAddVerificationOfficer()"></app-delete-modal>
+
+
+<!-- ADD OFFICER MODAL  -->
+<div class="modal fade" id="add-modal" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div>
+
+                    <div class="mb-4 position-relative  d-flex justify-content-center">
+                        <input type="file" accept="image/*" (change)="setOfficerImage($event)" id="file1"
+                            class="d-none">
+                        <img class="modal_profile" id="output"
+                            [src]="selectedImage?selectedImage :appUtil.DEFAULT_IMAGE">
+                        <label class="-label" for="file1">
+                            <a
+                                class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                            </a>
+                        </label>
+                    </div>
+ <div *ngIf="officerForm.get('profilePicture')?.errors?.['invalidType']" class="error text-danger mt-2">
+  Only JPG and PNG images are allowed.
+</div>
+<div *ngIf="officerForm.get('profilePicture')?.errors?.['maxSizeExceeded']" class="error text-danger mt-2">
+  File size too large. Maximum allowed size is 2 MB.
+</div>
+
+
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4">
+
+                    <form [formGroup]="officerForm">
+
+                        <div class="">
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">First Name </label>
+                                <input type="text" class="form-control profile_edit" placeholder="Enter First Name"
+                                    [(ngModel)]="officer.firstName" name="firstName" formControlName="firstName">
+                                <div *ngIf="officerForm.get('firstName')?.hasError('required') && officerForm.get('firstName')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_FIELD}}</p>
+                                </div>
+                                <div *ngIf="officerForm.get('firstName')?.hasError('invalidName') && officerForm.get('firstName')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_NAME}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Last Name </label>
+                                <input type="text" class="form-control profile_edit" placeholder="Enter Last Name"
+                                    [(ngModel)]="officer.lastName" name="lastName" formControlName="lastName">
+                                <div *ngIf="officerForm.get('lastName')?.hasError('required') && officerForm.get('lastName')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_FIELD}}</p>
+                                </div>
+                                <div *ngIf="officerForm.get('lastName')?.hasError('invalidName') && officerForm.get('lastName')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_NAME}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Email Address</label>
+                                <input type="text" class="form-control profile_edit" [(ngModel)]="officer.email"
+                                    name="email" formControlName="email" placeholder="Enter Email ">
+                                <div *ngIf="officerForm.get('email')?.hasError('required') && officerForm.get('email')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_FIELD}}</p>
+                                </div>
+                                <div *ngIf="officerForm.get('email')?.hasError('invalidEmail') && officerForm.get('email')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_EMAIL}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Phone Number</label>
+                                <input type="text" class="form-control profile_edit" placeholder="Enter Phone Number" id="phoneInput" oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    [(ngModel)]="officer.phoneNumber" name="phoneNumber" formControlName="phoneNumber">
+
+                                <div *ngIf="officerForm.get('phoneNumber')?.invalid && officerForm.get('phoneNumber')?.touched"
+                                    class="error ">
+                                    <p *ngIf="officerForm.get('phoneNumber')?.errors?.['pattern']">Phone Number is
+                                        invalid
+                                    </p>
+                                    <p *ngIf="officerForm.get('phoneNumber')?.errors?.['required']">Phone Number is
+                                        required
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="position-relative  mb-0 ">
+                                <label for="" class="black fs-15 fw-400 mb-2">Password</label>
+                                <input #i1 type="password" class="form-control  profile_edit password"
+                                    [(ngModel)]="officer.password" name="password" formControlName="password"
+                                    placeholder="Enter password here">
+                                <i (click)="changePasswordIcon(i1)"
+                                    [ngClass]="i1.type==='text'?'fi fi-rr-eye eye_icon':'fi fi-rr-eye-crossed eye_icon'"></i>
+                            </div>
+                            <div *ngIf="officerForm.get('password')?.hasError('required') && officerForm.get('password')?.touched "
+                                class="error validation">
+                                <p>{{constants.INVALID_FIELD}}</p>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" id="add-modal-close"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10" (click)="addPortalVerificationOfficer()">
+                        <div class="spinner-border text-light" *ngIf="loading" role="status"></div>
+                        {{loading?'Saving..':'Add'}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- ADD OFFICER MODAL  END -->
+
+
+<!-- UPDATE OFFICER MODAL  -->
+<div class="modal fade" id="edit-modal" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div>
+
+                    <div class="mb-4 position-relative  d-flex justify-content-center">
+
+                        <input id="file2" type="file" accept="image/*" onchange="loadFile(event)"
+                            (change)="setOfficerImageUpdated($event)" class="d-none">
+                        <img class="modal_profile" id="output" [src]="selectedImage">
+                        <label class="-label" for="file2">
+                            <a
+                                class="secondary fs-16 fw-500  edit_img d-flex justify-content-center align-items-center">
+                                <i class="fi fi-sr-pencil white lh-0 fs-12"></i>
+                            </a>
+                        </label>
+
+                    </div>
+ <div *ngIf="updateOfficerForm.get('profilePicture')?.errors?.['invalidType']" class="error text-danger mt-2">
+  Only JPG and PNG images are allowed.
+</div>
+<div *ngIf="updateOfficerForm.get('profilePicture')?.errors?.['maxSizeExceeded']" class="error text-danger mt-2">
+  File size too large. Maximum allowed size is 2 MB.
+</div>
+
+
+                </div>
+            </div>
+            <div class="modal-body p-0">
+                <div class="mb-4">
+                    <form [formGroup]="updateOfficerForm">
+                        <div class="">
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">First Name </label>
+                                <input type="text" class="form-control profile_edit" placeholder="firstName"
+                                    [(ngModel)]="officer.firstName" name="firstName" formControlName="firstName">
+                                <div *ngIf="updateOfficerForm.get('firstName')?.hasError('required') && updateOfficerForm.get('firstName')?.touched "
+                                    class="error">{{constants.INVALID_FIELD}}</div>
+                                <div *ngIf="updateOfficerForm.get('firstName')?.hasError('invalidName') && updateOfficerForm.get('firstName')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_NAME}}</p>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-40  0 mb-2">Last Name </label>
+                                <input type="text" class="form-control profile_edit" placeholder="lastName"
+                                    [(ngModel)]="officer.lastName" name="lastName" formControlName="lastName">
+                                <div *ngIf="updateOfficerForm.get('lastName')?.hasError('required') && updateOfficerForm.get('lastName')?.touched "
+                                    class="error">{{constants.INVALID_FIELD}}</div>
+                                <div *ngIf="updateOfficerForm.get('lastName')?.hasError('invalidName') && updateOfficerForm.get('lastName')?.touched "
+                                    class="error validation">
+                                    <p>{{constants.INVALID_NAME}}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" id="edit-modal-close"
+                        id="edit-model-close" aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10" (click)="updateVerificationPortalOfficer()">
+                        <div class="spinner-border text-light" *ngIf="loading" role="status"></div>
+                        {{loading?'':'Update'}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- ADD OFFICER MODAL  END -->

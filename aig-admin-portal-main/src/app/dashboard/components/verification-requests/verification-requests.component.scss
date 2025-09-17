@@ -1,0 +1,18 @@
+@media (min-width:1400px) and (max-width: 1800px) {
+    :host ::ng-deep.apexcharts-legend-series{
+        margin: 10px !important;
+    }
+    :host ::ng-deep.apexcharts-legend{
+        gap: 10px;
+    }
+    :host ::ng-deep.apexcharts-legend-text{
+        font-size: 14px !important;
+    }
+    .Verification_Requests{
+        font-size: 18px;
+    }
+ 
+}
+::ng-deep.apexcharts-legend{
+   gap: 20px !important;
+}

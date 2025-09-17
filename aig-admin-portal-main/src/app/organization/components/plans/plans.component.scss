@@ -1,0 +1,31 @@
+input[type=number] {
+    -moz-appearance: textfield;
+  }
+  
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 600px;
+}
+
+.expanded {
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  display: block;
+}
+
+  .truncate-text {
+  display: inline-block;
+  max-width: 200px; /* adjust as per column size */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

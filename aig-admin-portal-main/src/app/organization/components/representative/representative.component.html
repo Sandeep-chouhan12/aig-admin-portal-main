@@ -1,0 +1,234 @@
+<!-- Organization -->
+<!--  Representative -->
+<div class="content h-100" data-number="11">
+    <!-- Tabs -->
+    <div class="h-100 d-flex flex-column gap-3">
+        <div class="tabs-list">
+            <ul class="nav nav-pills gap-3 flex-nowrap" id="pills-tab" role="tablist">
+                <!-- All tab -->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active profile-tabs px-3" id="pills-Government-tab" data-bs-toggle="pill"
+                        (click)="onTabChange('GOVERNMENT')" data-bs-target="#pills-Government" type="button" role="tab"
+                        aria-controls="pills-Government" aria-selected="true">
+                        Government
+                    </button>
+                </li>
+                <!-- Bulk Upload tab -->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link profile-tabs px-3" id="pills-Private-tab" data-bs-toggle="pill"
+                        (click)="onTabChange('PRIVATE')" data-bs-target="#pills-Private" type="button" role="tab"
+                        aria-controls="pills-Private" aria-selected="false">
+                        Private
+                    </button>
+                </li>
+            </ul>
+        </div>
+        <div class="table_container">
+            <!-- tabs content -->
+            <div class="tab-content" id="pills-tabContent">
+                <!-- Government content -->
+                <div class="tab-pane fade show active" id="pills-Government" role="tabpanel"
+                    aria-labelledby="pills-Government-tab" tabindex="0">
+                    <div>
+                        <!-- Table heading -->
+                        <div class="Officer_table d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <h4 class="fs-20 fw-500 dark mb-0">Government</h4>
+                            <a [routerLink]="componentRoute.ADD_GOVERNMENT_ORGANIZATION_BASE" *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.CREATE }"
+                                class="primary-button fs-14 fw-500 px-3 gap-1">
+                                <img src="assets/images/svg_img/plus.svg">
+                                Add Organization
+                            </a>
+                        </div>
+
+
+                        <!-- table start -->
+
+                        <div class="table-responsive add-table-data">
+                            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr class="table_heading">
+                                        <th scope="col" class="fs-14 fw-500 theading">Agency Name</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Email</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Phone number</th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Status </th>
+                                        <th scope="col" class="fs-14 fw-500 theading">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg_light">
+                                    <tr *ngFor="let user of usersResponse">
+                                        <td>
+                                            <div class="d-flex align-items-center gap-12">
+                                                <img [src]="user.profilePicture || appUtils.DEFAULT_IMAGE"
+                                                    class="address_icon">
+                                                <div class="varification_officer gap-1">
+                                                    <h5 class="fs-14 fw-500 black mb-0">{{user.companyName || 'N/A'}}
+                                                    </h5>
+                                                    <!-- <h4 class="fs-12 fw-400 grey2 mb-0">
+                                                    Federal Ministry
+                                                </h4> -->
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="fs-14 fw-500 info">{{user.email || 'N/A'}}</td>
+                                        <td class="fs-14 fw-500 info">{{user.phoneNumber || 'N/A'}}</td>
+                                        <td class="fs-14 fw-500 info">
+                                            <label class="switch" *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.UPDATE }">
+                                                <input type="checkbox" [checked]="user.isActive"
+                                                    (click)="changeOrganizationStatus(user)">
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <div class=" d-flex align-items-center gap-3">
+                                                <a [routerLink]="[componentRoute.ORGANIZATION_DETAILS_BASE]"
+                                                    [queryParams]="{ id: user.organizationId, type: 'GOVERNMENT' }">
+                                                    <img src="assets/images/svg_img/edit-icon.svg"
+                                                        class="add_icons"></a>
+
+                                                <a [routerLink]="[componentRoute.UPDATE_GOVERNMENT_ORGANIZATION_BASE]" *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.UPDATE }"
+                                                    [queryParams]="{ id: user.organizationId }"><img
+                                                        src="assets/images/svg_img/pencil.svg" ></a>
+                                                <a class="add_icons" *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.DELETE }"><img src="assets/images/svg_img/Trash.svg" (click)="setUserId(user)"
+                                                        data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="table-pagination page-nav empty"
+                                                *ngIf="usersResponse.length==0  &&(loaderService.isDataLoaded |async)">
+                                                <h4 class="primary mb-0 fs-26 fw-600">{{constant.NO_ORGANIZATIONS_YET}}
+                                                </h4>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                    <app-pagination [pageManager]="paginationManager" [pageRequest]="pageRequest" [data]="usersResponse"
+                        (fetchData)="getAllUsersByType()"
+                        *ngIf="paginationManager.totalElements > pageRequest.pageSize"></app-pagination>
+                </div>
+                <!-- Private content -->
+                <div class="tab-pane fade" id="pills-Private" role="tabpanel" aria-labelledby="pills-Private-tab"
+                    tabindex="0">
+                    <div class="d-flex flex-column">
+                        <div>
+                            <!-- Table heading -->
+                            <div
+                                class="Officer_table d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <h4 class="fs-20 fw-500 dark mb-0">Private</h4>
+                                <a [routerLink]="componentRoute.ADD_PRIVATE_ORGANIZATION_BASE"  *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.CREATE }"
+                                    class="primary-button fs-14 fw-500 px-3 gap-1">
+                                    <img src="assets/images/svg_img/plus.svg">
+                                    Add Organization
+                                </a>
+                            </div>
+                            <!-- table start -->
+                            <div class="table-responsive add-table-data">
+                                <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="table_heading">
+                                            <th scope="col" class="fs-14 fw-500 theading">Name</th>
+                                            <th scope="col" class="fs-14 fw-500 theading">Email</th>
+                                            <th scope="col" class="fs-14 fw-500 theading">Phone number
+                                            </th>
+                                            <th scope="col" class="fs-14 fw-500 theading">Status </th>
+                                            <th scope="col" class="fs-14 fw-500 theading">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg_light">
+                                        <tr *ngFor="let user of usersResponse">
+                                            <td>
+                                                <div class="d-flex align-items-center gap-12">
+                                                    <img [src]="user.profilePicture ||  appUtils.DEFAULT_IMAGE"
+                                                        class="address_icon">
+                                                    <div class="varification_officer gap-1">
+                                                        <h5 class="fs-14 fw-500 black mb-0">{{user.companyName ||
+                                                            'N/A'}}
+                                                        </h5>
+                                                        <!-- <h4 class="fs-12 fw-400 grey2 mb-0">
+                                                        Software Development
+                                                    </h4> -->
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="fs-14 fw-500 info">{{user.email|| 'N/A'}}</td>
+                                            <td class="fs-14 fw-500 info">{{user.phoneNumber || 'N/A'}}</td>
+                                            <td class="fs-14 fw-500 info">
+                                                <label class="switch"  *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.UPDATE }">
+                                                    <input type="checkbox" [checked]="user.isActive"
+                                                        (click)="changeOrganizationStatus(user)">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div class=" d-flex align-items-center gap-3">
+                                                    <a [routerLink]="[componentRoute.ORGANIZATION_DETAILS_BASE]"
+                                                        [queryParams]="{ id: user.organizationId, type: 'PRIVATE' }"><img
+                                                            src="assets/images/svg_img/edit-icon.svg"
+                                                            class="add_icons"></a>
+                                                    <a [routerLink]="[componentRoute.UPDATE_PRIVATE_ORGANIZATION_BASE]"  *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.UPDATE }"
+                                                        [queryParams]="{ id: user.organizationId }"><img
+                                                            src="assets/images/svg_img/pencil.svg"
+                                                            class="add_icons"></a>
+                                                    <a  *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.DELETE }"> <img src="assets/images/svg_img/Trash.svg"
+                                                            (click)="setUserId(user)" data-bs-target="#delete-modal"
+                                                            data-bs-toggle="modal"></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="table-pagination page-nav empty"
+                                                *ngIf="usersResponse.length==0  &&(loaderService.isDataLoaded |async)">
+                                                <h4 class="primary mb-0 fs-26 fw-600">{{constant.NO_ORGANIZATIONS_YET}}
+                                                </h4>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                        <app-pagination [pageManager]="paginationManager" [pageRequest]="pageRequest"
+                            [data]="usersResponse" (fetchData)="getAllUsersByType()"
+                            *ngIf="paginationManager.totalElements > pageRequest.pageSize"></app-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="delete-modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-center mb-4">
+                        <img class="assign_icon" src="assets/images/svg_img/delete.svg" height="80" width="80">
+                    </div>
+                    <h1 class="fs-22 fw-600 text_small mb_12 text-center" id="exampleModalToggleLabel2">Delete
+                        Verification Officer</h1>
+                    <h3 class="fs-16 fw-400 info mb-0 mb-4 text-center">Are you sure you want to delete this
+                        verification officer's profile? This action is irreversible.</h3>
+                </div>
+            </div>
+
+            <div class="modal-footer p-0 justify-content-center">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_12" data-bs-dismiss="modal" id="closeModalDelete"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_12" (click)="deleteOrganization()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

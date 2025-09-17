@@ -1,0 +1,225 @@
+<!-- Plans -->
+<div class="table_container content d-flex flex-column justify-content-between h-100" data-number="13">
+    <div>
+        <div class="Officer_table">
+            <div class="d-flex align-items-center justify-content-between">
+                <h4 class="fs-20 fw-600 dark mb-0">Plans</h4>
+                <button class="select-btn gap_6" data-bs-target="#add-modal" data-bs-toggle="modal" *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.CREATE }"
+                    (click)="clearObject()"><img src="assets/images/svg_img/plus.svg">Add
+                    Plan</button>
+            </div>
+        </div>
+
+        <div class="table-responsive add-table-data">
+            <table class="table mb-0" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">Plan Name</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 40%;">Description</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">No. of Requests</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">Price</th>
+                        <th scope="col" class="fs-14 fw-500 theading" style="width: 15%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let obj of plans">
+                        <td class="fs-14 fw-500 info">{{obj.planName}}</td>
+                        <td class="fs-14 fw-500 info">
+                            <div [ngClass]="{ 'truncate': !(obj.id==id) , 'expanded': obj.id==id }">
+                             {{ obj.expanded || (obj?.description?.length || 0) <= 91 ? obj.description : (obj.id != id ? (obj.description | slice:0:91) + '...' : (obj.description )) }}</div>
+                                    <a *ngIf="obj.description && obj.description.length > 91"
+                                        class="text-primary d-block mt-1" href="javascript:void(0)"
+                                        (click)="setId(obj.id)">
+                                        {{ (obj.id==id ) ? 'Show Less' : 'Show More' }}
+                                    </a>
+                        </td>
+
+
+                        <td class="fs-14 fw-500 info">{{obj.totalRequests}}</td>
+                        <td class="fs-14 fw-500 info">₦{{obj.amount}}</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <a data-bs-target="#edit-modal" data-bs-toggle="modal" (click)="setPlan(obj)"  *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.UPDATE }"><img
+                                        src="assets/images/svg_img/pencil.svg" class="add_icons"></a>
+                                <a (click)="plandId=obj.id" *appHasPermission="{ title: permissionTitle.ORGANIZATIONS, accessType: permissionType.DELETE }"><img src="assets/images/svg_img/Trash.svg" 
+                                        data-bs-target="#delete-modal" data-bs-toggle="modal"></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tr *ngIf="plans.length==0 &&(loaderService.isDataLoaded |async)">
+                    <td colspan="6">
+                        <div class="table-pagination page-nav empty" *ngIf="plans.length==0">
+                        <h4 class="primary mb-0 fs-26 fw-600">No plans yet. </h4>
+                    </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <app-pagination [pageManager]="paginationManager" [pageRequest]="pageRequest" [data]="plans"
+        (fetchData)="getAllPlans()" *ngIf="paginationManager.totalElements>pageRequest.pageSize"></app-pagination>
+
+</div>
+
+
+
+<div class="modal fade" id="add-modal" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+
+            </div>
+            <div class="modal-body p-0">
+                <form [formGroup]="planForm">
+                    <div class="mb-4">
+                        <h3 class="theading fs-18 fw-500 mb-3">Add Plan</h3>
+                        <div class="">
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Plan Name</label>
+                                <input type="text" class="form-control profile_edit" [(ngModel)]="plan.planName"
+                                    name="planName" formControlName="planName" placeholder="Enter Plan Name">
+                                <div class="error"
+                                    *ngIf="planForm.get('planName')?.hasError('required') && planForm.get('planName')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">No. of Request</label>
+                                <input type="number" class="form-control profile_edit" [(ngModel)]="plan.totalRequests"
+                                    name="totalRequests" formControlName="totalRequests"
+                                    placeholder="Enter Number Of Request ">
+                                <div class="error"
+                                    *ngIf="planForm.get('totalRequests')?.hasError('required') && planForm.get('totalRequests')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+                                <div class="error"
+                                    *ngIf="planForm.get('totalRequests')?.hasError('min') && planForm.get('totalRequests')?.touched  ">
+                                    <p>{{constant.INVALID_FIELD_FORMAT}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Price</label>
+                                <input type="number" class="form-control profile_edit" [(ngModel)]="plan.amount"
+                                    name="amount" formControlName="amount" placeholder="Enter Amount">
+                                <div class="error"
+                                    *ngIf="planForm.get('amount')?.hasError('required') && planForm.get('amount')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+                                <div class="error"
+                                    *ngIf="planForm.get('amount')?.hasError('min') && planForm.get('amount')?.touched  ">
+                                    <p>{{constant.INVALID_FIELD_FORMAT}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Description</label>
+                                <textarea class="form-control profile_edit" [(ngModel)]="plan.description"
+                                    name="Description" formControlName="description" id="exampleFormControlTextarea1"
+                                    placeholder="Enter Description" rows="3"></textarea>
+                                <div class="error"
+                                    *ngIf="planForm.get('description')?.hasError('required') && planForm.get('description')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" aria-label="Close"
+                        id="add-modal-close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10" (click)="addPlan()">
+                        <div class="spinner-border text-light" *ngIf="loading" role="status"></div> {{loading?'':'Add'}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-modal" aria-labelledby="exampleModalToggleLabel2" tabindex="-1" aria-modal="true"
+    role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-0 justify-content-center">
+
+            </div>
+
+            <form [formGroup]="planForm">
+                <div class="modal-body p-0">
+                    <div class="mb-4">
+                        <h3 class="theading fs-18 fw-500 mb-3">Edit Plan</h3>
+                        <div class="">
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Plan Name</label>
+                                <input type="text" class="form-control profile_edit" name="planName"
+                                    formControlName="planName" [(ngModel)]="plan.planName"
+                                    placeholder="Enter Plan Name">
+                                <div class="error"
+                                    *ngIf="planForm.get('planName')?.hasError('required') && planForm.get('planName')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">No. of Request</label>
+                                <input type="number" class="form-control profile_edit" name="totalRequests"
+                                    formControlName="totalRequests" [(ngModel)]="plan.totalRequests"
+                                    placeholder="Enter Number Of Request">
+                                <div class="error"
+                                    *ngIf="planForm.get('totalRequests')?.hasError('required') && planForm.get('totalRequests')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+                                <div class="error"
+                                    *ngIf="planForm.get('totalRequests')?.hasError('min') && planForm.get('totalRequests')?.touched  ">
+                                    <p>{{constant.INVALID_FIELD_FORMAT}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Price</label>
+                                <input type="number" class="form-control profile_edit" name="amount"
+                                    formControlName="amount" [(ngModel)]="plan.amount" placeholder="Enter Amount">
+                                <div class="error"
+                                    *ngIf="planForm.get('amount')?.hasError('required') && planForm.get('amount')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+                                <div class="error"
+                                    *ngIf="planForm.get('amount')?.hasError('min') && planForm.get('amount')?.touched  ">
+                                    <p>{{constant.INVALID_FIELD_FORMAT}}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3 ps-0 px-2">
+                                <label for="" class="black fs-15 fw-400 mb-2">Description</label>
+                                <textarea class="form-control profile_edit " name="description"
+                                    formControlName="description" [(ngModel)]="plan.description"
+                                    placeholder="Enter Description" id="exampleFormControlTextarea1"
+                                    rows="3"></textarea>
+                                <div class="error"
+                                    *ngIf="planForm.get('description')?.hasError('required') && planForm.get('description')?.touched ">
+                                    <p>{{constant.INVALID_FIELD}}</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="modal-footer p-0">
+                <div class="gap_20 d-flex">
+                    <button class="btn_lg2 fs-16 fw-500 br_10" data-bs-dismiss="modal" id="edit-modal-close"
+                        aria-label="Close">Cancel</button>
+                    <button class="btn_lg fs-16 fw-500 br_10" (click)="updatePlan()">
+                        <div class="spinner-border text-light" *ngIf="loading" role="status"></div>
+                        {{loading?'':'Update'}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-delete-modal (onDelete)="deletePlan()" [isloading]="loading"></app-delete-modal>

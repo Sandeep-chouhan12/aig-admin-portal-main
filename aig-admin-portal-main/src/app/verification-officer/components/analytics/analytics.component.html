@@ -1,0 +1,91 @@
+<div>
+    <div class="row Verification_Officer_graph">
+        <div class="col-md-6 mb-4">
+            <div class="report_card">
+                <div class="user_heading flex-wrap gap-2">
+                    <h4 class="fs-20 fw-600 dark mb-0">Verification Officer Acquition</h4>
+                    <div class="d-flex align-items-center gap_30">
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="user_circle"></span>
+                            <h3 class="fs-14 fw-500 theading mb-0">Officer Onboarding</h3>
+                        </div>
+                        <!-- tabs -->
+
+                        <select id="year" name="year" #officerAcquitionRef
+                            class="attendance_dropdown1 border-0 fs-14 fw-700 theading"
+                            (change)="getVerificationOfficerAcquition(officerAcquitionRef.value)">
+                            <option [value]="-1">Monthly</option>
+                            <option [value]="-2">Yearly</option>
+                            <option *ngFor="let month of constants.MONTHS;index as i" [value]="i+1">{{month}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="chart">
+                    <apx-chart [series]="officerAcquition?.series" [chart]="officerAcquition?.chart"
+                        [xaxis]="officerAcquition?.xaxis" [dataLabels]="officerAcquition?.dataLabels"
+                        [grid]="officerAcquition?.grid" [stroke]="officerAcquition?.stroke"
+                        [title]="officerAcquition?.title" [colors]="officerAcquition?.colors"
+                        [yaxis]="officerAcquition?.yaxis" [tooltip]="officerAcquition?.tooltip"
+                        [legend]="officerAcquition?.legend" [markers]="officerAcquition?.markers"></apx-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="report_card h-100">
+                <h4 class="fs-20 fw-600 dark  mb-0">Address Verification Summary</h4>
+                <div id="chart">
+                    <apx-chart [series]="officerRedialGraph?.series" [chart]="officerRedialGraph?.chart"
+                        [plotOptions]="officerRedialGraph?.plotOptions" [labels]="officerRedialGraph?.labels"
+                        [stroke]="officerRedialGraph?.stroke" [colors]="officerRedialGraph?.colors"
+                        [dataLabels]="officerRedialGraph?.dataLabels" [legend]="officerRedialGraph?.legend"
+                        [responsive]="officerRedialGraph?.responsive" [fill]="officerRedialGraph?.fill"></apx-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="report_card p-0 pb-2 content d-flex flex-column justify-content-between h-100" data-number="4" style="display: block;">
+        <div class="p-4">
+            <h4 class="fs-18 fw-600 dark mb-0">Top Verification Officer</h4>
+        </div>
+        <div class="table-pagination page-nav empty" *ngIf="topVerificationOfficers.length==0 ">
+            <h4 class="primary mb-0 fs-26 fw-600">{{constants.NO_VERIFICATION_OFFICER_YET}}</h4>
+        </div>
+        <div class="table-responsive" *ngIf="topVerificationOfficers.length!=0">
+            <table class="table mb-0 admin-table" id="dtHorizontalExample" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table_heading">
+                        <th scope="col" class="fs-14 fw-500 theading">Verification
+                            Officer
+                        </th>
+                        <th scope="col" class="fs-14 fw-500 theading">Email</th>
+                        <th scope="col" class="fs-14 fw-500 theading">UserName</th>
+                        <th scope="col" class="fs-14 fw-500 theading">Phone Number</th>
+
+                    </tr>
+                </thead>
+                <tbody class="bg_light">
+                    <tr *ngFor="let officer of topVerificationOfficers ">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img [src]="officer.profilePicture || defaultImage" class="address_icon">
+                                <div class="mx_12 varification_officer">
+                                    <h5 class="fs-14 fw-500 black mb-1">{{officer.firstName+' '+officer.lastName}}</h5>
+                                    <a (click)="navigateToComponent(officer.userId)"
+                                        class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                        View Profile</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="fs-14 fw-500 info">{{officer.email}}</td>
+                        <td class="fs-14 fw-500 info">{{officer.userName}}</td>
+                        <td class="fs-14 fw-500 info">{{officer.phoneNumber}}</td>
+
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

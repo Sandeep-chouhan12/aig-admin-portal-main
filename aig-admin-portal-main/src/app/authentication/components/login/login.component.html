@@ -1,0 +1,51 @@
+<!-- LOGIN BOX -->
+<form [formGroup]="loginFrom">
+    <div class="login-container mx-auto d-flex flex-column justify-content-between">
+        <div class="d-flex justify-content-center">
+            <img src="assets/images/svg_img/login-logo.svg" class="img-fluid login_img">
+        </div>
+        <div class="d-flex flex-column scalable-gap-40-30">
+            <div class="d-flex flex-column gap-2">
+                <h3 class="dark fs-22 fw-600 mb-0">Welcome to AIG</h3>
+                <h4 class="fs-16 fw-500 info mb-0">Get access to your password by verifying your identity
+                    through otp with the help of your email address</h4>
+            </div>
+            <div class="d-flex flex-column scalable-gap-30-22">
+                <div>
+                    <div class="position-relative">
+                        <i class="fi fi-rr-envelope input_icons"></i>
+                        <input type="email" class="form-control profile_input" name="userId" formControlName="userId"
+                            [(ngModel)]="loginCredential.userId" placeholder="Enter Email">
+                    </div>
+                    <div *ngIf="checkFieldValid('userId',loginFrom)" class="error validation">
+                        <p>{{constants.INVALID_FIELD}}</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="position-relative">
+                        <i class="fi fi-rr-lock input_icons"></i>
+                        <input #i1 type="password" autocomplete="off" class="form-control  profile_input px_41"
+                            placeholder="Enter Password" name="password" formControlName="password"
+                            [(ngModel)]="loginCredential.password">
+                        <i (click)="changePasswordIcon(i1)"
+                            [ngClass]="i1.type==='text'?'fi fi-rr-eye eye_icon':'fi fi-rr-eye-crossed eye_icon'"></i>
+                    </div>
+                    <div *ngIf="checkFieldValid('password',loginFrom)" class="error validation">
+                        <p>{{constants.INVALID_FIELD}}</p>
+                    </div>
+                    <h4 class="forgot  right_menu_toggle mb-0 mt-2 fs-15 fw-600 info" data-bs-target="#forgot-password"
+                        data-bs-toggle="modal" (click)="appUtil.authFormController('btn2')">Forgot
+                        password?
+                    </h4>
+                </div>
+            </div>
+            <button class=" btn-primary  fs-15 fw-600 w-100 m-0" (click)="adminLogin()" [disabled]="isLoading">
+
+                <div class="spinner-border text-light" *ngIf="isLoading" role="status">
+                    <span class="sr-only"></span>
+                </div>
+                {{isLoading?'':'Login'}}
+            </button>
+        </div>
+    </div>
+</form>

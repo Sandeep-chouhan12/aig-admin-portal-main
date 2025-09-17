@@ -1,0 +1,42 @@
+.disabled-text {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.custom-select .disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@media (max-width:992px) {
+  .organization-report-graph {
+    .col-md-6 {
+      width: 100%;
+    }
+  }
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  max-width: 300px;
+}
+
+.expanded {
+  white-space: normal;
+  word-break: break-word;
+  overflow: visible;
+  display: block;
+}
+
+.truncate-text {
+  display: inline-block;
+  max-width: 200px;
+  /* adjust as per column size */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

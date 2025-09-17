@@ -1,0 +1,27 @@
+
+
+        /* Error message styling */
+        .error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        ::ng-deep .NgxEditor {
+  border: 1px solid transparent !important;
+  border-top: 1px solid #d6d8d9 !important;
+}
+
+::ng-deep .NgxEditor__Content { 
+  min-height: 220px;
+   background-color:#2E333E0F !important;
+    border-radius: 0px 0px 10px 10px !important;
+    
+}
+
+::ng-deep .NgxEditor__MenuBar {
+  background-color:#2E333E0F !important;
+    border-radius: 10px 10px 0px 0px !important;
+    padding: 6px !important;
+}

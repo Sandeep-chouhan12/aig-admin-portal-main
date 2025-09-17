@@ -1,0 +1,37 @@
+<div class="dashboard_content content p-0 " data-number="4" style="display: block;">
+        <div class="card-heading">
+            <h4 class="fs-18 fw-600 dark mb-0">Top Verification Officer</h4>
+        </div>
+    <div class="top_officer_scroll">
+        <table class="table mb-0 admin-table" id="dtHorizontalExample"
+            cellspacing="0" width="100%">
+            <thead>
+                <tr class="table_heading">
+                    <th scope="col" class="fs-14 fw-500 theading">Verification
+                        Officer
+                    </th>
+                    <th scope="col" class="fs-14 fw-500 theading">Email</th>
+                </tr>
+            </thead>
+            <tbody class="bg_light">
+                <tr *ngFor="let officer of topVerificationOfficers">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img [src]="officer.profilePicture || defaultImage"
+                                class="address_icon">
+                            <div class="mx_12 varification_officer">
+                                <h5 class="fs-14 fw-500 black mb-1">{{officer.firstName+' '+officer.lastName}}</h5>
+                                <a (click)="navigateToComponent(officer.userId)"
+                                    class="fs-10 fw-600 theading mb-0 border-bottomLine ">
+                                    View Profile</a>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="fs-14 fw-500 info">{{officer.email}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>

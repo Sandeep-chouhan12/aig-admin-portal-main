@@ -1,0 +1,333 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>AIG ADMIN</title>
+    <meta charset="utf-8">
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link rel="manifest" href="assets/site.webmanifest">
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- FONT CSS -->
+    <link rel="stylesheet" href="assets/css/stylesheet.css">
+
+    <!-- GOOGLE ICON -->
+
+
+    <!-- FLATICON -->
+    <link rel="stylesheet" href="assets/css/uicons-bold-rounded.css">
+    <link rel="stylesheet" href="assets/css/uicons-regular-straight.css">
+    <link rel="stylesheet" href="assets/css/uicons-solid-rounded.css">
+    <link rel="stylesheet" href="assets/css/uicons-solid-straight.css">
+    <link rel="stylesheet" href="assets/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.0.0/uicons-thin-rounded/css/uicons-thin-rounded.css">
+
+    <!-- POPUPS -->
+    <link rel="stylesheet" href="assets/css/butterup.min.css" />
+    <script src="assets/js/butterup.min.js"></script>
+
+    <!-- CHART.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    <!-- PDF EXPORT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- GOOGLE MAP -->
+
+
+    <!-- SCRIPTS -->
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery.js"></script>
+
+    <link rel="stylesheet" href="assets/css/butterup.min.css" />
+    <script src="assets/js/butterup.min.js"></script>
+    <link rel="stylesheet" href="assets/css/butterup 1.css">
+    <link rel="stylesheet" href="assets/css/butterup.min 1.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA44z1UDqoeiocMbC9dgN6LX2kwJCG5sSA&libraries=places&callback=initMap"
+        defer async></script>
+
+    <!-- 1. jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- 2. DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <!-- 3. DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+    <app-root></app-root>
+
+    <!-- POPUPS JS  -->
+
+    <!-- <script src="assets/js/custom-select.js"></script> -->
+ 
+    <!-- BOXES CHANGE SCRIPT -->
+    <script>
+        // BOX1
+
+        var button1 = false;
+        var button2 = false;
+        function btn1_controller() {
+            // opening fresh box1
+            if (button1 == false && button2 == false) {
+                document.getElementById("btn1").style.display = "none";
+                document.getElementById("btn2").style.display = "block";
+
+                button1 = true;
+            }
+
+        }
+
+        // BOX2
+        function btn2_controller() {
+            if (button1 == false && button2 == false) {
+                document.getElementById("btn1").style.display = "none";
+                document.getElementById("btn2").style.display = "none";
+                document.getElementById("btn3").style.display = "block";
+
+                button2 = true;
+            }
+            else if (button1 == true && button2 == false) {
+                document.getElementById("btn2").style.display = "none";
+                document.getElementById("btn1").style.display = "none";
+                document.getElementById("btn3").style.display = "block";
+
+                button1 = false;
+                button2 = true;
+
+            }
+
+        }
+
+        // BOX3
+        function btn3_controller() {
+            if (button1 == false && button2 == false) {
+                document.getElementById("btn1").style.display = "none";
+                document.getElementById("btn2").style.display = "none";
+                document.getElementById("btn3").style.display = "none";
+                document.getElementById("btn4").style.display = "block";
+
+
+                button2 = true;
+            }
+            else if (button1 == true && button2 == false) {
+                document.getElementById("btn3").style.display = "none";
+                document.getElementById("btn2").style.display = "none";
+                document.getElementById("btn1").style.display = "none";
+                document.getElementById("btn4").style.display = "block";
+
+                button1 = false;
+                button2 = true;
+
+            }
+            else if (button1 == false && button2 == true) {
+                document.getElementById("btn3").style.display = "none";
+                document.getElementById("btn2").style.display = "none";
+                document.getElementById("btn1").style.display = "none";
+                document.getElementById("btn4").style.display = "block";
+                button2 = false;
+            }
+
+
+        }
+    </script>
+
+    <!-- <script src="assets/js/jquery.js"></script> -->
+    <!-- scripts links END -->
+
+    <script>
+        $(document).ready(function () {
+            $('#dtHorizontalExample').DataTable({
+                "scrollX": true
+            });
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+
+    <!-- FILTER SCRIPT -->
+    <script>
+        //Filter options selector 
+        var optionMenu = document.querySelector(".select-menu")
+
+        if (optionMenu) {
+
+            selectBtn = optionMenu.querySelector(".select-btn"),
+
+                options = optionMenu.querySelectorAll(".option"),
+
+                sBtn_text = optionMenu.querySelector(".sBtn-text");
+
+            selectBtn.addEventListener("click", () =>
+
+                optionMenu.classList.toggle("active")
+
+            );
+
+            options.forEach((option) => {
+
+                option.addEventListener("click", () => {
+
+                    let selectedOption = option.querySelector(".option-text").innerText;
+
+                    sBtn_text.innerText = selectedOption;
+
+                    optionMenu.classList.remove("active");
+
+                });
+
+            });
+
+        }
+
+        //----Filter end-----
+    </script>
+
+    <!-- SIDEBAR TOGGLE BTN SCRIPT -->
+    <script>
+        let Buttons = document.querySelectorAll(".selectSection button");
+
+        // loop through the buttons using for..of 
+        for (let button of Buttons) {
+            // listen for a click event 
+            button.addEventListener('click', (e) => {
+                // et = event target
+                const et = e.target;
+                // slect active class
+                const active = document.querySelector(".active");
+                // check for the button that has active class and remove it
+                if (active) {
+                    active.classList.remove("active");
+                }
+                // add active class to the clicked element 
+                et.classList.add("active");
+
+                // select all classes with the name content
+                let allContent = document.querySelectorAll('.content');
+
+                // loop through all content classes
+                for (let content of allContent) {
+                    // display the content if the class has the same data-attribute as the button 
+                    if (content.getAttribute('data-number') === button.getAttribute('data-number')) {
+                        content.style.display = "block";
+                    }
+                    // if it's not equal then hide it.
+                    else {
+                        content.style.display = "none";
+                    }
+                }
+            });
+        }
+
+    </script>
+
+    <!-- upload profile script -->
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById("output");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+        var loadFile = function (event1) {
+            var image = document.getElementById("output1");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+        var loadFile = function (event2) {
+            var image = document.getElementById("output2");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+
+    </script>
+
+    <!-- Verification Requests pie chart script -->
+    <script>
+        const xValues = ["Verified", "Pending", "Rejected"];
+        const yValues = [63, 49, 44];
+        const barColors = [
+            "#1F3778",
+            "#BBCCFA",
+            "#EFF4FB"
+        ];
+
+        new Chart("myChart", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: ""
+                }
+            }
+        });
+    </script>
+  
+    <!--  profile change -->
+    <script>
+        setTimeout(() => {
+            function loadFile(event) {
+                const output = document.getElementById("output1");
+                const file = event.target.files[0];
+
+                if (file) {
+                    alert('file')
+                    // Create a URL for the selected file and set it as the src of the image
+                    const fileURL = URL.createObjectURL(file);
+                    output.src = fileURL;
+                    output.onload = function () {
+                        // Revoke the object URL after loading to free memory
+                        URL.revokeObjectURL(fileURL);
+                    };
+                } else {
+                    alert("No file selected or unsupported file type.");
+                }
+            }
+        }, 1000);
+
+    </script>
+
+    <!-- Sidebar Collapsed Script -->
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("middle-content");
+            const showIcon = document.getElementById("sidebar-show-icon");
+            const closeIcon = document.getElementById("sidebar-close-icon");
+
+            // Toggle sidebar collapsed class
+            sidebar.classList.toggle("collapsed");
+            mainContent.classList.toggle("sidebar-collapsed");
+
+            // Toggle visibility of the toggle icons
+            if (sidebar.classList.contains("collapsed")) {
+                showIcon.classList.add("inactive");
+                closeIcon.classList.add("active");
+            } else {
+                showIcon.classList.remove("inactive");
+                closeIcon.classList.remove("active");
+            }
+        }
+
+
+    </script>
+
+
+
+</body>
+
+</html>

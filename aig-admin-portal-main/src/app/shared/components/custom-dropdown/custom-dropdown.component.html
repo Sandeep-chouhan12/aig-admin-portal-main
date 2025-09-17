@@ -1,0 +1,27 @@
+<div class="custom-select-wrapper" [formGroup]="formGroup">
+  <div class="custom-select" [class.active]="isOpen">
+    <div class="select-display form-select" (click)="toggleDropdown($event)">
+      <span>{{ selectedOption || placeholder }}</span>
+    </div>
+
+    <div class="dropdown-options">
+      <ng-container *ngIf="options.length > 0; else noOptions">
+        <h5
+          class="dropdown-options-list font-14 regular mb-0"
+          *ngFor="let option of options"
+          (click)="selectOption(option)"
+        >
+          {{ option.label }}
+        </h5>
+      </ng-container>
+
+      <ng-template #noOptions>
+        <p class="error px-2 py-1 small">{{ noOptionsMessage }}</p>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="error" *ngIf="control?.invalid && control?.touched">
+    {{ getErrorMessage() }}
+  </div>
+</div>
